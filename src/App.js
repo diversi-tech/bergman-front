@@ -1,5 +1,9 @@
 import './App.css';
+<<<<<<< HEAD
 import { Filter } from './components/filtering';
+=======
+import './bootstrap.min.css'
+>>>>>>> 3e501b9aace99d3058c7449825928cafbfa30fdc
 
 function App() {
   return (
