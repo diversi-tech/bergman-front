@@ -20,7 +20,7 @@ function App() {
     //     </a>
     //   </header>
     // </div>
-    <p>tamara</p>
+    <p>tamar</p>
   );
 }
 
