@@ -21,7 +21,7 @@ function App() {
     //   </header>
     // </div>
 // <<<<<<< HEAD
-    <p>tamar</p>
+    <p>hello tamar</p>
 // >>>>>>> df8458ff3ad321cd395279e865324e0c0a3c7aea
   );
 }
