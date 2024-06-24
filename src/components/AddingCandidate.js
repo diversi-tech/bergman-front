@@ -1,8 +1,22 @@
-import  { useState } from "react"
+import { useState } from "react"
 
-export default function AddingCandidate(candidate){
+export default function AddingCandidate(candidate) {
 
-    
+    <div>
+            <nav>
+                <button type="button" >כניסה</button>
+                <button type="button" >הרשמה</button>
+                <button type="button" >שינוי פרופיל</button>
+            </nav>
+            <div>אודות...</div>
+            <button type="button" >העלאת קורות חיים</button>
+            <futer>צור קשר...
+                <span id='name'>חנה ברגמן</span>
+                <span id='tel'>טל: 055-5555-555</span>
+                <span id='email'>מייל: kkk@kkk.dd</span>
+            </futer>
+        </div>
+  
     // const [name,setName]=useState('');
     // const [email,setEmail]=useState('');
     // const [phone,setPhone]=useState('');
