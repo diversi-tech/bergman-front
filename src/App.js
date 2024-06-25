@@ -1,12 +1,18 @@
 import './App.css';
-import { Filter } from './components/filtering';
-import './bootstrap.min.css'
-
+import EnhancedTable, { EnhancedTableToolbar, Filter } from './components/filtering';
+import {EnhancedTableHead} from './components/filtering'
+import DataTable from './components/filtering'
+// import './bootstrap.min.css'
+// import './bootstrap.min.js'
 function App() {
   return (
     <div className="App">
       <header><Image /></header>
       <Filter />
+      <DataTable/>
+      {/* <EnhancedTableHead/>
+      <EnhancedTableToolbar/> */}
+      {/* <EnhancedTable/> */}
     </div>
   );
 }
