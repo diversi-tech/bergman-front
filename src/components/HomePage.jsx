@@ -3,7 +3,7 @@ import './AddingCandidate.css';
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import ProfileChange from "./ProfileChange";
 
-export default function AddingCandidate() {
+export default function HomePage() {
     return (
         <div>
             <BrowserRouter>

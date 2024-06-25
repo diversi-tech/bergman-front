@@ -1,13 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
 import './bootstrap.min.css'
-import AddingCandidate from './components/AddingCandidate';
+import HomePage from './components/HomePage';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-      <AddingCandidate></AddingCandidate>
+      <HomePage></HomePage>
       </header>
     </div>
   );
