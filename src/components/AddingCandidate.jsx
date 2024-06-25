@@ -1,13 +1,24 @@
 import { useState } from "react"
+import './AddingCandidate.css';
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import ProfileChange from "./ProfileChange";
 
-export default function AddingCandidate(candidate) {
+export default function AddingCandidate() {
+    return (
+        <div>
+            <BrowserRouter>
+                <nav id="nav">
+                    <button type="button"><Link to="/Entrance">כניסה</Link> </button>
+                    <button type="button" > <Link to="/Register">הרשמה</Link></button>
+                    <button type="button" > <Link to="/ProfileChange">שינוי פרופיל </Link> </button>
+                </nav>
+                <Routes>
+                {/* <Route path="/Entrance" element={<Entrance></Entrance>} />
+                <Route path="/Register" element={<Register></Register>} /> */}
+                <Route path="/ProfileChange" element={<ProfileChange></ProfileChange>} />
 
-    <div>
-            <nav>
-                <button type="button" >כניסה</button>
-                <button type="button" >הרשמה</button>
-                <button type="button" >שינוי פרופיל</button>
-            </nav>
+                </Routes>
+            </BrowserRouter>
             <div>אודות...</div>
             <button type="button" >העלאת קורות חיים</button>
             <futer>צור קשר...
@@ -16,7 +27,7 @@ export default function AddingCandidate(candidate) {
                 <span id='email'>מייל: kkk@kkk.dd</span>
             </futer>
         </div>
-  
+    )
     // const [name,setName]=useState('');
     // const [email,setEmail]=useState('');
     // const [phone,setPhone]=useState('');
