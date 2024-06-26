@@ -26,6 +26,9 @@ export const Nav = () => {
                 <Button color="inherit" component={Link} to="/History">
                 היסטוריה
                 </Button>
+                <Button color="inherit" component={Link} to="/Profile">
+                פרופיל
+                </Button>
             </Toolbar>
         </AppBar>
     );

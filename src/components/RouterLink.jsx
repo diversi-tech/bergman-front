@@ -7,6 +7,7 @@ import { Manager } from './Manager';
 import { Secretary } from './Secretary';
 import { Editing_filters } from './Editing_filters';
 import { History } from './History';
+import { Profile } from './profile';
 import { Workers_management } from './Workers_management';
 
 
@@ -23,6 +24,7 @@ export const RouterLink = () => {
                 <Route path="/Editing_filters" element={<Editing_filters></Editing_filters>}></Route>
                 <Route path="/Workers_management" element={<Workers_management></Workers_management>}></Route>
                 <Route path="/History" element={<History></History>}></Route>
+                <Route path="/Profile" element={<Profile></Profile>}></Route>
 
             </Routes>
         </BrowserRouter>
