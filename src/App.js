@@ -1,14 +1,14 @@
 import React from 'react';
 import './App.css';
-import { Filter } from './components/filtering';
+import { RouterLink } from './components/RouterLink';
 
 function App() {
   return (
     <div className="App">
+      <RouterLink></RouterLink>
       <header><Image /></header>
-      <Filter></Filter>
     </div>
-    
+
   );
 }
 
