@@ -1,11 +1,15 @@
 // import logo from './logo.svg';
+import { BrowserRouter } from 'react-router-dom';
 import './App.css';
+import Login from './components/login';
 // import './bootstrap.min.css'
 
 function App() {
   return (
   
-    <p>helloTamar</p>
+   <BrowserRouter>
+   <Login></Login>
+   </BrowserRouter>
   );
 }
 
