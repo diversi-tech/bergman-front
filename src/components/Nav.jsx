@@ -9,7 +9,7 @@ export const Nav = () => {
                 <Button color="inherit" component={Link} to="/Home">
                     עמוד בית
                 </Button>
-                <Button color="inherit" component={Link} to="/Manager">
+                <Button color="inherit" component={Link} to="/Manager" >
                     מנהלת                </Button>
                 <Button color="inherit" component={Link} to="/Filter">
                     מסננים
