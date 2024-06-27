@@ -29,6 +29,12 @@ export const Nav = () => {
                 <Button color="inherit" component={Link} to="/Profile">
                 פרופיל
                 </Button>
+                <Button color="inherit" component={Link} to="/Login">
+                התחברות
+                </Button>
+                <Button color="inherit" component={Link} to="/Sign_up">
+                הרשמה
+                </Button>
             </Toolbar>
         </AppBar>
     );

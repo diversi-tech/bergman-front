@@ -1,14 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Nav } from './Nav';
-import Filter from './Filtering';
-import { Home } from './Home';
-import { Manager } from './Manager';
-import { Secretary } from './Secretary';
-import { Editing_filters } from './Editing_filters';
-import { History } from './History';
+import { Nav } from './nav';
+import Filter from './filtering';
+import { Home } from './home';
+import { Manager } from './manager';
+import { Secretary } from './secretary';
+import { Editing_filters } from './editing_filters';
+import { History } from './history';
 import { Profile } from './profile';
-import { Workers_management } from './Workers_management';
+import { Workers_management } from './workers_management';
+import { Login } from './login';
+import { Sign_up } from './Sign_up';
 
 
 
@@ -25,7 +27,8 @@ export const RouterLink = () => {
                 <Route path="/Workers_management" element={<Workers_management></Workers_management>}></Route>
                 <Route path="/History" element={<History></History>}></Route>
                 <Route path="/Profile" element={<Profile></Profile>}></Route>
-
+                <Route path="/Login" element={<Login></Login>}></Route>
+                <Route path="/Sign_up" element={<Sign_up></Sign_up>}></Route>
             </Routes>
         </BrowserRouter>
     );
