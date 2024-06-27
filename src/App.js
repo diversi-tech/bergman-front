@@ -6,7 +6,6 @@ import Login from './components/login';
 
 function App() {
   return (
-  
    <BrowserRouter>
    <Login></Login>
    </BrowserRouter>
