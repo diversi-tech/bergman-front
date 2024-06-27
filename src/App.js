@@ -1,4 +1,7 @@
 import './App.css';
+import { CandidateDetails } from './components/candidateDetails';
+import CopyToClipboardButton from './components/copyToClipboard';
+import DownloadButton from './components/documentDownloader';
 import EnhancedTable, { EnhancedTableToolbar, Filter } from './components/filtering';
 import {EnhancedTableHead} from './components/filtering'
 import DataTable from './components/filtering'
@@ -8,8 +11,12 @@ function App() {
   return (
     <div className="App">
       <header><Image /></header>
-      <Filter />
-      <DataTable/>
+      <CandidateDetails/>
+      <DownloadButton/>
+      {/* <CopyToClipboardButton /> */}
+
+      {/* <Filter /> */}
+      {/* <DataTable/> */}
       {/* <EnhancedTableHead/>
       <EnhancedTableToolbar/> */}
       {/* <EnhancedTable/> */}
