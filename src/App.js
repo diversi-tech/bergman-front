@@ -1,24 +1,34 @@
-import logo from './logo.svg';
 import './App.css';
-import './bootstrap.min.css'
+import { CandidateDetails } from './components/candidateDetails';
+import CopyToClipboardButton from './components/copyToClipboard';
+import DownloadButton from './components/documentDownloader';
+import EnhancedTable, { EnhancedTableToolbar, Filter } from './components/filtering';
+import {EnhancedTableHead} from './components/filtering'
+import DataTable from './components/filtering'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <header><Image /></header>
+      <CandidateDetails/>
+      <DownloadButton/>
+      {/* <CopyToClipboardButton /> */}
+      {/* <Filter /> */}
+      {/* <DataTable/> */}
+      {/* <EnhancedTableHead/>
+      <EnhancedTableToolbar/> */}
+      {/* <EnhancedTable/> */}
+    </div>
+  );
+}
+
+
+const תמונה = require('./images/logo small.jpg');
+
+function Image() {
+  return (
+    <div>
+      <img src={תמונה} alt="תיאור תמונה" className='image' />
     </div>
   );
 }
