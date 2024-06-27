@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
+import { Button, Container, TextField, Typography } from '@mui/material';
+import { styled } from '@mui/system';
 import axios from 'axios';
 import '../App.css';
-const CombinedForm = () => {
+const FileInput = styled('input')({
+  display: 'none',
+});
+export const CombinedForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
-  const [fileUploaded, setFileUploaded] = useState(false); // New state to track if a file is uploaded
+  const [fileUploaded, setFileUploaded] = useState(false);
   const handleFileChange = (e, language) => {
     setSelectedFile(e.target.files[0]);
-    setFileUploaded(true); // Update state to indicate a file has been uploaded
+    setFileUploaded(true);
     handleFileUpload(language, e.target.files[0]);
   };
   const handleFileUpload = (language, file) => {
@@ -22,7 +27,6 @@ const CombinedForm = () => {
       }
     }).then(response => {
       console.log(response.data);
-      // Handle response after file upload
     }).catch(error => {
       console.error('Error uploading file: ', error);
     });
@@ -33,17 +37,14 @@ const CombinedForm = () => {
       alert('יש להעלות קובץ אחד לפחות.');
       return;
     }
-    // Handle form submission with user input
-    // Assume default language as 'hebrew' for example purpose
     if (selectedFile) {
       handleFileUpload('hebrew', selectedFile);
     }
-    // Reset the form fields after submission
     setName('');
     setEmail('');
     setPhone('');
     setSelectedFile(null);
-    setFileUploaded(false); // Reset the file uploaded state
+    setFileUploaded(false);
   };
   const triggerFileInput = (language) => {
     const fileInput = document.getElementById('hiddenFileInput');
@@ -51,63 +52,74 @@ const CombinedForm = () => {
     fileInput.onchange = (e) => handleFileChange(e, language);
   };
   return (
-    <div className="container">
+    <Container maxWidth="sm">
       <form onSubmit={handleSubmit}>
         <div className="input-container">
-          <label>שם</label>
-          <input
+          <Typography variant="h6">שם</Typography>
+          <TextField
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            fullWidth
             required
           />
         </div>
         <div className="input-container">
-          <label>מייל</label>
-          <input
+          <Typography variant="h6">מייל</Typography>
+          <TextField
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            fullWidth
             required
           />
         </div>
         <div className="input-container">
-          <label>טלפון</label>
-          <input
+          <Typography variant="h6">טלפון</Typography>
+          <TextField
             type="text"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
+            fullWidth
             required
           />
         </div>
         <div className="input-container">
-          <label>בחר שפה:</label>
-          <button
-            type="button"
+          <Typography variant="h6">בחר שפה:</Typography>
+          <Button
+            variant="contained"
+            component="label"
             className="language-button"
             onClick={() => triggerFileInput('english')}
           >
             אנגלית
-          </button>
-          <button
-            type="button"
+            <FileInput
+              type="file"
+              id="hiddenFileInput"
+              accept=".pdf, .docx"
+              onChange={(e) => handleFileChange(e, 'english')}
+            />
+          </Button>
+          <Button
+            variant="contained"
+            component="label"
             className="language-button"
             onClick={() => triggerFileInput('hebrew')}
           >
             עברית
-          </button>
-          <input
-            type="file"
-            id="hiddenFileInput"
-            style={{ display: 'none' }}
-            accept=".pdf, .docx"
-          />
+            <FileInput
+              type="file"
+              id="hiddenFileInput"
+              accept=".pdf, .docx"
+              onChange={(e) => handleFileChange(e, 'hebrew')}
+            />
+          </Button>
         </div>
-        <button type="submit" className="submit-button">
+        <Button type="submit" variant="contained" className="submit-button">
           אישור
-        </button>
+        </Button>
       </form>
-    </div>
+    </Container>
   );
 };
 export default CombinedForm;
