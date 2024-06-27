@@ -5,43 +5,19 @@ import React, { useState } from "react";
 import './filtering.css'
 
 import { DataGrid } from '@mui/x-data-grid';
-import { GridCellParams } from '@mui/x-data-grid-pro'
-
-
-
-
-import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import TableContainer from '@mui/material/TableContainer';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import { visuallyHidden } from '@mui/utils';
-import { DataGridPro } from "@mui/x-data-grid-pro";
-import { AlignHorizontalCenter } from "@mui/icons-material";
 
 function RenderDate(props) {
     const { hasFocus, value } = props;
     // const buttonElement = React.useRef(null);
     // const rippleRef = React.useRef(null);
-    
+
     React.useLayoutEffect(() => {
         // if (hasFocus) {
         //     const input = buttonElement.current.querySelector('input');
         //     input?.focus();
         // } else if (rippleRef.current) {
-            // Only available in @mui/material v5.4.1 or later
-            // rippleRef.current.stop({});
+        // Only available in @mui/material v5.4.1 or later
+        // rippleRef.current.stop({});
         // }
     }, [hasFocus]);
 
@@ -60,15 +36,15 @@ function RenderDate(props) {
                 variant="contained"
                 size="small"
                 style={{ marginLeft: 16 }}
-              
-                // Remove button from tab sequence when cell does not have focus
-                // tabIndex={hasFocus ? 0 : -1}
-                // onKeyDown={(event) => {
-                //     if (event.key === ' ') {
-                //         // Prevent key navigation when focus is on button
-                //         event.stopPropagation();
-                //     }
-                // }}
+
+            // Remove button from tab sequence when cell does not have focus
+            // tabIndex={hasFocus ? 0 : -1}
+            // onKeyDown={(event) => {
+            //     if (event.key === ' ') {
+            //         // Prevent key navigation when focus is on button
+            //         event.stopPropagation();
+            //     }
+            // }}
             >לצפייה בקורות חיים
             </Button>
         </strong>

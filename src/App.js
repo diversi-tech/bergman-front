@@ -5,8 +5,7 @@ import DownloadButton from './components/documentDownloader';
 import EnhancedTable, { EnhancedTableToolbar, Filter } from './components/filtering';
 import {EnhancedTableHead} from './components/filtering'
 import DataTable from './components/filtering'
-// import './bootstrap.min.css'
-// import './bootstrap.min.js'
+
 function App() {
   return (
     <div className="App">
@@ -14,7 +13,6 @@ function App() {
       <CandidateDetails/>
       <DownloadButton/>
       {/* <CopyToClipboardButton /> */}
-
       {/* <Filter /> */}
       {/* <DataTable/> */}
       {/* <EnhancedTableHead/>

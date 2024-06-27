@@ -33,9 +33,6 @@ const DownloadButton = () => {
     <a href="/מסכים לפרויקט.pdf" download="example.pdf">
       <Button variant="contained" color="primary">
       להורדת קורות חיים</Button>
-      {/* <Button variant="contained" color="primary">
-        Download File
-      </Button> */}
     </a>
   );
 };
