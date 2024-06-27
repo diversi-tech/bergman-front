@@ -1,31 +1,4 @@
-// import {TextField} from '@mui/material';
-// import { makeStyles } from '@material-ui/core/styles';
 
-// //הגדרות עיצוב לטופס
-// const useStyles = makeStyles((theme) => ({
-//     root: {
-//       display: 'flex',
-//       flexDirection: 'column',
-//       justifyContent: 'center',
-//       alignItems: 'center',
-//       height: '65vh', 
-//     //   margin: theme.spacing(2),
-//     },
-//     // textField: {
-//         // margin: theme.spacing(2),
-//         // margin:'10000px',
-//         // width: '300px',  
-//     //   },
-//   }));
-
-// export const Login = ()=>{
-//     const classes = useStyles();
-//     return <div className = {classes.root}>
-//       <TextField id="filled-basic" label="email" variant="filled" />   
-//       <br></br>
-//       <TextField id="filled-basic" label="password" variant="filled" /> 
-//        </div>
-// }
 
 
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
@@ -81,5 +54,49 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import {TextField} from '@mui/material';
+// import { makeStyles } from '@material-ui/core/styles';
+
+// //הגדרות עיצוב לטופס
+// const useStyles = makeStyles((theme) => ({
+//     root: {
+//       display: 'flex',
+//       flexDirection: 'column',
+//       justifyContent: 'center',
+//       alignItems: 'center',
+//       height: '65vh', 
+//     //   margin: theme.spacing(2),
+//     },
+//     // textField: {
+//         // margin: theme.spacing(2),
+//         // margin:'10000px',
+//         // width: '300px',  
+//     //   },
+//   }));
+
+// export const Login = ()=>{
+//     const classes = useStyles();
+//     return <div className = {classes.root}>
+//       <TextField id="filled-basic" label="email" variant="filled" />   
+//       <br></br>
+//       <TextField id="filled-basic" label="password" variant="filled" /> 
+//        </div>
+// }
 
 
