@@ -10,7 +10,7 @@ import { History } from './history';
 import { Profile } from './profile';
 import { Workers_management } from './workers_management';
 import { Login } from './login';
-import { Sign_up } from './Sign_up';
+import { Sign_up } from './sign_up';
 
 
 

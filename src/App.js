@@ -1,24 +1,26 @@
 import React from 'react';
 import './App.css';
-import { RouterLink } from './components/RouterLink';
+import { RouterLink } from './components/routerLink';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 function App() {
   return (
-    <div className="App">
-      <RouterLink></RouterLink>
-      <header><Image /></header>
-    </div>
-
+    <Provider store={store}>
+      <div className="App">
+        <header><Image /></header>
+        <RouterLink></RouterLink>
+      </div>
+    </Provider>
   );
 }
 
-
-const תמונה = require('./images/logo small.jpg');
+const pic = require('./images/logo small.jpg');
 
 function Image() {
   return (
     <div>
-      <img src={תמונה} alt="תיאור תמונה" className='image' />
+      <img src={pic} alt="תיאור תמונה" className='image' />
     </div>
   );
 }
