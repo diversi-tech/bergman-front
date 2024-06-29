@@ -17,15 +17,15 @@ const NewHomePage = () => {
             <CssBaseline />
             <AppBar position="static">
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
-                    
+
                     <Box>
-                        <Button color="inherit" onClick={() => handleNavigation('/profile')}>
+                        <Button color="inherit" id="profile" onClick={() => handleNavigation('/profile')}>
                             שינוי פרופיל
                         </Button>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Box>
-                            <Button color="inherit" onClick={() => handleNavigation('/register')}>
+                            <Button color="inherit" id="register"onClick={() => handleNavigation('/register')}>
                                 הרשמה
                             </Button>
                         </Box>
@@ -39,19 +39,16 @@ const NewHomePage = () => {
             </AppBar>
             <Container>
                 <Typography variant="h4" gutterBottom align="center" sx={{ mt: 9 }}>
-                
-
-      <img src={img1} alt="תיאור תמונה" className='image'  />
- 
+                    <img src={img1} alt="תיאור תמונה" className='image' />
                 </Typography>
 
             </Container>
-            <Box component="footer" sx={{ py: 3, px: 2, mt: 'calc(27rem - 27px)', backgroundColor: (theme) => theme.palette.grey[200], textAlign: 'center' }}>
+            <Box component="footer" sx={{ py: 3, px: 2, mt: 'calc(30rem - 30px)', backgroundColor: (theme) => theme.palette.grey[200], textAlign: 'center' }}>
                 <Container maxWidth="sm">
                     <Typography variant="body1">
 
-                        צור קשר: חנה ברגמן<br />
-                        פל': 055-555-555<br />
+                        <span> צור קשר: חנה ברגמן </span>
+                        <span> פל': 055-555-555  </span>
                         אימייל: kkk@gmail.com
                     </Typography>
                 </Container>
