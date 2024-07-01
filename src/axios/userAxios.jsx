@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let url = "http://localhost:8080/api/user/"
+let url = "http://localhost:8080/api/users/"
 
 export const getAll = async () => {
     try {
