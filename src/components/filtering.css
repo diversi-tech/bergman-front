@@ -1,0 +1,39 @@
+.btnFilter
+{
+    margin: 10px !important;
+    width: 200px;
+    height: 75px;
+    font-size: 35px !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-weight: bold !important;
+}
+
+.btnView
+{
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    margin-left: 40px !important;
+    margin-right: 40px !important;
+
+}
+
+.details{
+    /* width: 100% !important; */
+    align-items: center;
+    justify-content: center;
+    /* display: flex;
+    flex-direction: row; */
+}
+
+.lbl
+{
+    font-weight: bold;
+}
+
+.external
+{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
