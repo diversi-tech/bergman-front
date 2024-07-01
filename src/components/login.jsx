@@ -1,7 +1,6 @@
 
 
-
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, TextField, Typography, Modal, Backdrop, Fade } from '@mui/material';
 import React, { useState } from 'react';
 
 const Login = () => {
@@ -21,16 +20,18 @@ const Login = () => {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        minHeight="100vh"
+        minHeight="10vh"
       >
-        <Typography variant="h4" component="h1" gutterBottom> התחברות</Typography>
+        <Typography variant="h4" component="h1" gutterBottom>
+          התחברות
+        </Typography>
 
         <TextField
           label="אימייל"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          fullWidth
+          // fullWidth
           margin="normal"
         />
         <TextField
@@ -38,65 +39,74 @@ const Login = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          fullWidth
+          // fullWidth
           margin="normal"
         />
         <Button
           variant="contained"
           color="primary"
           onClick={handleLogin}
-          fullWidth
+          // fullWidth
           style={{ marginTop: '16px' }}
-        >התחבר</Button>
+        >
+          התחבר
+        </Button>
       </Box>
     </Container>
   );
 };
 
-export default Login;
+const Home1 = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  return (
+    <div>
+      <Button variant="contained" color="primary" onClick={handleOpen}>
+        פתח התחברות
+      </Button>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: 370,
+              backgroundColor: 'white',
+              // border: '2px solid #000', צבע מסגרת שחור
+              border: '2px solid lightblue', // שינוי צבע המסגרת לתכלת
+              borderRadius: '15px', //מסגרת עגולה
+              boxShadow: 24,
+              padding: 16,
+            }}
+          >
+            <Login />
+          </Box>
+        </Fade>
+      </Modal>
+    </div>
+  );
+};
+
+export default Home1;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import {TextField} from '@mui/material';
-// import { makeStyles } from '@material-ui/core/styles';
-
-// //הגדרות עיצוב לטופס
-// const useStyles = makeStyles((theme) => ({
-//     root: {
-//       display: 'flex',
-//       flexDirection: 'column',
-//       justifyContent: 'center',
-//       alignItems: 'center',
-//       height: '65vh', 
-//     //   margin: theme.spacing(2),
-//     },
-//     // textField: {
-//         // margin: theme.spacing(2),
-//         // margin:'10000px',
-//         // width: '300px',  
-//     //   },
-//   }));
-
-// export const Login = ()=>{
-//     const classes = useStyles();
-//     return <div className = {classes.root}>
-//       <TextField id="filled-basic" label="email" variant="filled" />   
-//       <br></br>
-//       <TextField id="filled-basic" label="password" variant="filled" /> 
-//        </div>
-// }
 
 
