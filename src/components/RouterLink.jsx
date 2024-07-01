@@ -1,15 +1,15 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Nav } from './nav';
-import Filter from './filtering';
-import { Home } from './home';
-import { Manager } from './manager';
-import { Secretary } from './secretary';
-import { Editing_filters } from './editing_filters';
-import { History } from './history';
+import { Editing_filters } from './Editing_filters';
+import Filter from './Filtering';
+import { History } from './History';
+import { Home } from './Home';
+import { Login } from './Login';
+import { Manager } from './Manager';
+import { Nav } from './Nav';
+import { Secretary } from './Secretary';
+import { Workers_management } from './Workers_management';
 import { Profile } from './profile';
-import { Workers_management } from './workers_management';
-import { Login } from './login';
 import { Sign_up } from './sign_up';
 
 
