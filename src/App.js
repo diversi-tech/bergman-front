@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { RouterLink } from './components/routerLink';
+import { RouterLink } from './components/RouterLink';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 

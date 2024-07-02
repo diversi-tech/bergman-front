@@ -1,7 +1,7 @@
 import axios from 'axios';
-const API_URL = 'http://localhost:8080/api/referrals'; // שים כאן את ה-URL שלך לקונטרולר
-const ReferralsAxios = {
-    getAllReferrals: async () => {
+const API_URL = 'http://localhost:8080/api/enums'; // שים כאן את ה-URL שלך לקונטרולר
+const EnumsAxios = {
+    getAllEnums: async () => {
         try {
             debugger
             const response = await axios.get(`${API_URL}`);
@@ -11,39 +11,39 @@ const ReferralsAxios = {
             throw error;
         }
     },
-    getReferralsId: async (referralsId) => {
+    getEnumsId: async (enumsId) => {
         try {
             debugger
-            const response = await axios.get(`${API_URL}/${referralsId}`);
+            const response = await axios.get(`${API_URL}/${enumsId}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching :', error);
             throw error;
         }
     },
-    addReferral: async (referral) => {
+    addEnums: async (enums) => {
         try {
             debugger
-            const response = await axios.post(`${API_URL}`, referral);
+            const response = await axios.post(`${API_URL}`, enums);
             return response.data;
         } catch (error) {
             console.error('Error adding :', error);
             throw error;
         }
     },
-    deleteReferralId: async (ReferralsId) => {
+    deleteEnumsId: async (enumsId) => {
         try {
-            const response = await axios.delete(`${API_URL}/${ReferralsId}`);
+            const response = await axios.delete(`${API_URL}/${enumsId}`);
             return response.data;
         } catch (error) {
             console.error('Error deleting :', error);
             throw error;
         }
     },
-    updateReferral: async (updateReferral) => {
+    updateEnums: async (updateEnums) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}/update_referrals`, updateReferral);
+            const response = await axios.put(`${API_URL}/update_enums`, updateEnums);
             return response.data;
             // alert(response.data.username)
         } catch (error) {
@@ -52,4 +52,4 @@ const ReferralsAxios = {
         }
     }
 };
-export default ReferralsAxios;
+export default EnumsAxios;
