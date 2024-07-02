@@ -3,6 +3,7 @@ import './App.css';
 import { RouterLink } from './components/routerLink';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import { Filter } from './components/filtering';
 
 function App() {
   return (
