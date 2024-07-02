@@ -24,16 +24,18 @@ export const Nav = () => {
                     ניהול עובדים
                 </Button>
                 <Button color="inherit" component={Link} to="/History">
-                היסטוריה
+                    היסטוריה
                 </Button>
                 <Button color="inherit" component={Link} to="/Profile">
-                פרופיל
+                    פרופיל
                 </Button>
+                <Button color="inherit" component={Link} to="/ChangeProfile">
+                    עריכת פרופיל                </Button>
                 <Button color="inherit" component={Link} to="/Login">
-                התחברות
+                    התחברות
                 </Button>
                 <Button color="inherit" component={Link} to="/Sign_up">
-                הרשמה
+                    הרשמה
                 </Button>
             </Toolbar>
         </AppBar>

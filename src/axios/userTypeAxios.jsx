@@ -1,7 +1,12 @@
 import axios from 'axios';
-const API_URL = 'http://localhost:8080/api/userTypes'; // שים כאן את ה-URL שלך לקונטרולר
+import { useSelector } from 'react-redux';
+import { selectBaseUrl } from '../redux/reducer/apiSlice';
+
+const baseUrl = useSelector(selectBaseUrl);
+const API_URL = `${baseUrl}userTypes`;
+
 const UserTypesAxios = {
-    getAllEnums: async () => {
+    getAllUserTypes: async () => {
         try {
             debugger
             const response = await axios.get(`${API_URL}`);
@@ -11,7 +16,7 @@ const UserTypesAxios = {
             throw error;
         }
     },
-    getUserTypesId: async (userTypesId) => {
+    getUserTypeById: async (userTypesId) => {
         try {
             debugger
             const response = await axios.get(`${API_URL}/${userTypesId}`);
@@ -21,29 +26,29 @@ const UserTypesAxios = {
             throw error;
         }
     },
-    addUserTypes: async (userTypes) => {
+    addUserType: async (userType) => {
         try {
             debugger
-            const response = await axios.post(`${API_URL}`, userTypes);
+            const response = await axios.post(`${API_URL}`, userType);
             return response.data;
         } catch (error) {
             console.error('Error adding :', error);
             throw error;
         }
     },
-    deleteUserTypesId: async (userTypesId) => {
+    deleteUserTypeId: async (userTypeId) => {
         try {
-            const response = await axios.delete(`${API_URL}/${userTypesId}`);
+            const response = await axios.delete(`${API_URL}/${userTypeId}`);
             return response.data;
         } catch (error) {
             console.error('Error deleting :', error);
             throw error;
         }
     },
-    updateUserTypes: async (UserTypes) => {
+    updateUserTypes: async (updateUserType) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}/update_userTypes`, updateUserTypes);
+            const response = await axios.put(`${API_URL}/update_userTypes`, updateUserType);
             return response.data;
             // alert(response.data.username)
         } catch (error) {

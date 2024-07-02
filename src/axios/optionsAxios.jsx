@@ -1,5 +1,10 @@
 import axios from 'axios';
-const API_URL = 'http://localhost:8080/api/options'; // שים כאן את ה-URL שלך לקונטרולר
+import { useSelector } from 'react-redux';
+import { selectBaseUrl } from '../redux/reducer/apiSlice';
+
+const baseUrl = useSelector(selectBaseUrl);
+const API_URL = `${baseUrl}options`;
+
 const OptionsAxios = {
     getAllOptions: async () => {
         try {
@@ -11,7 +16,7 @@ const OptionsAxios = {
             throw error;
         }
     },
-    getOptionsId: async (optionsId) => {
+    getOptionById: async (optionsId) => {
         try {
             debugger
             const response = await axios.get(`${API_URL}/${optionsId}`);
@@ -21,29 +26,29 @@ const OptionsAxios = {
             throw error;
         }
     },
-    addOptions: async (options) => {
+    addOption: async (option) => {
         try {
             debugger
-            const response = await axios.post(`${API_URL}`, options);
+            const response = await axios.post(`${API_URL}`, option);
             return response.data;
         } catch (error) {
             console.error('Error adding :', error);
             throw error;
         }
     },
-    deleteOptionsId: async (optionsId) => {
+    deleteOptionById: async (optionId) => {
         try {
-            const response = await axios.delete(`${API_URL}/${optionsId}`);
+            const response = await axios.delete(`${API_URL}/${optionId}`);
             return response.data;
         } catch (error) {
             console.error('Error deleting :', error);
             throw error;
         }
     },
-    updateOptions: async (updateoptions) => {
+    updateOptions: async (updateOption) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}/update_options`, updateoptions);
+            const response = await axios.put(`${API_URL}/updateOptions`, updateOption);
             return response.data;
             // alert(response.data.username)
         } catch (error) {

@@ -5,6 +5,8 @@ import { UserReducer } from "./reducer/userReducer";
 import { User_optionsReducer } from "./reducer/user_optionsReducer";
 import { User_TypeReducer } from "./reducer/user_typeReducer";
 import { EnumReducer } from "./reducer/enamReducer";
+import apiSlice from "./reducer/apiSlice";
+
 
 export const reduser = combineReducers({
     Candidate_profileReducer: Candidate_profileReducer,
@@ -12,9 +14,9 @@ export const reduser = combineReducers({
     ReferralsReducer: ReferralsReducer,
     userReducer: UserReducer,
     referralsReducer: ReferralsReducer,
-    user_typeReducer:User_TypeReducer,
-    enamReducer:EnumReducer
-    
+    user_typeReducer: User_TypeReducer,
+    enamReducer: EnumReducer,
+    api: apiSlice
 })
 
 export const store = createStore(reduser)

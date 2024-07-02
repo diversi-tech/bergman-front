@@ -1,5 +1,10 @@
 import axios from 'axios';
-const API_URL = 'http://localhost:8080/api/candidateProfiles'; // שים כאן את ה-URL שלך לקונטרולר
+import { useSelector } from 'react-redux';
+import { selectBaseUrl } from '../redux/reducer/apiSlice';
+
+const baseUrl = useSelector(selectBaseUrl);
+const API_URL = `${baseUrl}candidateProfiles`;
+
 const CandidateProfilesAxios = {
     getAllCandidateProfiles: async () => {
         try {
@@ -11,7 +16,7 @@ const CandidateProfilesAxios = {
             throw error;
         }
     },
-    getCandidateProfilesId: async (candidateProfilesId) => {
+    getCandidateProfileById: async (candidateProfilesId) => {
         try {
             debugger
             const response = await axios.get(`${API_URL}/${candidateProfilesId}`);
@@ -21,29 +26,29 @@ const CandidateProfilesAxios = {
             throw error;
         }
     },
-    addCandidateProfiles: async (candidateProfiles) => {
+    addCandidateProfile: async (candidateProfile) => {
         try {
             debugger
-            const response = await axios.post(`${API_URL}`, candidateProfiles);
+            const response = await axios.post(`${API_URL}`, candidateProfile);
             return response.data;
         } catch (error) {
             console.error('Error adding :', error);
             throw error;
         }
     },
-    deleteCandidateProfilesId: async (candidateProfilesId) => {
+    deleteCandidateProfileById: async (candidateProfileId) => {
         try {
-            const response = await axios.delete(`${API_URL}/${candidateProfilesId}`);
+            const response = await axios.delete(`${API_URL}/${candidateProfileId}`);
             return response.data;
         } catch (error) {
             console.error('Error deleting :', error);
             throw error;
         }
     },
-    updateCandidateProfiles: async (updatecandidateProfiles) => {
+    updateCandidateProfiles: async (updateCandidateProfile) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}/update_candidateProfiles`, updatecandidateProfiles);
+            const response = await axios.put(`${API_URL}/updateCandidateProfile`, updateCandidateProfile);
             return response.data;
             // alert(response.data.username)
         } catch (error) {

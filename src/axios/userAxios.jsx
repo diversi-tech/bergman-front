@@ -1,5 +1,10 @@
 import axios from 'axios';
-const API_URL = 'http://localhost:8080/api/users'; // שים כאן את ה-URL שלך לקונטרולר
+import { useSelector } from 'react-redux';
+import { selectBaseUrl } from '../redux/reducer/apiSlice';
+
+const baseUrl = useSelector(selectBaseUrl);
+const API_URL = `${baseUrl}users`;
+
 const UserAxios = {
     getAllUsers: async () => {
         try {
@@ -31,7 +36,7 @@ const UserAxios = {
             throw error;
         }
     },
-    deleteUser: async (userId) => {
+    deleteUserById: async (userId) => {
         try {
             const response = await axios.delete(`${API_URL}/${userId}`);
             return response.data;

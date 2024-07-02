@@ -1,5 +1,10 @@
 import axios from 'axios';
-const API_URL = 'http://localhost:8080/api/referrals'; // שים כאן את ה-URL שלך לקונטרולר
+import { useSelector } from 'react-redux';
+import { selectBaseUrl } from '../redux/reducer/apiSlice';
+
+const baseUrl = useSelector(selectBaseUrl);
+const API_URL = `${baseUrl}referrals`;
+
 const ReferralsAxios = {
     getAllReferrals: async () => {
         try {
@@ -11,7 +16,7 @@ const ReferralsAxios = {
             throw error;
         }
     },
-    getReferralsId: async (referralsId) => {
+    getReferralById: async (referralsId) => {
         try {
             debugger
             const response = await axios.get(`${API_URL}/${referralsId}`);
@@ -31,7 +36,7 @@ const ReferralsAxios = {
             throw error;
         }
     },
-    deleteReferralId: async (ReferralsId) => {
+    deleteReferralById: async (ReferralsId) => {
         try {
             const response = await axios.delete(`${API_URL}/${ReferralsId}`);
             return response.data;
@@ -40,10 +45,10 @@ const ReferralsAxios = {
             throw error;
         }
     },
-    updateReferral: async (updateReferral) => {
+    updateReferrals: async (updateReferral) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}/update_referrals`, updateReferral);
+            const response = await axios.put(`${API_URL}/updateReferrals`, updateReferral);
             return response.data;
             // alert(response.data.username)
         } catch (error) {

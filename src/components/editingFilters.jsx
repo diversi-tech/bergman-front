@@ -1,5 +1,5 @@
 import React from 'react'
 
-export const Editing_filters=()=>{
+export const EditingFilters=()=>{
     return<p>עריכת מסננים</p>
 }

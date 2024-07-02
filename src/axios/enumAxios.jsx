@@ -1,5 +1,10 @@
 import axios from 'axios';
-const API_URL = 'http://localhost:8080/api/enums'; // שים כאן את ה-URL שלך לקונטרולר
+import { useSelector } from 'react-redux';
+import { selectBaseUrl } from '../redux/reducer/apiSlice';
+
+const baseUrl = useSelector(selectBaseUrl);
+const API_URL = `${baseUrl}enums`;
+
 const EnumsAxios = {
     getAllEnums: async () => {
         try {
@@ -11,7 +16,7 @@ const EnumsAxios = {
             throw error;
         }
     },
-    getEnumsId: async (enumsId) => {
+    getEnumById: async (enumsId) => {
         try {
             debugger
             const response = await axios.get(`${API_URL}/${enumsId}`);
@@ -21,7 +26,7 @@ const EnumsAxios = {
             throw error;
         }
     },
-    addEnums: async (enums) => {
+    addEnum: async (enums) => {
         try {
             debugger
             const response = await axios.post(`${API_URL}`, enums);
@@ -31,7 +36,7 @@ const EnumsAxios = {
             throw error;
         }
     },
-    deleteEnumsId: async (enumsId) => {
+    deleteEnumById: async (enumsId) => {
         try {
             const response = await axios.delete(`${API_URL}/${enumsId}`);
             return response.data;
@@ -40,10 +45,10 @@ const EnumsAxios = {
             throw error;
         }
     },
-    updateEnums: async (updateEnums) => {
+    updateEnums: async (updateEnum) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}/update_enums`, updateEnums);
+            const response = await axios.put(`${API_URL}/updatEnums`, updateEnum);
             return response.data;
             // alert(response.data.username)
         } catch (error) {
