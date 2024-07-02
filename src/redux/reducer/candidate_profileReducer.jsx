@@ -7,7 +7,7 @@ export const InitalState = {
 }
 export const Candidate_profileReducer = produce((state, action) => {
     switch (action.type) {
-        case 'GET_ALL_CANDIDATE_PROFILE': state.listCandidateProfile = action.payload
+        case 'FETH_ALL_CANDIDATE_PROFILE': state.listCandidateProfile = action.payload
             break;
     }
 }, InitalState)

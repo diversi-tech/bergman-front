@@ -1,3 +1,3 @@
-export const GetAllUsers=(value)=>{
-    return {type:'GET_ALL_USERS',payload:value}
+export const FethAllUsers=(value)=>{
+    return {type:'FETH_ALL_USERS',payload:value}
 }

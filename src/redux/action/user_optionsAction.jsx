@@ -1,3 +1,3 @@
-export const GetAllUser_options=(value)=>{
-    return {type:'GET_ALL_USERS_OPTIONS',payload:value}
+export const FethAllUser_options=(value)=>{
+    return {type:'FETH_ALL_USERS_OPTIONS',payload:value}
 }

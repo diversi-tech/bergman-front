@@ -7,7 +7,7 @@ export const InitalState = {
 }
 export const UserReducer = produce((state, action) => {
     switch(action.type){
-        case 'GET_ALL_USERS':state.listUsers=action.payload
+        case 'FETH_ALL_USERS':state.listUsers=action.payload
         break;
      }
 }, InitalState)
