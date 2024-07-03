@@ -4,7 +4,7 @@ import React from 'react'
 
 export const Nav = () => {
     return (
-        <AppBar position="static">
+        <AppBar position="fixed" >
             <Toolbar>
                 <Button color="inherit" component={Link} to="/Home">
                     עמוד בית

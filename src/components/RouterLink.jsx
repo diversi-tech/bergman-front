@@ -30,8 +30,7 @@ export const RouterLink = () => {
                 <Route path="/Profile" element={<Profile></Profile>}></Route>
                 <Route path="/Login" element={<Login></Login>}></Route>
                 <Route path="/Sign_up" element={<SignUp></SignUp>}></Route>
-                <Route path="/ChangeProfile" element={<ChangeProfile></ChangeProfile>}></Route>
-           
+                <Route path="/ChangeProfile" element={<ChangeProfile></ChangeProfile>}></Route>  
             </Routes>
         </BrowserRouter>
     );

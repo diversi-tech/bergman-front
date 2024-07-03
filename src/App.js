@@ -15,12 +15,12 @@ function App() {
   );
 }
 
-const pic = require('./images/logo small.jpg');
+const pic = require('./images/logo.jpg');
 
 function Image() {
   return (
     <div>
-      <img src={pic} alt="תיאור תמונה" className='image' />
+      <img src={pic} alt="תיאור תמונה" className='image'/>
     </div>
   );
 }

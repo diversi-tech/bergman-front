@@ -1,174 +1,145 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-    Box,
-    Button,
-    Container,
-    TextField,
-    Typography,
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+  Autocomplete,
+  Chip,
 } from '@mui/material';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Chip from '@mui/material/Chip';
-import { useTheme } from '@emotion/react';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
+// רשימה של כתובות אימייל תקינות
+const validEmails = [
+  't055677597@gmail.com',
+  'user2@example.com',
+  'user3@example.com',
+  // הוסף כאן כתובות אימייל נוספות
+];
+
+const emailValidationSchema = yup
+  .string()
+  .matches(
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+    'Enter a valid email address'
+  )
+  .test('is-valid-email', 'Email is not in the allowed list', (value) =>
+    validEmails.includes(value)
+  );
+
+const validationSchema = yup.object({
+  to: yup
+    .array()
+    .of(emailValidationSchema)
+    .min(1, 'Enter at least one email')
+    .required('Email is required'),
+  subject: yup.string().required('Subject is required'),
+  body: yup.string().required('Body is required'),
+});
 
 export const EditingFilters = () => {
-    const [to, setTo] = useState('');
-    const [subject, setSubject] = useState('');
-    const [body, setBody] = useState('');
+    const formik = useFormik({
+    initialValues: {
+      to: [],
+      subject: '',
+      body: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      try {
+        const response = await fetch('/sendEmail', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(values),
+        });
 
-    const names = [
-        'Oliver Hansen',
-        'Van Henry',
-        'April Tucker',
-        'Ralph Hubbard',
-        'Omar Alexander',
-        'Carlos Abbott',
-        'Miriam Wagner',
-        'Bradley Wilkerson',
-        'Virginia Andrews',
-        'Kelly Snyder',
-    ];
-
-        const theme = useTheme();
-        const [personName, setPersonName] = React.useState([]);
-        const ITEM_HEIGHT = 48;
-        const ITEM_PADDING_TOP = 8;
-        const MenuProps = {
-            PaperProps: {
-                style: {
-                    maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-                    width: 250,
-                },
-            },
-        };
-        // function handleChange (){(event: import('@mui/material').SelectChangeEvent<typeof personName>) => {
-        //     const {
-        //         target: { value },
-        //     } 
-        //     setPersonName(
-        //         // On autofill we get a stringified value.
-        //         typeof value === 'string' ? value.split(',') : value,
-        //     ),event;
-        // }
-
-        const handleSubmit = async (e) => {
-            e.preventDefault();
-
-            const emailData = {
-                to: to.split(',').map(email => email.trim()), // נפריד את הנמענים לפי פסיק
-                subject,
-                body
-            };
-           
-            try {
-                const response = await fetch('/sendEmail', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(emailData),
-                });
-
-                if (response.ok) {
-                    alert('Email sent successfully!');
-                } else {
-                    alert('Failed to send email');
-                }
-            } catch (error) {
-                console.error('Error sending email:', error);
-                alert('Failed to send email');
-            }
-        };
-        const handleChange=(string)=>{
-                
+        if (response.ok) {
+          alert('Email sent successfully!');
+        } else {
+          alert('Failed to send email');
         }
+      } catch (error) {
+        console.error('Error sending email:', error);
+        alert('Failed to send email');
+      }
+    },
+  });
 
-        return (
-            <Container maxWidth="sm" >
-                <Box sx={{ my: 4 }}>
-                    <Typography variant="h4" component="h1" gutterBottom>
-                        Send Email
-                    </Typography>
-                    <form onSubmit={handleSubmit}>
-                        <div>
-                            <FormControl sx={{ m: 1, width: 300 }}>
-                                <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
-                                <Select
-                                    labelId="demo-multiple-chip-label"
-                                    id="demo-multiple-chip"
-                                    multiple
-                                    value={personName}
-                                    onChange={handleChange(personName)}
-                                    input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-                                    renderValue={(selected) => (
-                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                            {selected.map((value) => (
-                                                <Chip key={value} label={value} />
-                                            ))}
-                                        </Box>
-                                    )}
-                                    MenuProps={MenuProps}
-                                >
-                                    {names.map((name) => (
-                                        <MenuItem
-                                            key={name}
-                                            value={name}
-                                            //style={getStyles(name, personName, theme)}
-                                        >
-                                            {name}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </div>
-                        {/* <TextField
+  return (
+    <Container maxWidth="sm">
+      <Box sx={{ my: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Send Email
+        </Typography>
+        <form onSubmit={formik.handleSubmit}>
+          <Autocomplete
+            multiple
+            options={validEmails}
+            value={formik.values.to}
+            onChange={(event, newValue) => {
+              formik.setFieldValue('to', newValue);
+            }}
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip
+                  variant="outlined"
+                  label={option}
+                  {...getTagProps({ index })}
+                />
+              ))
+            }
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="To"
+                placeholder="Add email addresses"
+                // required
+                error={formik.touched.to && Boolean(formik.errors.to)}
+                helperText={formik.touched.to && formik.errors.to && formik.errors.to.length > 0 ? formik.errors.to.join(', ') : ''}
+              />
+            )}
+          />
+          <TextField
             fullWidth
-            label="To"
+            label="Subject"
             type="text"
-            id="to"
-            name="to"
-            placeholder="Separate emails with a comma"
-            value={to}
-            onChange={(e) => setTo(e.target.value)}
+            id="subject"
+            name="subject"
+            value={formik.values.subject}
+            onChange={formik.handleChange}
+            error={formik.touched.subject && Boolean(formik.errors.subject)}
+            helperText={formik.touched.subject && formik.errors.subject}
             required
             margin="normal"
-          /> */}
-                        <TextField
-                            fullWidth
-                            label="Subject"
-                            type="text"
-                            id="subject"
-                            name="subject"
-                            value={subject}
-                            onChange={(e) => setSubject(e.target.value)}
-                            required
-                            margin="normal"
-                        />
-                        <TextField
-                            fullWidth
-                            label="Body"
-                            type="text"
-                            id="body"
-                            name="body"
-                            value={body}
-                            onChange={(e) => setBody(e.target.value)}
-                            required
-                            margin="normal"
-                            multiline
-                            rows={4}
-                        />
-                        <Box sx={{ mt: 2 }}>
-                            <Button variant="contained" color="primary" type="submit">
-                                Send Email
-                            </Button>
-                        </Box>
-                    </form>
-                </Box>
-            </Container >
-        );
-    };
+          />
+          <TextField
+            fullWidth
+            label="Body"
+            type="text"
+            id="body"
+            name="body"
+            value={formik.values.body}
+            onChange={formik.handleChange}
+            error={formik.touched.body && Boolean(formik.errors.body)}
+            helperText={formik.touched.body && formik.errors.body}
+            required
+            margin="normal"
+            multiline
+            rows={4}
+          />
+          <Box sx={{ mt: 2 }}>
+            <Button variant="contained" color="primary" type="submit" disabled={formik.values.to.length === 0}>
+              Send Email
+            </Button>
+          </Box>
+        </form>
+      </Box>
+    </Container>
+  );
+};
 
