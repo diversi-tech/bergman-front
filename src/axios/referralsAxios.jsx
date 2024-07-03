@@ -48,7 +48,7 @@ const ReferralsAxios = {
     updateReferrals: async (updateReferral) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}/updateReferrals`, updateReferral);
+            const response = await axios.put(`${API_URL}`, updateReferral);
             return response.data;
             // alert(response.data.username)
         } catch (error) {

@@ -48,7 +48,7 @@ const OptionsAxios = {
     updateOptions: async (updateOption) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}/updateOptions`, updateOption);
+            const response = await axios.put(`${API_URL}`, updateOption);
             return response.data;
             // alert(response.data.username)
         } catch (error) {

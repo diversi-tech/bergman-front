@@ -48,7 +48,7 @@ const UserAxios = {
     updateUser: async (updatedUser) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}/updateUser`, updatedUser);
+            const response = await axios.put(`${API_URL}`, updatedUser);
             return response.data;
             // alert(response.data.username)
         } catch (error) {

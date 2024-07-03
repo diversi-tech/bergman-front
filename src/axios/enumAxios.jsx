@@ -48,7 +48,7 @@ const EnumsAxios = {
     updateEnums: async (updateEnum) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}/updatEnums`, updateEnum);
+            const response = await axios.put(`${API_URL}`, updateEnum);
             return response.data;
             // alert(response.data.username)
         } catch (error) {

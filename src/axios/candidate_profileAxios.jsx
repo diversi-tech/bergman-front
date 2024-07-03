@@ -48,7 +48,7 @@ const CandidateProfilesAxios = {
     updateCandidateProfiles: async (updateCandidateProfile) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}/updateCandidateProfile`, updateCandidateProfile);
+            const response = await axios.put(`${API_URL}`, updateCandidateProfile);
             return response.data;
             // alert(response.data.username)
         } catch (error) {
