@@ -4,4 +4,3 @@ export const Filter = () => {
         מסננים
     </p>)
 }
-export default Filter;
