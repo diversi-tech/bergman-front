@@ -48,7 +48,7 @@ const UserTypesAxios = {
     updateUserTypes: async (updateUserType) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}/update_userTypes`, updateUserType);
+            const response = await axios.put(`${API_URL}/updateUserTypes`, updateUserType);
             return response.data;
             // alert(response.data.username)
         } catch (error) {
