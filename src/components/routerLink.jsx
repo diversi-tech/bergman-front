@@ -1,17 +1,17 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Nav } from './nav';
-import {Filter} from './filtering';
-import { Home } from './home';
-import { Manager } from './manager';
-import { Secretary } from './secretary';
-import { EditingFilters} from './editingFilters';
-import { History } from './history';
-import { Profile } from './profile';
-import { WorkersManagement } from './workersManagement';
-import { Login } from './login';
-import { SignUp } from './signUp';
-import { ChangeProfile } from './changeProfile';
+import { Nav } from './nav.jsx';
+import {Filter} from './filtering.jsx';
+import { Home } from './home.jsx';
+import { Manager } from './manager.jsx';
+import { Secretary } from './secretary.jsx/index.js';
+import { EditingFilters} from './editingFilters.jsx';
+import { History } from './history.jsx';
+import { Profile } from './profile.jsx';
+import { WorkersManagement } from './workersManagement.jsx';
+import { Login } from './login.jsx';
+import { SignUp } from './signUp.jsx';
+import { ChangeProfile } from './changeProfile.jsx';
 
 
 
