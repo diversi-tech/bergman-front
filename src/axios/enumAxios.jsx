@@ -16,20 +16,20 @@ const EnumsAxios = {
             throw error;
         }
     },
-    getEnumById: async (enumsId) => {
+    getEnumById: async (enumId) => {
         try {
             debugger
-            const response = await axios.get(`${API_URL}/${enumsId}`);
+            const response = await axios.get(`${API_URL}/${enumId}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching :', error);
             throw error;
         }
     },
-    addEnum: async (enums) => {
+    addEnum: async (myEnum) => {
         try {
             debugger
-            const response = await axios.post(`${API_URL}`, enums);
+            const response = await axios.post(`${API_URL}`, myEnum);
             return response.data;
         } catch (error) {
             console.error('Error adding :', error);
@@ -45,10 +45,10 @@ const EnumsAxios = {
             throw error;
         }
     },
-    updateEnums: async (updateEnum) => {
+    updateEnum: async (Enum) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}`, updateEnum);
+            const response = await axios.put(`${API_URL}`, Enum);
             return response.data;
             // alert(response.data.username)
         } catch (error) {

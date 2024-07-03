@@ -16,10 +16,10 @@ const ReferralsAxios = {
             throw error;
         }
     },
-    getReferralById: async (referralsId) => {
+    getReferralById: async (referralId) => {
         try {
             debugger
-            const response = await axios.get(`${API_URL}/${referralsId}`);
+            const response = await axios.get(`${API_URL}/${referralId}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching :', error);
@@ -36,19 +36,19 @@ const ReferralsAxios = {
             throw error;
         }
     },
-    deleteReferralById: async (ReferralsId) => {
+    deleteReferralById: async (ReferralId) => {
         try {
-            const response = await axios.delete(`${API_URL}/${ReferralsId}`);
+            const response = await axios.delete(`${API_URL}/${ReferralId}`);
             return response.data;
         } catch (error) {
             console.error('Error deleting :', error);
             throw error;
         }
     },
-    updateReferrals: async (updateReferral) => {
+    updateReferral: async (referral) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}`, updateReferral);
+            const response = await axios.put(`${API_URL}`, referral);
             return response.data;
             // alert(response.data.username)
         } catch (error) {

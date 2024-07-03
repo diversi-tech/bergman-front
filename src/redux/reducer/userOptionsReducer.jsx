@@ -5,9 +5,9 @@ export const InitalState = {
 
     ]
 }
-export const User_optionsReducer = produce((state, action) => {
+export const UserOptionsReducer = produce((state, action) => {
     switch (action.type) {
-        case 'FETH_ALL_CANDIDATE_PROFILE': state.listUser_options = action.payload
+        case 'FETCH_ALL_CANDIDATE_PROFILE': state.listUser_options = action.payload
             break;
     }
 }, InitalState)

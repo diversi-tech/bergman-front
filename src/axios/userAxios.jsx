@@ -45,10 +45,10 @@ const UserAxios = {
             throw error;
         }
     },
-    updateUser: async (updatedUser) => {
+    updateUser: async (user) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}`, updatedUser);
+            const response = await axios.put(`${API_URL}`, user);
             return response.data;
             // alert(response.data.username)
         } catch (error) {

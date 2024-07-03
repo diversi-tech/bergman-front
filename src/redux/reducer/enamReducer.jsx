@@ -7,7 +7,7 @@ export const InitalState = {
 }
 export const EnumReducer = produce((state, action) => {
     switch(action.type){
-        case 'FETH_ALL_ENUM':state.listUsers=action.payload
+        case 'FETCH_ALL_ENUM':state.listUsers=action.payload
         break;
      }
 }, InitalState)

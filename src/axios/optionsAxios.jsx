@@ -16,10 +16,10 @@ const OptionsAxios = {
             throw error;
         }
     },
-    getOptionById: async (optionsId) => {
+    getOptionById: async (optionId) => {
         try {
             debugger
-            const response = await axios.get(`${API_URL}/${optionsId}`);
+            const response = await axios.get(`${API_URL}/${optionId}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching :', error);
@@ -45,10 +45,10 @@ const OptionsAxios = {
             throw error;
         }
     },
-    updateOptions: async (updateOption) => {
+    updateOption: async (option) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}`, updateOption);
+            const response = await axios.put(`${API_URL}`, option);
             return response.data;
             // alert(response.data.username)
         } catch (error) {

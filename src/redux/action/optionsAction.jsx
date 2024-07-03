@@ -1,3 +1,3 @@
-export const FethAllOptions=(value)=>{
-    return {type:'FETH_ALL_OPTIONS',payload:value}
+export const FETCHAllOptions=(value)=>{
+    return {type:'FETCH_ALL_OPTIONS',payload:value}
 }

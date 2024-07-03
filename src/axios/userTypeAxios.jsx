@@ -45,10 +45,10 @@ const UserTypesAxios = {
             throw error;
         }
     },
-    updateUserTypes: async (updateUserType) => {
+    updateUserTypes: async (userType) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}`, updateUserType);
+            const response = await axios.put(`${API_URL}`, userType);
             return response.data;
             // alert(response.data.username)
         } catch (error) {

@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import { selectBaseUrl } from '../redux/reducer/apiSlice';
 
 const baseUrl = useSelector(selectBaseUrl);
-const API_URL = `${baseUrl}userOptions`;
+const API_URL = `${baseUrl}candidateProfiles`;
 
-const UserOptionsAxios = {
-    getAllUserOptions: async () => {
+const CandidateProfilesAxios = {
+    getAllCandidateProfiles: async () => {
         try {
             debugger
             const response = await axios.get(`${API_URL}`);
@@ -16,39 +16,39 @@ const UserOptionsAxios = {
             throw error;
         }
     },
-    getUserOptionById: async (User_optionId) => {
+    getCandidateProfileById: async (candidateProfileId) => {
         try {
             debugger
-            const response = await axios.get(`${API_URL}/${User_optionId}`);
+            const response = await axios.get(`${API_URL}/${candidateProfileId}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching :', error);
             throw error;
         }
     },
-    addUserOption: async (User_option) => {
+    addCandidateProfile: async (candidateProfile) => {
         try {
             debugger
-            const response = await axios.post(`${API_URL}`, User_option);
+            const response = await axios.post(`${API_URL}`, candidateProfile);
             return response.data;
         } catch (error) {
             console.error('Error adding :', error);
             throw error;
         }
     },
-    deleteUserOptionById: async (UserOptionsId) => {
+    deleteCandidateProfileById: async (candidateProfileId) => {
         try {
-            const response = await axios.delete(`${API_URL}/${UserOptionsId}`);
+            const response = await axios.delete(`${API_URL}/${candidateProfileId}`);
             return response.data;
         } catch (error) {
             console.error('Error deleting :', error);
             throw error;
         }
     },
-    updateUsers: async (updatedUserOption) => {
+    updateCandidateProfile: async (candidateProfile) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}`, updatedUserOption);
+            const response = await axios.put(`${API_URL}`, candidateProfile);
             return response.data;
             // alert(response.data.username)
         } catch (error) {
@@ -57,4 +57,4 @@ const UserOptionsAxios = {
         }
     }
 };
-export default UserOptionsAxios;
+export default CandidateProfilesAxios;
