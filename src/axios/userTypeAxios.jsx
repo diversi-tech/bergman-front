@@ -1,14 +1,12 @@
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { selectBaseUrl } from '../redux/reducer/apiSlice';
 
-const baseUrl = useSelector(selectBaseUrl);
-const API_URL = `${baseUrl}userTypes`;
-
+  // const baseUrl = prosess.env.REACT_APP_URL_SERVER;
+    // const API_URL = `${baseUrl}userTypes`;
+    const API_URL = `http://localhost:8080/api/userTypes`;
 const UserTypesAxios = {
     getAllUserTypes: async () => {
         try {
-            debugger
+            
             const response = await axios.get(`${API_URL}`);
             return response.data;
         } catch (error) {
@@ -18,7 +16,7 @@ const UserTypesAxios = {
     },
     getUserTypeById: async (userTypesId) => {
         try {
-            debugger
+            
             const response = await axios.get(`${API_URL}/${userTypesId}`);
             return response.data;
         } catch (error) {
@@ -28,7 +26,7 @@ const UserTypesAxios = {
     },
     addUserType: async (userType) => {
         try {
-            debugger
+            
             const response = await axios.post(`${API_URL}`, userType);
             return response.data;
         } catch (error) {
@@ -47,10 +45,8 @@ const UserTypesAxios = {
     },
     updateUserTypes: async (userType) => {
         try {
-            debugger
             const response = await axios.put(`${API_URL}`, userType);
             return response.data;
-            // alert(response.data.username)
         } catch (error) {
             console.error('Error updating :', error);
             throw error;

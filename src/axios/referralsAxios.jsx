@@ -1,14 +1,13 @@
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { selectBaseUrl } from '../redux/reducer/apiSlice';
 
-const baseUrl = useSelector(selectBaseUrl);
-const API_URL = `${baseUrl}referrals`;
+  // const baseUrl = prosess.env.REACT_APP_URL_SERVER;
+    // const API_URL = `${baseUrl}referrals`;
+    const API_URL = `http://localhost:8080/api/referrals`;
 
 const ReferralsAxios = {
     getAllReferrals: async () => {
         try {
-            debugger
+            
             const response = await axios.get(`${API_URL}`);
             return response.data;
         } catch (error) {
@@ -18,7 +17,7 @@ const ReferralsAxios = {
     },
     getReferralById: async (referralId) => {
         try {
-            debugger
+            
             const response = await axios.get(`${API_URL}/${referralId}`);
             return response.data;
         } catch (error) {
@@ -28,7 +27,7 @@ const ReferralsAxios = {
     },
     addReferral: async (referral) => {
         try {
-            debugger
+            
             const response = await axios.post(`${API_URL}`, referral);
             return response.data;
         } catch (error) {
@@ -47,10 +46,9 @@ const ReferralsAxios = {
     },
     updateReferral: async (referral) => {
         try {
-            debugger
+            
             const response = await axios.put(`${API_URL}`, referral);
             return response.data;
-            // alert(response.data.username)
         } catch (error) {
             console.error('Error updating :', error);
             throw error;

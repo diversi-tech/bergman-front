@@ -1,14 +1,12 @@
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { selectBaseUrl } from '../redux/reducer/apiSlice';
 
-const baseUrl = useSelector(selectBaseUrl);
-const API_URL = `${baseUrl}enums`;
+   // const baseUrl = prosess.env.REACT_APP_URL_SERVER;
+  // const API_URL = `${baseUrl}enums`;
+    const API_URL = `http://localhost:8080/api/enums`;
 
 const EnumsAxios = {
     getAllEnums: async () => {
         try {
-            debugger
             const response = await axios.get(`${API_URL}`);
             return response.data;
         } catch (error) {
@@ -18,7 +16,7 @@ const EnumsAxios = {
     },
     getEnumById: async (enumId) => {
         try {
-            debugger
+            
             const response = await axios.get(`${API_URL}/${enumId}`);
             return response.data;
         } catch (error) {
@@ -28,7 +26,7 @@ const EnumsAxios = {
     },
     addEnum: async (myEnum) => {
         try {
-            debugger
+            
             const response = await axios.post(`${API_URL}`, myEnum);
             return response.data;
         } catch (error) {
@@ -47,10 +45,9 @@ const EnumsAxios = {
     },
     updateEnum: async (Enum) => {
         try {
-            debugger
-            const response = await axios.put(`${API_URL}`, Enum);
+            
+            const response = await axios.put(`${API_URL}`, updateEnum);
             return response.data;
-            // alert(response.data.username)
         } catch (error) {
             console.error('Error updating :', error);
             throw error;
