@@ -1,16 +1,71 @@
 
-
 import { Box, Button, Container, TextField, Typography, Modal, Backdrop, Fade } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { FillUsersData } from '../redux/action/userAction';
+import { store } from '../redux/store'
+import { Provider } from 'react-redux';
+import UserAxios  from '../axios/userAxios';
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+
+export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [usersList, setUsersList] = useState([]);
+  const [error, setError] = useState(false); 
+
+///////////
+  const myDispatch = useDispatch();
+  const myNavigate = useNavigate();
+  const users = useSelector(state => state.UserReducer.listUsers);
+
+  useEffect(() => {
+    const fetchUsers = async ()=>{
+      debugger
+      if(users.length > 0)
+          setUsersList(users)
+        else {
+          try{
+            const response = await UserAxios.getAllUsers()
+            setUsersList(response)
+            myDispatch(FillUsersData(response))
+             }
+          catch(error){
+            console.error("Error fetching users:", error);
+          }
+        }
+    }
+    fetchUsers()
+  }, [myDispatch, users]);
+
+//////////////
 
   const handleLogin = () => {
+    debugger
     // הוספת הלוגיקה להתחברות כאן
-    console.log('Email:', email);
-    console.log('Password:', password);
+    // console.log('Email:', email);
+    // console.log('Password:', password);
+    const user = usersList.find(user => user.email === email && user.password === password);
+    if (user) {
+      // alert("אתה משתמש קיים")
+      if(user.userType === 1)
+        myNavigate('/Manager')
+      else if(user.userType === 2)
+        myNavigate('/Home')
+       else
+       myNavigate('/Secretary')
+      }
+     else {
+      // alert("אתה משתמש חדש")
+      setError(true);
+    }
+  };
+
+  const handleSignUp = () => {
+    // לוגיקה להרשמה
+    // alert("ניווט לעמוד הרשמה");
+    myNavigate('/SignUp', { state: { email, password } });
   };
 
   return (
@@ -22,7 +77,7 @@ const Login = () => {
         justifyContent="center"
         minHeight="10vh"
       >
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography variant="h5" component="h1" gutterBottom>
           התחברות
         </Typography>
 
@@ -51,21 +106,37 @@ const Login = () => {
         >
           התחבר
         </Button>
+        {error && (
+          <Box display="flex" flexDirection="column" alignItems="center" marginTop="16px">
+            <Typography color="error"  style={{ fontSize: '15px' }}>אתה משתמש חדש</Typography>
+            <Button
+              variant="outlined"
+              // color="secondary"
+              color="primary"
+              onClick={handleSignUp}
+              style={{ marginTop: '16px' }}
+            >
+              להרשמה
+            </Button>
+          </Box>
+        )}
       </Box>
     </Container>
   );
 };
 
-const Home1 = () => {
+ const LoginModal = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  useEffect(() => {
+    handleOpen();
+  }, []);
+
   return (
+    <Provider store={store}>
     <div>
-      <Button variant="contained" color="primary" onClick={handleOpen}>
-        פתח התחברות
-      </Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -85,13 +156,12 @@ const Home1 = () => {
             justifyContent="center"
             style={{
               position: 'absolute',
-              top: '50%',
+              top: '60%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
               width: 370,
               backgroundColor: 'white',
-              // border: '2px solid #000', צבע מסגרת שחור
-              border: '2px solid lightblue', // שינוי צבע המסגרת לתכלת
+              // border: '2px solid lightblue', // שינוי צבע המסגרת לתכלת
               borderRadius: '15px', //מסגרת עגולה
               boxShadow: 24,
               padding: 16,
@@ -102,11 +172,9 @@ const Home1 = () => {
         </Fade>
       </Modal>
     </div>
+   </Provider>
   );
 };
 
-export default Home1;
-
-
-
+export default LoginModal
 

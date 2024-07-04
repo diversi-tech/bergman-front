@@ -7,7 +7,10 @@ export const InitalState = {
 }
 export const ReferralsReducer = produce((state, action) => {
     switch (action.type) {
-        case 'GET_ALL_REFERERRALS': state.listReferrals = action.payload
-            break;
+        case 'GET_ALL_REFERERRALS': 
+             state.listReferrals = action.payload
+             break;
+        default:
+             return state;
     }
 }, InitalState)

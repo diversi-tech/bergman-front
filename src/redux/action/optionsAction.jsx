@@ -1,3 +1,3 @@
-export const GetAllOptions=(value)=>{
-    return {type:'GET_ALL_OPTIONS',payload:value}
+export const FillOption=(value)=>{
+    return {type:'FILL_OPTIONS_DATA',payload:value}
 }

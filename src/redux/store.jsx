@@ -8,7 +8,7 @@ export const reduser = combineReducers({
     Candidate_profileReducer: Candidate_profileReducer,
     User_optionsReducer: User_optionsReducer,
     ReferralsReducer: ReferralsReducer,
-    userReducer: UserReducer,
+    UserReducer: UserReducer,
     referralsReducer: ReferralsReducer
 })
 

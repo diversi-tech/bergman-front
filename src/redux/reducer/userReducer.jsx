@@ -4,10 +4,36 @@ export const InitalState = {
     listUsers: [
 
     ]
-}
+};
+
 export const UserReducer = produce((state, action) => {
+    debugger
     switch(action.type){
-        case 'GET_ALL_USERS':state.listUsers=action.payload
+        case 'FILL_USERS_DATA':
+            state.listUsers = action.payload
         break;
+        default:
+            return state;
      }
 }, InitalState)
+
+
+
+// const UserReducer = produce((state = InitalState, action) => {
+//     switch (action.type) {
+//         case 'FILL_USERS_DATA':
+//             state.listUsers = action.payload;
+//             break;
+//         default:
+//             return state;
+//     }
+// });
+// export default UserReducer;
+
+
+
+
+
+
+
+

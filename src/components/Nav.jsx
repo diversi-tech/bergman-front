@@ -1,6 +1,7 @@
-import { AppBar, Button, Toolbar, Typography } from "@mui/material";
+import { AppBar, Button, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
 import React from 'react'
+
 
 export const Nav = () => {
     return (
@@ -17,10 +18,10 @@ export const Nav = () => {
                 <Button color="inherit" component={Link} to="/Secretary">
                     מזכירה
                 </Button>
-                <Button color="inherit" component={Link} to="/Editing_filters">
+                <Button color="inherit" component={Link} to="/EditingFilters">
                     עריכת מסננים
                 </Button>
-                <Button color="inherit" component={Link} to="/Workers_management">
+                <Button color="inherit" component={Link} to="/WorkersManagement">
                     ניהול עובדים
                 </Button>
                 <Button color="inherit" component={Link} to="/History">
@@ -29,10 +30,10 @@ export const Nav = () => {
                 <Button color="inherit" component={Link} to="/Profile">
                 פרופיל
                 </Button>
-                <Button color="inherit" component={Link} to="/Login">
+                <Button color="inherit" component={Link} to="/Login" >
                 התחברות
                 </Button>
-                <Button color="inherit" component={Link} to="/Sign_up">
+                <Button color="inherit" component={Link} to="/SignUp">
                 הרשמה
                 </Button>
             </Toolbar>

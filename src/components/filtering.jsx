@@ -1,7 +1,6 @@
 import React from 'react'
 export const Filter = () => {
-    return(<p>
+    return<p>
         מסננים
-    </p>)
+    </p>
 }
-export default Filter;

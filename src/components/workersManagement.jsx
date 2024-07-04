@@ -1,4 +1,5 @@
 import React from 'react'
-export const Workers_management=()=>{
+
+export const WorkersManagement=()=>{
     return<p>ניהול עובדים</p>
 }

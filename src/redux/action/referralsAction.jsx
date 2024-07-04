@@ -1,3 +1,3 @@
-export const GetAllReferrals=(value)=>{
-    return {type:'GET_ALL_REFERERRALS',payload:value}
+export const FillReferrals=(value)=>{
+    return {type:'FILL_REFERRALS_DATA',payload:value}
 }
