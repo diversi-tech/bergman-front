@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Button from '@mui/material/Button';
+import DownloadIcon from '@mui/icons-material/Download';
 
 
 // const DocumentDownloader = ({ documentId }) => {
@@ -32,7 +33,7 @@ const DownloadButton = () => {
   return (
     <a href="/מסכים לפרויקט.pdf" download="example.pdf">
       <Button variant="contained" color="primary">
-      להורדת קורות חיים</Button>
+      להורדת קורות חיים <DownloadIcon/></Button>
     </a>
   );
 };
