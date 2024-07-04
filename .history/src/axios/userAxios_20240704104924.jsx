@@ -18,7 +18,7 @@ import axios from 'axios';
     },
      getAllManagers: async () => {
             try {
-                
+                debugger
                 const response = await axios.get(`${API_URL}/managers`);
                 return response.data;
             } catch (error) {
@@ -28,7 +28,7 @@ import axios from 'axios';
         },
           addUser: async (user) => {
                 try {
-                    
+                    debugger
                     const response = await axios.post(`${API_URL}`, user);
                     return response.data;
                 } catch (error) {
@@ -47,9 +47,10 @@ import axios from 'axios';
                 },
              updateUser: async (user) => {
                         try {
-                            
+                            debugger
                             const response = await axios.put(`${API_URL}`, user);
                             return response.data;
+                            // alert(response.data.username)
                         } catch (error) {
                             console.error('Error updating :', error);
                             throw error;

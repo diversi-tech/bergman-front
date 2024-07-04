@@ -6,7 +6,7 @@ const API_URL = `http://localhost:8080/api/candidateProfiles`;
 const CandidateProfilesAxios = {
     getAllCandidateProfiles: async () => {
         try {
-            
+            debugger
             const response = await axios.get(`${API_URL}`);
             return response.data;
         } catch (error) {
@@ -16,7 +16,7 @@ const CandidateProfilesAxios = {
     },
     getCandidateProfileById: async (candidateProfileId) => {
         try {
-            
+            debugger
             const response = await axios.get(`${API_URL}/${candidateProfileId}`);
             return response.data;
         } catch (error) {
@@ -26,7 +26,7 @@ const CandidateProfilesAxios = {
     },
     addCandidateProfile: async (candidateProfile) => {
         try {
-            
+            debugger
             const response = await axios.post(`${API_URL}`, candidateProfile);
             return response.data;
         } catch (error) {
@@ -45,9 +45,10 @@ const CandidateProfilesAxios = {
     },
     updateCandidateProfile: async (candidateProfile) => {
         try {
-            
+            debugger
             const response = await axios.put(`${API_URL}`, candidateProfile);
             return response.data;
+            // alert(response.data.username)
         } catch (error) {
             console.error('Error updating :', error);
             throw error;

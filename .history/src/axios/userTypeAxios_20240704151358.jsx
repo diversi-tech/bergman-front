@@ -1,12 +1,12 @@
 import axios from 'axios';
-// const baseUrl = prosess.env.REACT_APP_URL_SERVER;
-// const API_URL = `${baseUrl}candidateProfiles`;
-const API_URL = `http://localhost:8080/api/candidateProfiles`;
 
-const CandidateProfilesAxios = {
-    getAllCandidateProfiles: async () => {
+  // const baseUrl = prosess.env.REACT_APP_URL_SERVER;
+    // const API_URL = `${baseUrl}userTypes`;
+    const API_URL = `http://localhost:8080/api/userTypes`;
+const UserTypesAxios = {
+    getAllUserTypes: async () => {
         try {
-            
+            debugger
             const response = await axios.get(`${API_URL}`);
             return response.data;
         } catch (error) {
@@ -14,39 +14,38 @@ const CandidateProfilesAxios = {
             throw error;
         }
     },
-    getCandidateProfileById: async (candidateProfileId) => {
+    getUserTypeById: async (userTypesId) => {
         try {
-            
-            const response = await axios.get(`${API_URL}/${candidateProfileId}`);
+            debugger
+            const response = await axios.get(`${API_URL}/${userTypesId}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching :', error);
             throw error;
         }
     },
-    addCandidateProfile: async (candidateProfile) => {
+    addUserType: async (userType) => {
         try {
             
-            const response = await axios.post(`${API_URL}`, candidateProfile);
+            const response = await axios.post(`${API_URL}`, userType);
             return response.data;
         } catch (error) {
             console.error('Error adding :', error);
             throw error;
         }
     },
-    deleteCandidateProfileById: async (candidateProfileId) => {
+    deleteUserTypeId: async (userTypeId) => {
         try {
-            const response = await axios.delete(`${API_URL}/${candidateProfileId}`);
+            const response = await axios.delete(`${API_URL}/${userTypeId}`);
             return response.data;
         } catch (error) {
             console.error('Error deleting :', error);
             throw error;
         }
     },
-    updateCandidateProfile: async (candidateProfile) => {
+    updateUserTypes: async (userType) => {
         try {
-            
-            const response = await axios.put(`${API_URL}`, candidateProfile);
+            const response = await axios.put(`${API_URL}`, userType);
             return response.data;
         } catch (error) {
             console.error('Error updating :', error);
@@ -54,4 +53,4 @@ const CandidateProfilesAxios = {
         }
     }
 };
-export default CandidateProfilesAxios;
+export default UserTypesAxios;

@@ -1,12 +1,13 @@
 import axios from 'axios';
-// const baseUrl = prosess.env.REACT_APP_URL_SERVER;
-// const API_URL = `${baseUrl}candidateProfiles`;
-const API_URL = `http://localhost:8080/api/candidateProfiles`;
 
-const CandidateProfilesAxios = {
-    getAllCandidateProfiles: async () => {
+   // const baseUrl = prosess.env.REACT_APP_URL_SERVER;
+  // const API_URL = `${baseUrl}enums`;
+    const API_URL = `http://localhost:8080/api/enums`;
+
+const EnumsAxios = {
+    getAllEnums: async () => {
         try {
-            
+            debugger
             const response = await axios.get(`${API_URL}`);
             return response.data;
         } catch (error) {
@@ -14,44 +15,45 @@ const CandidateProfilesAxios = {
             throw error;
         }
     },
-    getCandidateProfileById: async (candidateProfileId) => {
+    getEnumById: async (enumId) => {
         try {
-            
-            const response = await axios.get(`${API_URL}/${candidateProfileId}`);
+            debugger
+            const response = await axios.get(`${API_URL}/${enumId}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching :', error);
             throw error;
         }
     },
-    addCandidateProfile: async (candidateProfile) => {
+    addEnum: async (myEnum) => {
         try {
-            
-            const response = await axios.post(`${API_URL}`, candidateProfile);
+            debugger
+            const response = await axios.post(`${API_URL}`, myEnum);
             return response.data;
         } catch (error) {
             console.error('Error adding :', error);
             throw error;
         }
     },
-    deleteCandidateProfileById: async (candidateProfileId) => {
+    deleteEnumById: async (enumsId) => {
         try {
-            const response = await axios.delete(`${API_URL}/${candidateProfileId}`);
+            const response = await axios.delete(`${API_URL}/${enumsId}`);
             return response.data;
         } catch (error) {
             console.error('Error deleting :', error);
             throw error;
         }
     },
-    updateCandidateProfile: async (candidateProfile) => {
+    updateEnum: async (Enum) => {
         try {
-            
-            const response = await axios.put(`${API_URL}`, candidateProfile);
+            debugger
+            const response = await axios.put(`${API_URL}`, updateEnum);
             return response.data;
+            // alert(response.data.username)
         } catch (error) {
             console.error('Error updating :', error);
             throw error;
         }
     }
 };
-export default CandidateProfilesAxios;
+export default EnumsAxios;
