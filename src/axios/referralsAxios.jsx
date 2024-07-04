@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { selectBaseUrl } from '../redux/reducer/apiSlice';
 
-const baseUrl = useSelector(selectBaseUrl);
-const API_URL = `${baseUrl}referrals`;
+  // const baseUrl = prosess.env.REACT_APP_URL_SERVER;
+    // const API_URL = `${baseUrl}referrals`;
+    const API_URL = `http://localhost:8080/api/referrals`;
 
 const ReferralsAxios = {
     getAllReferrals: async () => {

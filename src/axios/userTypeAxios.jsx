@@ -1,10 +1,8 @@
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { selectBaseUrl } from '../redux/reducer/apiSlice';
 
-const baseUrl = useSelector(selectBaseUrl);
-const API_URL = `${baseUrl}userTypes`;
-
+  // const baseUrl = prosess.env.REACT_APP_URL_SERVER;
+    // const API_URL = `${baseUrl}userTypes`;
+    const API_URL = `http://localhost:8080/api/userTypes`;
 const UserTypesAxios = {
     getAllUserTypes: async () => {
         try {

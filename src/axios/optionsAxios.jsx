@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { selectBaseUrl } from '../redux/reducer/apiSlice';
 
-const baseUrl = useSelector(selectBaseUrl);
-const API_URL = `${baseUrl}options`;
+// const baseUrl = prosess.env.REACT_APP_URL_SERVER;
+// const API_URL = `${baseUrl}options`;
+const API_URL = `http://localhost:8080/api/options`;
 
 const OptionsAxios = {
     getAllOptions: async () => {
