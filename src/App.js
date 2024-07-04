@@ -1,34 +1,26 @@
+import React from 'react';
 import './App.css';
-import { CandidateDetails } from './components/candidateDetails';
-import CopyToClipboardButton from './components/copyToClipboard';
-import DownloadButton from './components/documentDownloader';
-import EnhancedTable, { EnhancedTableToolbar, Filter } from './components/filtering';
-import {EnhancedTableHead} from './components/filtering'
-import DataTable from './components/filtering'
+import { RouterLink } from './components/routerLink';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 function App() {
   return (
-    <div className="App">
-      <header><Image /></header>
-      <CandidateDetails/>
-      <DownloadButton/>
-      {/* <CopyToClipboardButton /> */}
-      {/* <Filter /> */}
-      {/* <DataTable/> */}
-      {/* <EnhancedTableHead/>
-      <EnhancedTableToolbar/> */}
-      {/* <EnhancedTable/> */}
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <header><Image /></header>
+        <RouterLink></RouterLink>
+      </div>
+    </Provider>
   );
 }
 
-
-const תמונה = require('./images/logo small.jpg');
+const pic = require('./images/logo.jpg');
 
 function Image() {
   return (
     <div>
-      <img src={תמונה} alt="תיאור תמונה" className='image' />
+      <img src={pic} alt="תיאור תמונה" className='image'/>
     </div>
   );
 }
