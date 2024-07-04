@@ -7,7 +7,6 @@ const emailAxios  = {
 
      addEmail : async (value) => {
         try {
-            debugger
             const response = await axios.post(`${API_URL}`, value);
             return response.data;
         } catch (error) {

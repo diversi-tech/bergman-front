@@ -8,9 +8,7 @@ import axios from 'axios';
  const UserAxios = {
 
      getAllUsers: async () => {
-        
         try {
-            debugger
             const response = await axios.get(`${API_URL}`);
             return response.data;
         } catch (error) {
