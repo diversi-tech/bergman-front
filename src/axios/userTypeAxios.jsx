@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import { selectBaseUrl } from '../redux/reducer/apiSlice';
 
 const baseUrl = useSelector(selectBaseUrl);
-const API_URL = `${baseUrl}referrals`;
+const API_URL = `${baseUrl}userTypes`;
 
-const ReferralsAxios = {
-    getAllReferrals: async () => {
+const UserTypesAxios = {
+    getAllUserTypes: async () => {
         try {
             debugger
             const response = await axios.get(`${API_URL}`);
@@ -16,39 +16,39 @@ const ReferralsAxios = {
             throw error;
         }
     },
-    getReferralById: async (referralId) => {
+    getUserTypeById: async (userTypesId) => {
         try {
             debugger
-            const response = await axios.get(`${API_URL}/${referralId}`);
+            const response = await axios.get(`${API_URL}/${userTypesId}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching :', error);
             throw error;
         }
     },
-    addReferral: async (referral) => {
+    addUserType: async (userType) => {
         try {
             debugger
-            const response = await axios.post(`${API_URL}`, referral);
+            const response = await axios.post(`${API_URL}`, userType);
             return response.data;
         } catch (error) {
             console.error('Error adding :', error);
             throw error;
         }
     },
-    deleteReferralById: async (ReferralId) => {
+    deleteUserTypeId: async (userTypeId) => {
         try {
-            const response = await axios.delete(`${API_URL}/${ReferralId}`);
+            const response = await axios.delete(`${API_URL}/${userTypeId}`);
             return response.data;
         } catch (error) {
             console.error('Error deleting :', error);
             throw error;
         }
     },
-    updateReferral: async (referral) => {
+    updateUserTypes: async (userType) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}`, referral);
+            const response = await axios.put(`${API_URL}`, userType);
             return response.data;
             // alert(response.data.username)
         } catch (error) {
@@ -57,4 +57,4 @@ const ReferralsAxios = {
         }
     }
 };
-export default ReferralsAxios;
+export default UserTypesAxios;
