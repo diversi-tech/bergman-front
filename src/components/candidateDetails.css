@@ -34,6 +34,20 @@
   flex-wrap: nowrap;
 }
 
+.moreDetails
+{
+  border: #2976D2 1px solid;
+  border-radius: 5px;
+  width: 100%;
+  padding: 10px;
+}
+
+.moreDetailsPnimi
+{
+  border: #2976D2 1px solid;
+  border-radius: 5px;
+  width: 100%;
+}
 
 
 .scroll-down-arrow {

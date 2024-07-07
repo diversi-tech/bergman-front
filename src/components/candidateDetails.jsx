@@ -90,9 +90,8 @@
 // }
 
 import React, { useState } from "react";
-import { Button, Table, TableBody, TableCell, TableHead, TableRow, TextField, Box, IconButton, Typography, Grid } from "@mui/material";
+import { Button, Table, TableBody, TableCell, TableHead, TableRow, TextField, Box, IconButton, Typography } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
-import EditIcon from '@mui/icons-material/Edit';
 import CancelIcon from '@mui/icons-material/Cancel';
 import './candidateDetails.css';
 
@@ -101,7 +100,7 @@ export const CandidateDetails = () => {
         userName: "מוריה דויד",
         email: "moriya1519@gmail.com",
         phone: "0527101519",
-        location: "תל אביב",
+        location: "גבעת זאב",
         experience: "5 שנים",
         skills: {
             technologies: "React, Node.js",
@@ -110,105 +109,96 @@ export const CandidateDetails = () => {
         }
     };
 
+    const [isEditing, setIsEditing] = useState(true);
     const [candidateDetails, setCandidateDetails] = useState(initialDetails);
-    const [editableFields, setEditableFields] = useState({});
-    const [tempDetails, setTempDetails] = useState(initialDetails);
     const [showDetails, setShowDetails] = useState(false);
+    const [editableDetails, setEditableDetails] = useState(initialDetails);
 
-    const handleEditToggle = (field) => {
-        if (editableFields[field]) {
-            setEditableFields({ ...editableFields, [field]: false });
-        } else {
-            setEditableFields({ ...editableFields, [field]: true });
-            setTempDetails(candidateDetails); // Set temp details on edit start
+    const handleEditToggle = () => {
+        setIsEditing(!isEditing);
+        if (isEditing) {
+            setEditableDetails(candidateDetails); // Reset editable details if cancelling edit
         }
     };
 
     const handleDetailChange = (event) => {
         const { name, value } = event.target;
-        setTempDetails({ ...tempDetails, [name]: value });
+        setEditableDetails({ ...editableDetails, [name]: value });
     };
 
     const handleSkillsChange = (event) => {
         const { name, value } = event.target;
-        setTempDetails({
-            ...tempDetails,
+        setEditableDetails({
+            ...editableDetails,
             skills: {
-                ...tempDetails.skills,
+                ...editableDetails.skills,
                 [name]: value
             }
         });
     };
 
-    const handleSave = (field) => {
-        setCandidateDetails(tempDetails);
-        setEditableFields({ ...editableFields, [field]: false });
+    const handleSave = () => {
+        setCandidateDetails(editableDetails);
+        // setIsEditing(false);
     };
 
-    const handleScrollDown = () => {
-        window.scrollTo({
-            top: window.innerHeight,
-            behavior: 'smooth'
-        });
-    };
+    
 
     const handleDetailsShow = () => {
         setShowDetails(true);
     };
 
-    const renderEditableField = (fieldName, label, value, onChangeHandler) => (
-        <Grid container alignItems="center" spacing={2} mt={2}>
-            <Grid item>
-                {editableFields[fieldName] ? (
-                    <TextField
-                        label={label}
-                        name={fieldName}
-                        value={value}
-                        onChange={onChangeHandler}
-                        margin="normal"
-                        size="small"
-                    />
-                ) : (
-                    <Typography>{label}: {value}</Typography>
-                )}
-            </Grid>
-            <Grid item>
-                <IconButton onClick={() => handleEditToggle(fieldName)} size="small">
-                    {editableFields[fieldName] ? <SaveIcon /> : <EditIcon />}
-                </IconButton>
-                {editableFields[fieldName] && (
-                    <IconButton onClick={() => handleEditToggle(fieldName)} size="small">
-                        <CancelIcon />
-                    </IconButton>
-                )}
-            </Grid>
-        </Grid>
-    );
-
     return (
         <Box sx={{ padding: 2 }}>
             <Typography variant="h4" component="label" fontWeight="bold">
-                הפניות {candidateDetails.userName}
+                עריכת פרטי מועמד- {candidateDetails.userName}
             </Typography>
-            <br />
             <Box sx={{ marginY: 4 }}>
-                <Grid container spacing={20} alignItems="center">
-                    <Grid item>
-                        {renderEditableField("userName", "שם", tempDetails.userName, handleDetailChange)}
-                    </Grid>
-                    <Grid item>
-                        {renderEditableField("email", "מייל", tempDetails.email, handleDetailChange)}
-                    </Grid>
-                    <Grid item>
-                        {renderEditableField("phone", "פלאפון", tempDetails.phone, handleDetailChange)}
-                    </Grid>
-                </Grid>
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                    {isEditing ? (
+                        <>
+                            <TextField
+                                label="שם"
+                                name="userName"
+                                value={editableDetails.userName}
+                                onChange={handleDetailChange}
+                                fullWidth
+                                margin="normal"
+                            />
+                            <TextField
+                                label="מייל"
+                                name="email"
+                                value={editableDetails.email}
+                                onChange={handleDetailChange}
+                                fullWidth
+                                margin="normal"
+                            />
+                            <TextField
+                                label="פלאפון"
+                                name="phone"
+                                value={editableDetails.phone}
+                                onChange={handleDetailChange}
+                                fullWidth
+                                margin="normal"
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <Typography className="lbl">שם: {candidateDetails.userName}</Typography>
+                            <Typography className="lbl" style={{ flexBasis: '50%' }}>מייל: {candidateDetails.email}</Typography>
+                            <Typography className="lbl">פלאפון: {candidateDetails.phone}</Typography>
+                        </>
+                    )}
+                </Box>
+                <IconButton onClick={handleEditToggle}>
+                    {/* {isEditing ? <CancelIcon /> : <EditIcon />} */}
+                </IconButton>
             </Box>
 
-            <Button onClick={handleScrollDown}>לתחתית העמוד</Button>
+            
 
             <Button variant="contained" onClick={handleDetailsShow}>
-                להצגת כל פרטי המועמד
+                לעריכת כל פרטי המועמד
             </Button>
 
             {showDetails && (
@@ -233,18 +223,96 @@ export const CandidateDetails = () => {
                         }}
                     >
                         <Typography variant="h5">פרטי מועמד</Typography>
-                        {renderEditableField("location", "מיקום", tempDetails.location, handleDetailChange)}
-                        {renderEditableField("experience", "וותק", tempDetails.experience, handleDetailChange)}
-                        <Typography mt={2}>כישורים:</Typography>
-                        {renderEditableField("technologies", "טכנולוגיות", tempDetails.skills.technologies, handleSkillsChange)}
-                        {renderEditableField("programmingLanguages", "שפות תכנות", tempDetails.skills.programmingLanguages, handleSkillsChange)}
-                        {renderEditableField("languages", "שפות", tempDetails.skills.languages, handleSkillsChange)}
+                        <Box className="moreDetails" mt={2}>
+                            {isEditing ? (
+                                <TextField
+                                    label="מיקום"
+                                    name="location"
+                                    value={editableDetails.location}
+                                    onChange={handleDetailChange}
+                                    fullWidth
+                                    margin="normal"
+                                />
+                            ) : (
+                                <Typography>מיקום: {candidateDetails.location}</Typography>
+                            )}
+                        </Box>
+                        <Box className="moreDetails" mt={2}>
+                            {isEditing ? (
+                                <TextField
+                                    label="וותק"
+                                    name="experience"
+                                    value={editableDetails.experience}
+                                    onChange={handleDetailChange}
+                                    fullWidth
+                                    margin="normal"
+                                />
+                            ) : (
+                                <Typography>וותק: {candidateDetails.experience}</Typography>
+                            )}
+                        </Box>
+                        <Box className="moreDetails" mt={2}>
+                            <Typography>כישורים:</Typography>
+                            <Box className="moreDetailsPnimi" mt={2}>
+                                {isEditing ? (
+                                    <TextField
+                                        label="טכנולוגיות"
+                                        name="technologies"
+                                        value={editableDetails.skills.technologies}
+                                        onChange={handleSkillsChange}
+                                        fullWidth
+                                        margin="normal"
+                                    />
+                                ) : (
+                                    <Typography>טכנולוגיות: {candidateDetails.skills.technologies}</Typography>
+                                )}
+                            </Box>
+                            <Box className="moreDetailsPnimi" mt={2}>
+                                {isEditing ? (
+                                    <TextField
+                                        label="שפות תכנות"
+                                        name="programmingLanguages"
+                                        value={editableDetails.skills.programmingLanguages}
+                                        onChange={handleSkillsChange}
+                                        fullWidth
+                                        margin="normal"
+                                    />
+                                ) : (
+                                    <Typography>שפות תכנות: {candidateDetails.skills.programmingLanguages}</Typography>
+                                )}
+                            </Box>
+                            <Box className="moreDetailsPnimi" mt={2}>
+                                {isEditing ? (
+                                    <TextField
+                                        label="שפות"
+                                        name="languages"
+                                        value={editableDetails.skills.languages}
+                                        onChange={handleSkillsChange}
+                                        fullWidth
+                                        margin="normal"
+                                    />
+                                ) : (
+                                    <Typography>שפות: {candidateDetails.skills.languages}</Typography>
+                                )}
+                            </Box>
+                        </Box>
                     </Box>
+                    
+                    
                 </Box>
+                
             )}
-            <h2>היסטוריית מועמד</h2>
-
-            <Box className="table">
+            {isEditing && (
+                    <Box sx={{ mt: 2 }}>
+                        <Button variant="contained" color="primary" onClick={handleSave} startIcon={<SaveIcon />}>
+                            שמור שינויים
+                        </Button>
+                        <Button variant="outlined" color="error" onClick={handleEditToggle} startIcon={<CancelIcon />} sx={{ ml: 2 }}>
+                            בטל
+                        </Button>
+                    </Box>
+                )}
+                {/* <Box className="table">
                 <Table sx={{ border: '1px solid #2976D2' }}>
                     <TableHead>
                         <TableRow>
@@ -266,9 +334,10 @@ export const CandidateDetails = () => {
                         </TableRow>
                     </TableBody>
                 </Table>
-            </Box>
+            </Box> */}
         </Box>
     );
 };
+
 
 
