@@ -1,6 +1,6 @@
 import { Button, Checkbox, TextField, Autocomplete, Grid, Box } from "@mui/material";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import './filtering.css'
+// import './filtering.css'
 import * as React from 'react';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -25,19 +25,53 @@ export const Filter = () => {
         // כאן תוסיף את לוגיקת הסינון שלך
     };
 
-    //פונקציה להעתקת מיילים מהמועמדים שנבחרו
-    const handleCopyEmails = () => {
-        const emailsToCopy = selectedCandidates.map(candidate => candidate.email).join(", ");
-        if (emailsToCopy.length > 0) {
-            navigator.clipboard.writeText(emailsToCopy)
-                .then(() => alert(`המיילים הועתקו בהצלחה: ${emailsToCopy}`))
-                .catch(err => console.error('העתקת המיילים נכשלה', err));
+    // פונקציה להעתקת טקסט ללוח
+    const copyTextToClipboard = async (text) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            console.log('טקסט הועתק ללוח:', text);
+        } catch (err) {
+            console.error('העתקת הטקסט נכשלה', err);
         }
-        else {
-            alert("אין מיילים להעתקה")
-        }
-        //בעת ביטול הסימון, יבטל את המועמד שאותו ביטלו
     };
+
+    //פונקציה להעתקת מיילים מהמועמדים שנבחרו
+    const handleCopyEmails = async () => {
+        const emailsToCopy = selectedCandidates.map(candidate => candidate.email);
+        if (emailsToCopy.length > 0) {
+            for (const email of emailsToCopy) {
+                await copyTextToClipboard(email);
+                await new Promise(resolve => setTimeout(resolve, 500)); // זמן המתנה של 500 מילישניות בין כל העתקה
+            }
+            alert('המיילים הועתקו בהצלחה');
+        } else {
+            alert("אין מיילים להעתקה");
+        }
+    };
+
+    // פונקציה לביטול בחירת כל המיילים
+    // const handleClearEmails = () => {
+    //     setSelectedCandidates([]);
+    //     alert('בחירת כל המיילים בוטלה');
+    // };
+
+
+    //פונקציה להעתקת מיילים מהמועמדים שנבחרו
+    // const handleCopyEmails = () => {
+    //     const emailsToCopy = selectedCandidates.map(candidate => candidate.email).join(", ");
+    //     if (emailsToCopy.length > 0) {
+    //         navigator.clipboard.writeText(emailsToCopy)
+    //             .then(() => alert(`המיילים הועתקו בהצלחה: ${emailsToCopy}`))
+    //             .catch(err => console.error('העתקת המיילים נכשלה', err));
+    //     }
+    //     else {
+    //         alert("אין מיילים להעתקה")
+    //     }
+    //     //בעת ביטול הסימון, יבטל את המועמד שאותו ביטלו
+    // };
+
+
+
 
     //פונקציה גנרית לטיפול בשינוי ב-Autocomplete
     const handleChange = (type, value) => {
@@ -183,7 +217,14 @@ export const Filter = () => {
             </Grid>
         </Box>
         <br /><br /><br />
-        <Button variant="contained" className="btnView" style={{ margin: '15px' }} onClick={() => handleCopyEmails()}> העתק מיילים </Button>
+        <Box display="flex" justifyContent="center" gap={2}>
+            <Button variant="contained" className="btnView" style={{ margin: '15px' }} onClick={() => handleCopyEmails()}>
+                העתק מיילים
+            </Button>
+            {/* <Button variant="contained" className="btnView" style={{ margin: '15px' }} onClick={() => handleClearEmails()}>
+                בטל בחירת מיילים
+            </Button> */}
+        </Box>
         <br />
         {/* הצגת המועמדים */}
 
@@ -217,14 +258,14 @@ export const Filter = () => {
                                 />
                             </TableCell>
                             <TableCell align="center">
-                                <div className="button-container">
+                                <Box display="flex" justifyContent="center" gap={2}>
                                     <Button variant="contained" className="btnView">
                                         מעבר לדף ההסטוריה
                                     </Button>
                                     <Button variant="contained" className="btnView">
                                         לצפייה בקורות חיים
                                     </Button>
-                                </div>
+                                </Box>
                             </TableCell>
                         </TableRow>
                     ))}
