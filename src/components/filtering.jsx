@@ -16,6 +16,7 @@ export const Filter = () => {
     const [selectedLanguages, setSelectedLanguages] = useState([]);
     const [selectedTechnologies, setSelectedTechnologies] = useState([]);
     const [selectedLocations, setSelectedLocations] = useState([]);
+    const [checkedCandidates, setCheckedCandidates] = useState({});
 
     // פונקציה לסינון המועמדים
     const handleSearch = () => {
@@ -49,10 +50,11 @@ export const Filter = () => {
     };
 
     // פונקציה לביטול בחירת כל המיילים
-    // const handleClearEmails = () => {
-    //     setSelectedCandidates([]);
-    //     alert('בחירת כל המיילים בוטלה');
-    // };
+    const handleClearEmails = () => {
+        setSelectedCandidates([]);
+        setCheckedCandidates({});
+        alert('בחירת כל המיילים בוטלה');
+    };
 
     //פונקציה גנרית לטיפול בשינוי ב-Autocomplete
     const handleChange = (type, value) => {
@@ -202,9 +204,9 @@ export const Filter = () => {
             <Button variant="contained" className="btnView" style={{ margin: '15px' }} onClick={() => handleCopyEmails()}>
                 העתק מיילים
             </Button>
-            {/* <Button variant="contained" className="btnView" style={{ margin: '15px' }} onClick={() => handleClearEmails()}>
+            <Button variant="contained" className="btnView" style={{ margin: '15px' }} onClick={() => handleClearEmails()}>
                 בטל בחירת מיילים
-            </Button> */}
+            </Button>
         </Box>
         <br />
         {/* הצגת המועמדים */}
@@ -228,12 +230,15 @@ export const Filter = () => {
                             <TableCell align="center">{candidate.phone}</TableCell>
                             <TableCell align="center">
                                 <Checkbox
+                                    checked={checkedCandidates[candidate.email] || false}
                                     onChange={(event) => {
                                         const isChecked = event.target.checked;
                                         if (isChecked) {
                                             setSelectedCandidates(prev => [...prev, candidate]);
+                                            setCheckedCandidates(prev => ({ ...prev, [candidate.email]: true }));
                                         } else {
                                             setSelectedCandidates(prev => prev.filter(sel => sel.email !== candidate.email));
+                                            setCheckedCandidates(prev => ({ ...prev, [candidate.email]: false }));
                                         }
                                     }}
                                 />
