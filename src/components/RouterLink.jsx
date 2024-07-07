@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Nav } from './Nav';
-import { Filter } from './filtering1';
+import { Filter } from './filtering';
 import { Home } from './Home';
 import { Manager } from './Manager';
 import { Secretary } from './Secretary';
