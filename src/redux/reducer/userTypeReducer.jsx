@@ -5,9 +5,9 @@ export const InitalState = {
 
     ]
 }
-export const UserReducer = produce((state, action) => {
+export const UserTypeReducer = produce((state, action) => {
     switch(action.type){
-        case 'FETCH_ALL_USERS':state.listUsers=action.payload
+        case 'FETCH_ALL_USERS_TYPE':state.listUsers=action.payload
         break;
      }
 }, InitalState)

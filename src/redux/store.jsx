@@ -1,15 +1,20 @@
 import { combineReducers, createStore } from "redux";
-import { Candidate_profileReducer } from "./reducer/candidate_profileReducer";
+import { CandidateProfileReducer } from "./reducer/candidateProfileReducer";
 import { ReferralsReducer } from "./reducer/referralsReducer";
 import { UserReducer } from "./reducer/userReducer";
-import { User_optionsReducer } from "./reducer/user_optionsReducer";
+import { UserOptionsReducer } from "./reducer/userOptionsReducer";
+import { UserTypeReducer } from "./reducer/userTypeReducer";
+import { EnumReducer } from "./reducer/enamReducer";
+
 
 export const reduser = combineReducers({
-    Candidate_profileReducer: Candidate_profileReducer,
-    User_optionsReducer: User_optionsReducer,
+    CandidateProfileReducer: CandidateProfileReducer,
+    UserOptionsReducer: UserOptionsReducer,
     ReferralsReducer: ReferralsReducer,
     userReducer: UserReducer,
-    referralsReducer: ReferralsReducer
+    referralsReducer: ReferralsReducer,
+    userTypeReducer: UserTypeReducer,
+    enamReducer: EnumReducer
 })
 
 export const store = createStore(reduser)

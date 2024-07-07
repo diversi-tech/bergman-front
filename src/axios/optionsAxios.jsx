@@ -1,34 +1,58 @@
 import axios from 'axios';
 
-let url = "http://localhost:8080/api/options/"
+// const baseUrl = prosess.env.REACT_APP_URL_SERVER;
+// const API_URL = `${baseUrl}options`;
+const API_URL = `http://localhost:8080/api/options`;
 
-export const getAll = async () => {
-    try {
-        let data = await axios.get(`${url}getAll`)
-        return data
+const OptionsAxios = {
+    getAllOptions: async () => {
+        try {
+            
+            const response = await axios.get(`${API_URL}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching :', error);
+            throw error;
+        }
+    },
+    getOptionById: async (optionId) => {
+        try {
+            
+            const response = await axios.get(`${API_URL}/${optionId}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching :', error);
+            throw error;
+        }
+    },
+    addOption: async (option) => {
+        try {
+            
+            const response = await axios.post(`${API_URL}`, option);
+            return response.data;
+        } catch (error) {
+            console.error('Error adding :', error);
+            throw error;
+        }
+    },
+    deleteOptionById: async (optionId) => {
+        try {
+            const response = await axios.delete(`${API_URL}/${optionId}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error deleting :', error);
+            throw error;
+        }
+    },
+    updateOption: async (option) => {
+        try {
+            
+            const response = await axios.put(`${API_URL}`, option);
+            return response.data;
+        } catch (error) {
+            console.error('Error updating :', error);
+            throw error;
+        }
     }
-    catch (err) {
-        console.log(err)
-    }
-}
-
-export const post = async (options_elemnt) => {
-    try {
-        let data = await axios.post(`${url}post`, options_elemnt)
-        return data
-    }
-    catch (err) {
-        console.log(err)
-    }
-
-}
-export const dellByIdoptions = async (Idoptions) => {
-    try {
-        let data = await axios.delete(`${url}dellByIdoptions/${Idoptions}`)
-        return data
-    }
-    catch (err) {
-        console.log(err)
-    }
-
-}
+};
+export default OptionsAxios;

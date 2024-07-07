@@ -1,34 +1,59 @@
 import axios from 'axios';
 
-let url = "http://localhost:8080/api/users/"
 
-export const getAll = async () => {
-    try {
-        let data = await axios.get(`${url}getAll`)
-        return data
-    }
-    catch (err) {
-        console.log(err)
-    }
+    // const baseUrl = prosess.env.REACT_APP_URL_SERVER;
+    // const API_URL = `${baseUrl}users`;
+    const API_URL = `http://localhost:8080/api/users`;
+
+ const UserAxios = {
+
+     getAllUsers: async () => {
+        try {
+            const response = await axios.get(`${API_URL}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching :', error);
+            throw error;
+        }
+    },
+     getAllManagers: async () => {
+            try {
+                
+                const response = await axios.get(`${API_URL}/managers`);
+                return response.data;
+            } catch (error) {
+                console.error('Error fetching :', error);
+                throw error;
+            }
+        },
+          addUser: async (user) => {
+                try {
+                    
+                    const response = await axios.post(`${API_URL}`, user);
+                    return response.data;
+                } catch (error) {
+                    console.error('Error adding :', error);
+                    throw error;
+                }
+            },
+              deleteUserById:async (userId) => {
+                    try {
+                        const response = await axios.delete(`${API_URL}/${userId}`);
+                        return response.data;
+                    } catch (error) {
+                        console.error('Error deleting :', error);
+                        throw error;
+                    }
+                },
+             updateUser: async (user) => {
+                        try {
+                            
+                            const response = await axios.put(`${API_URL}`, user);
+                            return response.data;
+                        } catch (error) {
+                            console.error('Error updating :', error);
+                            throw error;
+                        }
+                    }
 }
-
-export const post = async (userElemnt) => {
-    try {
-        let data = await axios.post(`${url}post`, userElemnt)
-        return data
-    }
-    catch (err) {
-        console.log(err)
-    }
-
-}
-export const dellByIdUser = async (IdUser) => {
-    try {
-        let data = await axios.delete(`${url}dellByIdUser/${IdUser}`)
-        return data
-    }
-    catch (err) {
-        console.log(err)
-    }
-
-}
+export default UserAxios;

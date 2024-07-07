@@ -4,15 +4,15 @@ import { Home } from './components/Home';
 import Profile from './components/profile';
 import { Register } from './components/register';
 import { RouterLink } from './components/RouterLink';
-import { Nav } from './components/Nav';
+import { Nav } from './components/nav';
 import { Sign_up } from './components/sign_up';
 import { Login } from './components/login';
-import { History } from './components/History';
+import { History } from './components/history';
 import { Workers_management } from './components/Workers_management';
 import { Editing_filters } from './components/Editing_filters';
-import { Secretary } from './components/Secretary';
+import { Secretary } from './components/secretary';
 import Filter from './components/filtering';
-import { Manager } from './components/Manager';
+import { Manager } from './components/manager';
 import Change_profile from './components/change_profile';
 
 const App = () => (
