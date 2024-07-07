@@ -1,8 +1,4 @@
-
-export default function Login() {
-    return(
-        <div>
-            <h1>כניסה</h1>
-        </div>
-    )
+import React from 'react'
+export const Login = () => {
+    return <p>התחברות</p>
 }

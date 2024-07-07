@@ -1,4 +1,4 @@
-export default function Register() {
+export const Register=()=> {
     return(
         <div>
             <h1>כניסה</h1>
