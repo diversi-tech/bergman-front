@@ -54,24 +54,6 @@ export const Filter = () => {
     //     alert('בחירת כל המיילים בוטלה');
     // };
 
-
-    //פונקציה להעתקת מיילים מהמועמדים שנבחרו
-    // const handleCopyEmails = () => {
-    //     const emailsToCopy = selectedCandidates.map(candidate => candidate.email).join(", ");
-    //     if (emailsToCopy.length > 0) {
-    //         navigator.clipboard.writeText(emailsToCopy)
-    //             .then(() => alert(`המיילים הועתקו בהצלחה: ${emailsToCopy}`))
-    //             .catch(err => console.error('העתקת המיילים נכשלה', err));
-    //     }
-    //     else {
-    //         alert("אין מיילים להעתקה")
-    //     }
-    //     //בעת ביטול הסימון, יבטל את המועמד שאותו ביטלו
-    // };
-
-
-
-
     //פונקציה גנרית לטיפול בשינוי ב-Autocomplete
     const handleChange = (type, value) => {
         if (type === "languages") {
