@@ -1,9 +1,11 @@
-import { Button, Checkbox, TextField, Autocomplete, Grid, Box } from "@mui/material";
+import { Button, Checkbox, TextField, Autocomplete, Grid, Box, Tooltip, IconButton } from "@mui/material";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import * as React from 'react';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { useState } from "react";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import HistoryIcon from '@mui/icons-material/History';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 
@@ -245,12 +247,16 @@ export const Filter = () => {
                             </TableCell>
                             <TableCell align="center">
                                 <Box display="flex" justifyContent="center" gap={2}>
-                                    <Button variant="contained" className="btnView">
-                                        מעבר לדף ההסטוריה
-                                    </Button>
-                                    <Button variant="contained" className="btnView">
-                                        לצפייה בקורות חיים
-                                    </Button>
+                                    <Tooltip title="דף היסטוריה">
+                                        <IconButton color="primary" sx={{ borderRadius: '50%' }}>
+                                            <HistoryIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="צפיה בקורות חיים">
+                                        <IconButton color="primary" sx={{ borderRadius: '50%' }}>
+                                            <VisibilityIcon />
+                                        </IconButton>
+                                    </Tooltip>
                                 </Box>
                             </TableCell>
                         </TableRow>
