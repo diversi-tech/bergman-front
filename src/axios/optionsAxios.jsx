@@ -1,14 +1,13 @@
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { selectBaseUrl } from '../redux/reducer/apiSlice';
 
-const baseUrl = useSelector(selectBaseUrl);
-const API_URL = `${baseUrl}options`;
+// const baseUrl = prosess.env.REACT_APP_URL_SERVER;
+// const API_URL = `${baseUrl}options`;
+const API_URL = `http://localhost:8080/api/options`;
 
 const OptionsAxios = {
     getAllOptions: async () => {
         try {
-            debugger
+            
             const response = await axios.get(`${API_URL}`);
             return response.data;
         } catch (error) {
@@ -18,7 +17,7 @@ const OptionsAxios = {
     },
     getOptionById: async (optionId) => {
         try {
-            debugger
+            
             const response = await axios.get(`${API_URL}/${optionId}`);
             return response.data;
         } catch (error) {
@@ -28,7 +27,7 @@ const OptionsAxios = {
     },
     addOption: async (option) => {
         try {
-            debugger
+            
             const response = await axios.post(`${API_URL}`, option);
             return response.data;
         } catch (error) {
@@ -50,7 +49,6 @@ const OptionsAxios = {
             debugger
             const response = await axios.put(`${API_URL}/${id}`, option);
             return response.data;
-            // alert(response.data.username)
         } catch (error) {
             console.error('Error updating :', error);
             throw error;
