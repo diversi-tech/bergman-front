@@ -1,10 +1,12 @@
-import { AppBar, Button, Toolbar, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
 import React from 'react'
+import { AppBar, Button, Toolbar } from "@mui/material";
+import { Link } from "react-router-dom";
+
+
 
 export const Nav = () => {
     return (
-        <AppBar position="fixed" >
+        <AppBar position="static">
             <Toolbar>
                 <Button color="inherit" component={Link} to="/Home">
                     עמוד בית
@@ -17,25 +19,23 @@ export const Nav = () => {
                 <Button color="inherit" component={Link} to="/Secretary">
                     מזכירה
                 </Button>
-                <Button color="inherit" component={Link} to="/Editing_filters">
+                <Button color="inherit" component={Link} to="/EditingFilters">
                     עריכת מסננים
                 </Button>
-                <Button color="inherit" component={Link} to="/Workers_management">
+                <Button color="inherit" component={Link} to="/WorkersManagement">
                     ניהול עובדים
                 </Button>
                 <Button color="inherit" component={Link} to="/History">
-                    היסטוריה
+                היסטוריה
                 </Button>
                 <Button color="inherit" component={Link} to="/Profile">
-                    פרופיל
+                פרופיל
                 </Button>
-                <Button color="inherit" component={Link} to="/ChangeProfile">
-                    עריכת פרופיל                </Button>
-                <Button color="inherit" component={Link} to="/Login">
-                    התחברות
+                <Button color="inherit" component={Link} to="/Login" >
+                התחברות
                 </Button>
-                <Button color="inherit" component={Link} to="/Sign_up">
-                    הרשמה
+                <Button color="inherit" component={Link} to="/SignUp">
+                הרשמה
                 </Button>
             </Toolbar>
         </AppBar>

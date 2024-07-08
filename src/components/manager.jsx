@@ -114,7 +114,7 @@ export const Manager = () => {
 
     const handleDeleteConfirm = async () => {
         try {
-            await userAxios.deleteUserById(managerToDelete.userId);
+            await userAxios.deleteUser(managerToDelete.userId);
             const managers1 = await userAxios.getAllManagers();
             setManagers(managers1);
             dispatch(FillUsersData(managers1));
@@ -467,7 +467,7 @@ export const Manager = () => {
                                     <InputLabel>סוג משתמש</InputLabel>
                                     <Select
                                         value={currentManager.userType}
-                                        onChange={handleUserTypeEditChange}
+                                        onChange={handleUserTypeChange}
                                         name="userType"
                                         label="סוג משתמש"
                                         MenuProps={{

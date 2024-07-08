@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react'
 
-export const EditingFilters = () => {
-  return<p>EditingFilters</p>
+export const EditingFilters=()=>{
+    return<p>עריכת מסננים</p>
 }
