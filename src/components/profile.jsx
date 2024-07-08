@@ -247,3 +247,8 @@ export const Profile = () => {
 };
 
 export default Profile;
+import React from 'react'
+
+export const Profile=()=>{
+    return<p>פרופיל</p>
+}

@@ -1,13 +1,15 @@
-import { produce } from 'immer'
+import { produce } from 'immer';
 
 export const InitalState = {
-    listReferrals: [
-
-    ]
+    listReferrals: []
 }
+
 export const ReferralsReducer = produce((state, action) => {
     switch (action.type) {
-        case 'GET_ALL_REFERERRALS': state.listReferrals = action.payload
-            break;
+        case 'FILL_REFERRALS_DATA': 
+             state.listReferrals = action.payload
+             break;
+        default:
+             return state;
     }
 }, InitalState)

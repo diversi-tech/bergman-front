@@ -1,3 +1,3 @@
-export const GetAllCandidate_profile=(value)=>{
-    return {type:'GET_ALL_CANDIDATE_PROFILE',payload:value}
+export const FillCavdidateProfileData=(value)=>{
+    return {type:'FILL_CANDIDATE_PROFILE_DATA',payload:value}
 }
