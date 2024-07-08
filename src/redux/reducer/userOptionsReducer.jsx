@@ -1,13 +1,15 @@
 import { produce } from 'immer'
 
 export const InitalState = {
-    listUser_options: [
-
-    ]
+    listUserUserOptions: []
 }
+
 export const UserOptionsReducer = produce((state, action) => {
     switch (action.type) {
-        case 'FETCH_ALL_CANDIDATE_PROFILE': state.listUser_options = action.payload
-            break;
+        case 'FILL_USER_OPTIONS_DATA':
+             state.listUserUserOptions = action.payload
+             break;
+        default:
+            return state;
     }
 }, InitalState)

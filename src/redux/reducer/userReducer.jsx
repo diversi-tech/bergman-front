@@ -1,13 +1,25 @@
 import {produce} from 'immer'
 
 export const InitalState = {
-    listUsers: [
+    listUsers: []
+};
 
-    ]
-}
 export const UserReducer = produce((state, action) => {
+    debugger
     switch(action.type){
-        case 'FETCH_ALL_USERS':state.listUsers=action.payload
-        break;
+        case 'FILL_USERS_DATA':
+             state.listUsers = action.payload
+             break;
+        default:
+             return state;
      }
 }, InitalState)
+
+
+
+
+
+
+
+
+

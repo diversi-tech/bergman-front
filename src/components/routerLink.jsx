@@ -1,36 +1,31 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Nav } from './nav.jsx';
-import {Filter} from './filtering.jsx';
-import { Home } from './home.jsx';
-import { Manager } from './manager.jsx';
-import { Secretary } from './secretary.jsx';
-import { EditingFilters} from './editingFilters.jsx';
-import { History } from './history.jsx';
-import { Profile } from './profile.jsx';
-import { WorkersManagement } from './workersManagement.jsx';
-import { Login } from './login.jsx';
-import { SignUp } from './signUp.jsx';
-import { ChangeProfile } from './changeProfile.jsx';
-
-
+import { Filter } from './filtering';
+import {EditingFilters}  from './editingFilters';
+import { History } from './history';
+import { Home } from './home';
+import LoginModal  from './login';
+import SignUpModal from './signUp';
+import { Manager } from './manager';
+import { Secretary } from './secretary';
+import { WorkersManagement } from './workersManagement';
+import { Profile } from './profile';
+import { Nav } from './nav';
 export const RouterLink = () => {
     return (
         <BrowserRouter>
-            <Nav></Nav>
+        <Nav></Nav>
             <Routes>
                 <Route path="/Filter" element={<Filter></Filter>}></Route>
                 <Route path="/Home" element={<Home></Home>}></Route>
                 <Route path="/Manager" element={<Manager></Manager>}></Route>
                 <Route path="/Secretary" element={<Secretary></Secretary>}></Route>
-                <Route path="/Editing_filters" element={<EditingFilters></EditingFilters>}></Route>
-                <Route path="/Workers_management" element={<WorkersManagement></WorkersManagement>}></Route>
+                <Route path="/EditingFilters" element={<EditingFilters></EditingFilters>}></Route>
+                <Route path="/WorkersManagement" element={<WorkersManagement></WorkersManagement>}></Route>
                 <Route path="/History" element={<History></History>}></Route>
                 <Route path="/Profile" element={<Profile></Profile>}></Route>
-                <Route path="/Login" element={<Login></Login>}></Route>
-                <Route path="/Sign_up" element={<SignUp></SignUp>}></Route>
-                <Route path="/ChangeProfile" element={<ChangeProfile></ChangeProfile>}></Route>  
-
+                <Route path="/Login" element={<LoginModal></LoginModal>}></Route>
+                <Route path="/SignUp" element={<SignUpModal></SignUpModal>}></Route>
             </Routes>
         </BrowserRouter>
     );

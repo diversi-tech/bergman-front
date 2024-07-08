@@ -1,13 +1,15 @@
 import {produce} from 'immer'
 
 export const InitalState = {
-    listUsers: [
-
-    ]
+    listEnum: []
 }
+
 export const EnumReducer = produce((state, action) => {
     switch(action.type){
-        case 'FETCH_ALL_ENUM':state.listUsers=action.payload
-        break;
+        case 'FILL_ENAM_DATA':
+             state.listEnum = action.payload
+             break;
+        default:
+             return state;
      }
 }, InitalState)
