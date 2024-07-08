@@ -1,3 +1,3 @@
-export const FETCHAllUsers=(value)=>{
-    return {type:'FETCH_ALL_USERS_TYPE',payload:value}
+export const FillUsersTypeData=(value)=>{
+    return {type:'FILL_USERS_TYPE_DATA',payload:value}
 }

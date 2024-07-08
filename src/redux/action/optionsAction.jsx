@@ -1,3 +1,3 @@
-export const FillOption=(value)=>{
+export const FillOptionData=(value)=>{
     return {type:'FILL_OPTIONS_DATA',payload:value}
 }

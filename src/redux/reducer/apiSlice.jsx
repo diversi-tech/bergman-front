@@ -4,11 +4,11 @@ import { createSlice } from '@reduxjs/toolkit';
 const apiSlice = createSlice({
   name: 'api',
   initialState: {
-    baseUrl: 'http://localhost:8080/api/', // ערך התחלתי
+    // baseUrl: 'http://localhost:8080/api/', // ערך התחלתי
   },
   reducers: {
     setBaseUrl: (state, action) => {
-      state.baseUrl = action.payload;
+      // state.baseUrl = action.payload;
     },
   },
 });

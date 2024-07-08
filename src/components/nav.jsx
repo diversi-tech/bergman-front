@@ -1,6 +1,7 @@
+import React from 'react'
 import { AppBar, Button, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
-import React from 'react'
+
 
 
 export const Nav = () => {

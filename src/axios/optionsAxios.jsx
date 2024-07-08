@@ -45,10 +45,10 @@ const OptionsAxios = {
             throw error;
         }
     },
-    updateOption: async (option) => {
+    updateOption: async (id, option) => {
         try {
             debugger
-            const response = await axios.put(`${API_URL}`, option);
+            const response = await axios.put(`${API_URL}/${id}`, option);
             return response.data;
             // alert(response.data.username)
         } catch (error) {

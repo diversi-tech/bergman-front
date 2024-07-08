@@ -8,22 +8,21 @@ import { Provider } from 'react-redux';
 import UserAxios  from '../axios/userAxios';
 import { useNavigate } from 'react-router-dom';
 
-
 export const Login = () => {
+  debugger
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [usersList, setUsersList] = useState([]);
   const [error, setError] = useState(false); 
 
-///////////
   const myDispatch = useDispatch();
   const myNavigate = useNavigate();
-  const users = useSelector(state => state.UserReducer.listUsers);
+  const users = useSelector(state => state.listUsers);
 
   useEffect(() => {
     const fetchUsers = async ()=>{
       debugger
-      if(users.length > 0)
+      if(users > 0)
           setUsersList(users)
         else {
           try{
@@ -39,7 +38,6 @@ export const Login = () => {
     fetchUsers()
   }, [myDispatch, users]);
 
-//////////////
 
   const handleLogin = () => {
     debugger
@@ -48,7 +46,6 @@ export const Login = () => {
     // console.log('Password:', password);
     const user = usersList.find(user => user.email === email && user.password === password);
     if (user) {
-      // alert("אתה משתמש קיים")
       if(user.userType === 1)
         myNavigate('/Manager')
       else if(user.userType === 2)
@@ -57,7 +54,6 @@ export const Login = () => {
        myNavigate('/Secretary')
       }
      else {
-      // alert("אתה משתמש חדש")
       setError(true);
     }
   };

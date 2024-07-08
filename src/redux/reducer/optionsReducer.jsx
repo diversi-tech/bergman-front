@@ -1,15 +1,14 @@
 import { produce } from 'immer'
 
 export const InitalState = {
-    listOptions: [
-
-    ]
+    listOptions: []
 }
+
 export const OptionsReducer = produce((state, action) => {
     switch (action.type) {
-        case 'GET_ALL_OPTIONS':
+        case 'FILL_OPTIONS_DATA':
              state.listOptions = action.payload
-        break;
+             break;
         default:
              return state;
     }
