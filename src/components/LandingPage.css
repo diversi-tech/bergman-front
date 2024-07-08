@@ -1,0 +1,30 @@
+.btnFilter
+{
+    margin: 20px !important;
+    width: 200px;
+    height: 75px;
+    font-size: 35px !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-weight: bold !important;
+}
+
+.btnView
+{
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+
+}
+
+.details{
+    border: 2px solid black;
+    font-size: 30px;
+    width: 1000px;
+    height: 100px;
+    align-items: center;
+    justify-content: center;
+    margin-right: 13%;
+}
+.lbl
+{
+    font-weight: bold;
+}
