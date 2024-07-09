@@ -155,10 +155,10 @@ export const Manager = () => {
         }
     };
 
-    const handleUserTypeChange = (e) => {
-        const userType = e.target.value;
-        setNewManager({ ...newManager, userType });
-    };
+    // const handleUserTypeChange = (e) => {
+    //     const userType = e.target.value;
+    //     setNewManager({ ...newManager, userType });
+    // };
 
     const handleUserTypeEditChange = (e) => {
         const userType = e.target.value;
