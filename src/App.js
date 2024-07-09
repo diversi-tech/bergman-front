@@ -32,16 +32,21 @@ import './App.css';
 import { RouterLink } from './components/routerLink';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import Footer from './components/footer';
 
 function App() {
   return (
+   
     <Provider store={store}>
       <div className="App">
         <header><RouterLink></RouterLink>
 
-          <Image /></header>
+          </header>
       </div>
+      <Footer/>
     </Provider>
+    
+    
   );
 }
 const pic = require('./images/logo.jpg');
