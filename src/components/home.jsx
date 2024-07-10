@@ -6,6 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { ChangeProfile } from './changeProfile';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 const background = require('../images/background.jpg')
+const background1 = require('../images/background1.jpg')
+const background2 = require('../images/background2.jpg')
+
+
 const img1 = require('../images/logo small.jpg');
 
 export const Home = () => {
@@ -53,7 +57,7 @@ export const Home = () => {
             </Container> */}
             <Box
                 sx={{
-                    backgroundImage: 'url(/images/background.jpg)',
+                    // backgroundImage: 'url(/images/background.jpg)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     height: '10vh',
@@ -78,14 +82,14 @@ export const Home = () => {
                     }}
                 />
             </Box>
-            <Box component="footer" sx={{ py: 3, px: 2, mt: 'calc(30rem - 30px)', backgroundColor: (theme) => theme.palette.grey[200], textAlign: 'center' }}>
-                <Container maxWidth="sm">
+            <Box component="footer" sx={{ py: 30, px: 2,  textAlign: 'center' }}>
+                {/* <Container maxWidth="sm">
                     <Typography variant="body1">
                         <span> צור קשר: חנה ברגמן </span>
                         <span> פל': 055-555-555  </span>
                         אימייל: kkk@gmail.com
                     </Typography>
-                </Container>
+                </Container> */}
             </Box>
             <Modal
                 aria-labelledby="transition-modal-title"
