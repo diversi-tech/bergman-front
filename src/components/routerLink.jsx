@@ -26,6 +26,7 @@ export const RouterLink = () => {
                 <Route path="/Profile" element={<Profile></Profile>}></Route>
                 <Route path="/Login" element={<LoginModal></LoginModal>}></Route>
                 <Route path="/SignUp" element={<SignUpModal></SignUpModal>}></Route>
+                <Route path="/" element={<Home></Home>}></Route>
             </Routes>
         </BrowserRouter>
     );
