@@ -253,16 +253,10 @@ export const Manager = () => {
                     <TableBody>
                         {managers.map((manager) => (
                             <TableRow key={manager.userId}>
-                                {/* <TableCell style={{ direction: 'rtl' ,textAlign: 'center'}} >
-                                    <Avatar>{manager.username[0]}</Avatar>
-                                     {manager.username} 
-                                </TableCell> */}
                                 <TableCell style={{ direction: 'rtl', textAlign: 'center' }}>
                                     <Box
                                         display="flex"
                                         alignItems="center"
-
-                                    // justifyContent="center"
                                     >
                                         <Avatar>{manager.username[0]}</Avatar>
                                         <Box ml={1} flexGrow={1} textAlign="center"> {/* flexGrow כדי למלא את השורה */}
@@ -281,10 +275,10 @@ export const Manager = () => {
                                     {userTypes.find(type => type.userTypeId === manager.userType)?.userTypeName || 'N/A'}
                                 </TableCell>
                                 <TableCell>
-                                    <IconButton onClick={() => handleEditOpen(manager)}>
+                                    <IconButton style={{color: "primary"}} onClick={() => handleEditOpen(manager)}>
                                         <EditIcon />
                                     </IconButton>
-                                    <IconButton onClick={() => handleDeleteWarningOpen(manager)}>
+                                    <IconButton style={{color: "primary"}} onClick={() => handleDeleteWarningOpen(manager)}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </TableCell>
