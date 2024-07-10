@@ -1,42 +1,117 @@
-import React, { useState } from 'react';
-import { Box, Table, TableBody, TableCell, TableHead, TableRow, Button, Typography, Paper, TextField, IconButton, Tooltip } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add'; // אייקון הוספה
+import React, { useEffect, useState } from 'react';
+import { Box, Table, TableBody, TableCell, TableHead, TableRow, Button, Typography, Paper, TextField, IconButton, Tooltip, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import './history.css';
+import ReferralsAxios from '../axios/referralsAxios';
+import CandidateProfilesAxios from '../axios/candidateProfileAxios';
+import UserAxios from '../axios/userAxios';
+import { useParams } from 'react-router-dom';
 
 export const History = () => {
-    const userName = "מוריה דויד";
-    const email = "moriya1519@gmail.com";
-    const phone = "0527101519";
+    const { userId } = useParams();
+    const [candidateDetails, setCandidateDetails] = useState({
+        name: '',
+        phone: '',
+        email: '',
+        address: '',
+        experience: '',
+        summary: '',
+        skills: '',
+        education: '',
+        certifications: '',
+        portfolioWebsite: '',
+        linkedinProfile: '',
+        userId: 0
+    });
     const [showDetails, setShowDetails] = useState(false);
-    const [showAddForm, setShowAddForm] = useState(false); // מצב לניהול הצגת הטופס
+    const [openAddDialog, setOpenAddDialog] = useState(false);
+    const [history, setHistory] = useState([]);
+    const [user, setUser] = useState([]);
+    const candidateId = userId; // ניתן להחליף את ה-ID הזה ב-ID האמיתי של המועמד
+
+    useEffect(() => {
+        const fetchCandidateProfile = async () => {
+            try {
+                const data = await CandidateProfilesAxios.getCandidateProfileById(candidateId);
+                console.log("candidate:" + data);
+                setCandidateDetails(prevDetails => ({
+                    ...prevDetails,
+                    name: data.firstName + " " + data.lastName,
+                    phone: data.phoneNumber,
+                    address: data.city + " " + data.address + " " + data.state,
+                    experience: data.experienceYears,
+                    summary: data.summary,
+                    skills: data.skills,
+                    education: data.education,
+                    certifications: data.certifications,
+                    portfolioWebsite: data.portfolioWebsite,
+                    linkedinProfile: data.linkedinProfile,
+                    userId: data.userId
+                }));
+            } catch (error) {
+                console.error('Error fetching candidate profile:', error);
+            }
+        };
+
+        const fetchHistory = async () => {
+            try {
+                const data = await ReferralsAxios.getReferralById(candidateId);
+                setHistory([data]);
+            } catch (error) {
+                console.error('Error fetching history:', error);
+            }
+        };
+
+        const fetchUser = async () => {
+            try {
+                const response = await UserAxios.getAllUsers();
+                console.log(response);
+                const users = response;
+                setUser(users);
+
+                const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
+
+                if (filteredUser) {
+                    setCandidateDetails(prevDetails => ({
+                        ...prevDetails,
+                        email: filteredUser.email
+                    }));
+                }
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        };
+
+        fetchCandidateProfile();
+        fetchHistory();
+        fetchUser();
+    }, [candidateId, candidateDetails.userId]);
 
     const handleDetails = () => {
         setShowDetails(true);
     };
 
-    const [orders, setOrders] = useState([
-        { date: '16 Mar, 2019', name: 'Elvis Presley', location: 'Tupelo, MS' },
-        { date: '16 Mar, 2019', name: 'Paul McCartney', location: 'London, UK' },
-        { date: '16 Mar, 2019', name: 'Tom Scholz', location: 'Boston, MA' },
-        { date: '16 Mar, 2019', name: 'Michael Jackson', location: 'Gary, IN' },
-        { date: '15 Mar, 2019', name: 'Bruce Springsteen', location: 'Long Branch, NJ' }
-    ]);
-
-    const [newOrder, setNewOrder] = useState({ date: '', name: '', location: '' });
+    const [newHistory, setNewHistory] = useState({ name: '', date: '', comment: '' });
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setNewOrder({ ...newOrder, [name]: value });
+        setNewHistory({ ...newHistory, [name]: value });
     };
 
-    const addOrder = () => {
-        setOrders([...orders, newOrder]);
-        setNewOrder({ date: '', name: '', location: '' });
-        setShowAddForm(false); // הסתרת הטופס לאחר ההוספה
+    const addHistory = async () => {
+        try {
+            const addedHistory = await ReferralsAxios.addReferral(newHistory);
+            console.log("addedHistory:" + addedHistory);
+            setHistory([...history, addedHistory]);
+            setNewHistory({ name: '', date: '', comment: '' });
+            setOpenAddDialog(false);
+        } catch (error) {
+            console.error('Error adding history:', error);
+        }
     };
 
-    const toggleAddForm = () => {
-        setShowAddForm(!showAddForm); // שינוי המצב להצגת או הסתרת הטופס
+    const toggleAddDialog = () => {
+        setOpenAddDialog(!openAddDialog);
     };
 
     return (
@@ -44,9 +119,9 @@ export const History = () => {
             <Typography variant="h4" gutterBottom fontWeight='bold'>היסטוריית מועמד</Typography>
             <Paper elevation={3} sx={{ p: 2, mb: 3 }}>
                 <div className="details">
-                    <label className="lbl">שם: {userName}</label>
-                    <label className="lbl" style={{ flexBasis: '50%' }}>מייל: {email}</label>
-                    <label className="lbl">פלאפון: {phone}</label>
+                    <label className="lbl">שם: {candidateDetails.name}</label>
+                    <label className="lbl" style={{ flexBasis: '50%' }}>פלאפון: {candidateDetails.phone}</label>
+                    <label className="lbl">מייל: {candidateDetails.email}</label>
                 </div>
             </Paper>
             <Paper elevation={3} sx={{ p: 2, mb: 3 }}>
@@ -59,22 +134,21 @@ export const History = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {orders.map((order, index) => (
+                        {history.map((historyItem, index) => (
                             <TableRow key={index}>
-                                <TableCell align='center'>{order.date}</TableCell>
-                                <TableCell align='center'>{order.name}</TableCell>
-                                <TableCell align='center'>{order.location}</TableCell>
+                                <TableCell align='center'>{historyItem.referralSource}</TableCell>
+                                <TableCell align='center'>{historyItem.referralDate}</TableCell>
+                                <TableCell align='center'>{historyItem.remarks}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </Paper>
 
-            {/* כפתור הוספה עם Tooltip */}
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mb: 2 }}>
                 <Tooltip title="הוספת היסטוריה" arrow>
                     <IconButton
-                        onClick={toggleAddForm}
+                        onClick={toggleAddDialog}
                         sx={{
                             backgroundColor: '#2976D2',
                             color: 'white',
@@ -88,33 +162,51 @@ export const History = () => {
                 </Tooltip>
             </Box>
 
-            {/* טופס להוספת הזמנות חדשות */}
-            {showAddForm && (
-                <Box p={3} sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Dialog open={openAddDialog} onClose={toggleAddDialog}>
+                <DialogTitle>הוסף היסטוריה חדשה</DialogTitle>
+                <DialogContent>
                     <TextField
-                        label="תאריך"
-                        name="date"
-                        value={newOrder.date}
-                        onChange={handleInputChange}
-                        sx={{ flexGrow: 1 }}
-                    />
-                    <TextField
+                        margin="dense"
                         label="שם החברה"
                         name="name"
-                        value={newOrder.name}
+                        value={newHistory.name}
                         onChange={handleInputChange}
-                        sx={{ flexGrow: 1 }}
+                        fullWidth
                     />
                     <TextField
-                        label="תגובה"
-                        name="location"
-                        value={newOrder.location}
+                        margin="dense"
+                        label="תאריך"
+                        type='date'
+                        name="date"
+                        value={newHistory.date}
                         onChange={handleInputChange}
-                        sx={{ flexGrow: 1 }}
+                        fullWidth
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end" />,
+                        }}
+                        sx={{
+                            '& input[type="date"]::-webkit-calendar-picker-indicator': {
+                                marginLeft: '10px',
+                            },
+                        }}
                     />
-                    <Button variant="contained" onClick={addOrder}>הוסף</Button>
-                </Box>
-            )}
+                    <TextField
+                        margin="dense"
+                        label="תגובה"
+                        name="comment"
+                        value={newHistory.comment}
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={toggleAddDialog}>ביטול</Button>
+                    <Button onClick={addHistory} variant="contained">הוסף</Button>
+                </DialogActions>
+            </Dialog>
 
             <Button variant="contained" onClick={handleDetails}>
                 להצגת כל פרטי המועמד
@@ -126,33 +218,40 @@ export const History = () => {
                         <Box sx={{ width: '80%', display: 'flex', flexDirection: 'column', gap: 2 }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <Typography>מיקום:</Typography>
-                                <Typography variant="body1">תוכן המיקום</Typography>
+                                <Typography variant="body1">{candidateDetails.address}</Typography>
                             </Box>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <Typography>וותק:</Typography>
-                                <Typography variant="body1">תוכן הוותק</Typography>
+                                <Typography variant="body1">{candidateDetails.experience}</Typography>
                             </Box>
-                            <Box>
-                                <Typography variant="h6" sx={{ mt: 2 }}>כישורים</Typography>
-                                <Box sx={{ mt: 2 }}>
-                                    <Typography>טכנולוגיות:</Typography>
-                                    <Typography variant="body1" sx={{ ml: 2 }}>תוכן הטכנולוגיות</Typography>
-                                </Box>
-                                <Box sx={{ mt: 2 }}>
-                                    <Typography>שפות תכנות:</Typography>
-                                    <Typography variant="body1" sx={{ ml: 2 }}>תוכן שפות התכנות</Typography>
-                                </Box>
-                                <Box sx={{ mt: 2 }}>
-                                    <Typography>שפות:</Typography>
-                                    <Typography variant="body1" sx={{ ml: 2 }}>תוכן השפות</Typography>
-                                </Box>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Typography>תקציר:</Typography>
+                                <Typography variant="body1">{candidateDetails.summary}</Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Typography>השכלה:</Typography>
+                                <Typography variant="body1">{candidateDetails.education}</Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Typography>תעודות:</Typography>
+                                <Typography variant="body1">{candidateDetails.certifications}</Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Typography>כישורים:</Typography>
+                                <Typography variant="body1">{candidateDetails.skills}</Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Typography>אתר המועמד:</Typography>
+                                <Typography variant="body1">{candidateDetails.portfolioWebsite}</Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Typography>linkedinProfile:</Typography>
+                                <Typography variant="body1">{candidateDetails.linkedinProfile}</Typography>
                             </Box>
                         </Box>
                     </Paper>
                 </Box>
             )}
-
         </Box>
     );
 };
-
