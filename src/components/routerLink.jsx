@@ -22,7 +22,9 @@ export const RouterLink = () => {
                 <Route path="/Secretary" element={<Secretary></Secretary>}></Route>
                 <Route path="/EditingFilters" element={<EditingFilters></EditingFilters>}></Route>
                 <Route path="/WorkersManagement" element={<WorkersManagement></WorkersManagement>}></Route>
-                <Route path="/History" element={<History></History>}></Route>
+                {/* <Route path="/History" element={<History></History>}></Route> */}
+                <Route path="/History/:userId" element={<History></History>} />
+
                 <Route path="/Profile" element={<Profile></Profile>}></Route>
                 <Route path="/Login" element={<LoginModal></LoginModal>}></Route>
                 <Route path="/SignUp" element={<SignUpModal></SignUpModal>}></Route>

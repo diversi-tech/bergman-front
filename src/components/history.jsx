@@ -5,8 +5,10 @@ import './history.css';
 import ReferralsAxios from '../axios/referralsAxios';
 import CandidateProfilesAxios from '../axios/candidateProfileAxios';
 import UserAxios from '../axios/userAxios';
+import { useParams } from 'react-router-dom';
 
 export const History = () => {
+    const { userId } = useParams();
     const [candidateDetails, setCandidateDetails] = useState({
         name: '',
         phone: '',
@@ -25,7 +27,7 @@ export const History = () => {
     const [openAddDialog, setOpenAddDialog] = useState(false);
     const [history, setHistory] = useState([]);
     const [user, setUser] = useState([]);
-    const candidateId = 13; // ניתן להחליף את ה-ID הזה ב-ID האמיתי של המועמד
+    const candidateId = userId; // ניתן להחליף את ה-ID הזה ב-ID האמיתי של המועמד
 
     useEffect(() => {
         const fetchCandidateProfile = async () => {

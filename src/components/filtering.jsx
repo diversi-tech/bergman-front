@@ -26,6 +26,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { History } from './history'; // Import useHistory for navigation
 import { useHistory } from 'react-router-dom'; // Import useHistory for navigation
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -49,8 +50,8 @@ const cacheRtl = createCache({
 
 
 export const Filter = () => {
+    const navigate = useNavigate();
     const [selectedCandidates, setSelectedCandidates] = useState([]);
-
     const [selectedLanguages, setSelectedLanguages] = useState([]);
     const [selectedProgrammingLanguages, setSelectedProgrammingLanguages] = useState([]);
     const [selectedTechnologies, setSelectedTechnologies] = useState([]);
@@ -306,8 +307,7 @@ const renderAutocomplete = (enumItem) => {
                         <IconButton
                           color="primary"
                           sx={{ borderRadius: '50%' }}
-                          onClick={() => History.push('./history')} // ניתוב לקומפוננטה אחרת
-                        >
+                          onClick={() => navigate(`/History/${candidate.candidateId}`)}                        >
                           <HistoryIcon />
                         </IconButton>
                       </Tooltip>
