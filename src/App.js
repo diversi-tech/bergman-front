@@ -4,14 +4,28 @@ import { RouterLink } from './components/routerLink';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import Footer from './components/footer';
+import { Box } from '@mui/material';
 
 function App() {
   return (
     <Provider store={store}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+        }}
+      >
       <div className="App">
-        <header><RouterLink></RouterLink></header>
+        {/* <header><RouterLink></RouterLink></header> */}
+        <RouterLink/>
+        <Box component="main" sx={{ flex: 1, mt: '64px' }}>
+          {/* כאן יש להוסיף את התוכן המרכזי של העמוד */}
+        </Box>
+        <Footer/>
+
       </div>
-      <Footer/>
+      </Box>
     </Provider>
   );
 }
