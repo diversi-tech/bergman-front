@@ -6,10 +6,13 @@ import SearchIcon from '@mui/icons-material/Search';
 import HistoryIcon from '@mui/icons-material/History';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonIcon from '@mui/icons-material/Person';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 
 export const Nav = () => {
     return (
-        <AppBar position="static">
+        <AppBar position="fixed">
             <Toolbar>
                 <Tooltip title="דף הבית" arrow>
                     <Button color="inherit" component={Link} to="/Home">
@@ -21,18 +24,22 @@ export const Nav = () => {
                 <Tooltip title="חיפוש מועמדים" arrow>
 
                     <Button color="inherit" component={Link} to="/Filter">
-                        <SearchIcon />
+                        <PersonSearchIcon />
                     </Button>
                 </Tooltip>
                 <Button color="inherit" component={Link} to="/Secretary">
                     מזכירה
                 </Button>
+                <Tooltip title="עריכת מסננים" arrow>
                 <Button color="inherit" component={Link} to="/EditingFilters">
-                    עריכת מסננים
+                    <ManageSearchIcon />
                 </Button>
-                <Button color="inherit" component={Link} to="/WorkersManagement">
-                    ניהול עובדים
-                </Button>
+                </Tooltip>
+                <Tooltip title="ניהול עובדים" arrow>
+                    <Button color="inherit" component={Link} to="/WorkersManagement">
+                        <ManageAccountsIcon />
+                    </Button>
+                </Tooltip>
                 <Tooltip title="היסטוריית מועמד" arrow>
 
                     <Button color="inherit" component={Link} to="/History">

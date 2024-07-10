@@ -10,7 +10,7 @@ const FooterContainer = styled('footer')({
   // padding: '20px',
   borderTop: '1px solid #ccc',
   direction: 'rtl',
-  // position: 'fixed',
+  position: 'sticky',
   // bottom: 0,
   width: '100%',
   backgroundColor: '#fff',
