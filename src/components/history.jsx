@@ -5,13 +5,15 @@ import './history.css';
 import ReferralsAxios from '../axios/referralsAxios';
 import CandidateProfilesAxios from '../axios/candidateProfileAxios';
 import UserAxios from '../axios/userAxios';
+import { useParams } from 'react-router-dom';
 
 export const History = () => {
+    const { userId } = useParams();
     const [candidateDetails, setCandidateDetails] = useState({
         name: '',
         phone: '',
         email: '',
-        adress: '',
+        address: '',
         experience: '',
         summary: '',
         skills: '',
@@ -19,23 +21,23 @@ export const History = () => {
         certifications: '',
         portfolioWebsite: '',
         linkedinProfile: '',
-        userId:0
+        userId: 0
     });
     const [showDetails, setShowDetails] = useState(false);
     const [openAddDialog, setOpenAddDialog] = useState(false);
     const [history, setHistory] = useState([]);
-    const [user, setUser]= useState([])
-    const candidateId = 13; // ניתן להחליף את ה-ID הזה ב-ID האמיתי של המועמד
+    const [user, setUser] = useState([]);
+    const candidateId = userId; // ניתן להחליף את ה-ID הזה ב-ID האמיתי של המועמד
 
     useEffect(() => {
         const fetchCandidateProfile = async () => {
             try {
                 const data = await CandidateProfilesAxios.getCandidateProfileById(candidateId);
-                console.log("candidate:" + data)
-                setCandidateDetails({
+                console.log("candidate:" + data);
+                setCandidateDetails(prevDetails => ({
+                    ...prevDetails,
                     name: data.firstName + " " + data.lastName,
                     phone: data.phoneNumber,
-                    email: '',
                     address: data.city + " " + data.address + " " + data.state,
                     experience: data.experienceYears,
                     summary: data.summary,
@@ -44,8 +46,8 @@ export const History = () => {
                     certifications: data.certifications,
                     portfolioWebsite: data.portfolioWebsite,
                     linkedinProfile: data.linkedinProfile,
-                    userId:data.userId
-                });
+                    userId: data.userId
+                }));
             } catch (error) {
                 console.error('Error fetching candidate profile:', error);
             }
@@ -62,30 +64,28 @@ export const History = () => {
 
         const fetchUser = async () => {
             try {
-                debugger;
-                const response = await UserAxios.getAllUsers(); // make sure to call the function
-                console.log(response); // Log the entire response to see its structure
-                const users = response; // Change this line if the data is directly in response
+                const response = await UserAxios.getAllUsers();
+                console.log(response);
+                const users = response;
                 setUser(users);
-        
-                const filteredUser = user.find(user1 => user1.userId === candidateDetails.userId);
-                
+
+                const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
+
                 if (filteredUser) {
-                    setCandidateDetails({
+                    setCandidateDetails(prevDetails => ({
+                        ...prevDetails,
                         email: filteredUser.email
-                    });
+                    }));
                 }
             } catch (error) {
                 console.error('Error fetching users:', error);
             }
-        }
-        
-        
+        };
 
         fetchCandidateProfile();
         fetchHistory();
         fetchUser();
-    }, [candidateId]);
+    }, [candidateId, candidateDetails.userId]);
 
     const handleDetails = () => {
         setShowDetails(true);
@@ -101,15 +101,14 @@ export const History = () => {
     const addHistory = async () => {
         try {
             const addedHistory = await ReferralsAxios.addReferral(newHistory);
-            console.log("addedHistory:" + addedHistory)
-            setHistory([...history, addedHistory]); // שימוש במשתנה addedHistory
+            console.log("addedHistory:" + addedHistory);
+            setHistory([...history, addedHistory]);
             setNewHistory({ name: '', date: '', comment: '' });
             setOpenAddDialog(false);
         } catch (error) {
             console.error('Error adding history:', error);
         }
     };
-
 
     const toggleAddDialog = () => {
         setOpenAddDialog(!openAddDialog);
@@ -219,7 +218,7 @@ export const History = () => {
                         <Box sx={{ width: '80%', display: 'flex', flexDirection: 'column', gap: 2 }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <Typography>מיקום:</Typography>
-                                <Typography variant="body1">{candidateDetails.address} </Typography>
+                                <Typography variant="body1">{candidateDetails.address}</Typography>
                             </Box>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <Typography>וותק:</Typography>
@@ -246,24 +245,9 @@ export const History = () => {
                                 <Typography variant="body1">{candidateDetails.portfolioWebsite}</Typography>
                             </Box>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Typography>linkedinProfile :</Typography>
+                                <Typography>linkedinProfile:</Typography>
                                 <Typography variant="body1">{candidateDetails.linkedinProfile}</Typography>
                             </Box>
-                            {/* <Box>
-                                <Typography variant="h6" sx={{ mt: 2 }}>כישורים</Typography>
-                                <Box sx={{ mt: 2 }}>
-                                    <Typography>טכנולוגיות:</Typography>
-                                    <Typography variant="body1" sx={{ ml: 2 }}>תוכן הטכנולוגיות</Typography>
-                                </Box>
-                                <Box sx={{ mt: 2 }}>
-                                    <Typography>שפות תכנות:</Typography>
-                                    <Typography variant="body1" sx={{ ml: 2 }}>תוכן שפות התכנות</Typography>
-                                </Box>
-                                <Box sx={{ mt: 2 }}>
-                                    <Typography>שפות:</Typography>
-                                    <Typography variant="body1" sx={{ ml: 2 }}>תוכן השפות</Typography>
-                                </Box>
-                            </Box> */}
                         </Box>
                     </Paper>
                 </Box>
@@ -271,4 +255,3 @@ export const History = () => {
         </Box>
     );
 };
-
