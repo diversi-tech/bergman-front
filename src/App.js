@@ -32,6 +32,7 @@ import './App.css';
 import { RouterLink } from './components/routerLink';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+// import { Home } from './components/home';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
         <header><RouterLink></RouterLink>
 
           <Image /></header>
+          {/* <Home></Home> */}
       </div>
     </Provider>
   );
