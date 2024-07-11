@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Tooltip } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, IconButton, Dialog,
@@ -114,7 +114,7 @@ export const Manager = () => {
 
     const handleDeleteConfirm = async () => {
         try {
-            await userAxios.deleteUserById(managerToDelete.userId);
+            await userAxios.deleteUser(managerToDelete.userId);
             const managers1 = await userAxios.getAllManagers();
             setManagers(managers1);
             dispatch(FillUsersData(managers1));
@@ -239,30 +239,24 @@ export const Manager = () => {
     );
 
     const renderTable = () => (
-        <div style={{ padding: '20px', textAlign: 'center', direction: 'rtl' }}>
+        <div style={{ padding: '20px', textAlign: 'center', direction: 'rtl', marginTop: '80px' }}>
             <TableContainer component={Paper} style={{ margin: '0 auto', maxWidth: '80%' }}>
                 <Table>
                     <TableHead>
-                        <TableRow style={{ backgroundColor: '#1976d2', color: 'white' }}>
-                            <TableCell style={{ direction: 'rtl', color: 'white', fontWeight: 'bold', textAlign: 'center' }}>שם משתמש</TableCell>
-                            <TableCell style={{ direction: 'rtl', color: 'white', fontWeight: 'bold', textAlign: 'center' }}>אימייל</TableCell>
-                            <TableCell style={{ direction: 'rtl', color: 'white', fontWeight: 'bold', textAlign: 'center' }}>סוג משתמש</TableCell>
-                            <TableCell style={{ direction: 'rtl', color: 'white', fontWeight: 'bold', textAlign: 'center' }}></TableCell>
+                        <TableRow>
+                            <TableCell style={{ direction: 'rtl', fontWeight: 'bold', textAlign: 'center' }}>שם משתמש</TableCell>
+                            <TableCell style={{ direction: 'rtl', fontWeight: 'bold', textAlign: 'center' }}>סוג מנהל</TableCell>
+                            <TableCell style={{ direction: 'rtl', fontWeight: 'bold', textAlign: 'center' }}>אימייל</TableCell>
+                            <TableCell style={{ direction: 'rtl', fontWeight: 'bold', textAlign: 'center' }}></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {managers.map((manager) => (
                             <TableRow key={manager.userId}>
-                                {/* <TableCell style={{ direction: 'rtl' ,textAlign: 'center'}} >
-                                    <Avatar>{manager.username[0]}</Avatar>
-                                     {manager.username} 
-                                </TableCell> */}
                                 <TableCell style={{ direction: 'rtl', textAlign: 'center' }}>
                                     <Box
                                         display="flex"
                                         alignItems="center"
-
-                                    // justifyContent="center"
                                     >
                                         <Avatar>{manager.username[0]}</Avatar>
                                         <Box ml={1} flexGrow={1} textAlign="center"> {/* flexGrow כדי למלא את השורה */}
@@ -270,23 +264,34 @@ export const Manager = () => {
                                         </Box>
                                     </Box>
                                 </TableCell>
-                                <TableCell style={{ direction: 'rtl', textAlign: 'center' }}>
-
-                                    <IconButton onClick={() => handleEmailDialogOpen(manager.email || '')}>
-                                        <MailIcon />
-                                    </IconButton>
-                                    {manager.email}
-                                </TableCell>
                                 <TableCell style={{ textAlign: 'center' }}>
                                     {userTypes.find(type => type.userTypeId === manager.userType)?.userTypeName || 'N/A'}
                                 </TableCell>
-                                <TableCell>
-                                    <IconButton onClick={() => handleEditOpen(manager)}>
+                                <TableCell style={{ direction: 'rtl', textAlign: 'center' }}>
+                                    {manager.email}
+                                    
+
+                                </TableCell>
+                                
+
+                                <TableCell padding="none"><Tooltip title="לשליחת אימייל"><IconButton color="primary" onClick={() => handleEmailDialogOpen(manager.email || '')}>
+                                        <MailIcon />
+                                    </IconButton></Tooltip>
+                                    </TableCell>
+                                    
+                                <TableCell padding="none">
+                                <Tooltip title="עריכת מנהל">
+                                    <IconButton color="primary" onClick={() => handleEditOpen(manager)}>
                                         <EditIcon />
                                     </IconButton>
-                                    <IconButton onClick={() => handleDeleteWarningOpen(manager)}>
+                                    </Tooltip>
+                                    </TableCell>
+                                <TableCell padding="0px 20px">
+                                <Tooltip title="מחיקת מנהל">
+                                    <IconButton color="primary" onClick={() => handleDeleteWarningOpen(manager)}>
                                         <DeleteIcon />
                                     </IconButton>
+                                    </Tooltip>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -300,7 +305,7 @@ export const Manager = () => {
         <>
             {showTable ? renderTable() : renderButtons()}
 
-            <Dialog open={openEdit} onClose={handleEditClose} dir="rtl" style={{ textAlign: 'center' }}
+            <Dialog open={openEdit} onClose={handleEditClose} dir="rtl" //style={{ textAlign: 'center' }}
                 fullWidth
                 maxWidth="sm"
                 PaperProps={{
@@ -467,7 +472,7 @@ export const Manager = () => {
                                     <InputLabel>סוג משתמש</InputLabel>
                                     <Select
                                         value={currentManager.userType}
-                                        onChange={handleUserTypeEditChange}
+                                        onChange={handleUserTypeChange}
                                         name="userType"
                                         label="סוג משתמש"
                                         MenuProps={{
