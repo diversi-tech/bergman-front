@@ -21,6 +21,14 @@ const blinkAnimation = keyframes`
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 `;
+const pulseAnimation = keyframes`
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+`;
 
 export const Home = () => {
     const navigate = useNavigate();
@@ -97,7 +105,7 @@ export const Home = () => {
                     מטרתנו היא לחבר בין כישרונות מובילים לבין חברות מובילות בתעשייה, תוך הבטחת התאמה מושלמת הן למועמדים והן למעסיקים.<br />
                     עם הבנה עמוקה של הדרישות הייחודיות של תחום ההייטק,<br /> אנו גאים בגישה המדוקדקת שלנו להשמה ושואפים למצוינות ודיוק בכל תהליך הגיוס.
                 </Typography>
-                <Button variant='contained' sx={{ mt: 8, animation: `${blinkAnimation} 1.5s infinite` }}>
+                <Button variant='contained' sx={{ mt: 8, animation: `${pulseAnimation} 2s infinite` }}>
                     העלאת קורות חיים
                     <FileUploadIcon />
                 </Button>
