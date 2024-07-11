@@ -1,10 +1,8 @@
-
-
 import { Autocomplete, Box, Button, Chip, Container, FormControl, TextField, Typography } from '@mui/material';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CV } from './CV';
-import './LandPage.css';
+
 
 const skills = [
   'JavaScript', 'Java', 'Python', 'C', 'C#', 'C++', 'Ruby', 'Swift', 'Kotlin',
@@ -246,3 +244,4 @@ export const Profile = () => {
   );
 };
 
+export default Profile;

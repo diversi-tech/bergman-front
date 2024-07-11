@@ -1,17 +1,17 @@
 
-import React from 'react';
-import { Box, Divider, Typography, Link } from '@mui/material';
+import { Box, Divider, Link, Typography } from '@mui/material';
 import { styled } from '@mui/system';
+import React from 'react';
 
 const FooterContainer = styled('footer')({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  padding: '20px',
+  // padding: '20px',
   borderTop: '1px solid #ccc',
   direction: 'rtl',
-  position: 'fixed',
-  bottom: 0,
+  position: 'sticky',
+  // bottom: 0,
   width: '100%',
   backgroundColor: '#fff',
   fontFamily: 'sans-serif',
