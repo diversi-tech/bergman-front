@@ -19,7 +19,8 @@ export const RouterLink = () => {
 
     return (
         <BrowserRouter>
-            {isAuthenticated && <Nav />}
+            {/* {isAuthenticated && <Nav />} */}
+            <Nav/>
             <Box sx={{ pt: '60px' }}>
                 <Routes>
                     <Route path="/Filter" element={<Filter />} />
