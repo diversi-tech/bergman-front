@@ -27,181 +27,180 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import { History } from './history'; // Import useHistory for navigation
 import { useHistory } from 'react-router-dom'; // Import useHistory for navigation
 import { useNavigate } from 'react-router-dom';
-
-
-
+import EditIcon from '@mui/icons-material/Edit';
+import EditDocumentIcon from '@mui/icons-material/Description';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const theme =
-    createTheme({
-        direction: 'rtl',
-        palette: {
-            mode: 'light',
-        },
-    });
+  createTheme({
+    direction: 'rtl',
+    palette: {
+      mode: 'light',
+    },
+  });
 
 const cacheRtl = createCache({
-    key: 'muirtl',
-    stylisPlugins: [prefixer, rtlPlugin],
+  key: 'muirtl',
+  stylisPlugins: [prefixer, rtlPlugin],
 });
 
 
 
 
 export const Filter = () => {
-    const navigate = useNavigate();
-    const [selectedCandidates, setSelectedCandidates] = useState([]);
-    const [selectedLanguages, setSelectedLanguages] = useState([]);
-    const [selectedProgrammingLanguages, setSelectedProgrammingLanguages] = useState([]);
-    const [selectedTechnologies, setSelectedTechnologies] = useState([]);
-    const [selectedLocations, setSelectedLocations] = useState([]);
-    const [checkedCandidates, setCheckedCandidates] = useState({});
-    const [candidatesFromServer, setCandidatesFromServer] = useState([]);
-    const [filteredCandidates, setFilteredCandidates] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [options, setOptions] = useState([]);
-    const [enums, setEnums] = useState([]);
-    const [userOptions, setUserOptions] = useState([]);
+  const navigate = useNavigate();
+  const [selectedCandidates, setSelectedCandidates] = useState([]);
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
+  const [selectedProgrammingLanguages, setSelectedProgrammingLanguages] = useState([]);
+  const [selectedTechnologies, setSelectedTechnologies] = useState([]);
+  const [selectedLocations, setSelectedLocations] = useState([]);
+  const [checkedCandidates, setCheckedCandidates] = useState({});
+  const [candidatesFromServer, setCandidatesFromServer] = useState([]);
+  const [filteredCandidates, setFilteredCandidates] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [options, setOptions] = useState([]);
+  const [enums, setEnums] = useState([]);
+  const [userOptions, setUserOptions] = useState([]);
 
-    const dispatch = useDispatch();
-    const candidateProfiles = useSelector(state => state.listCandidateProfile);
-    const users1 = useSelector(state => state.listUsers);
-    const options1 = useSelector(state => state.listOptions);
-    const enums1 = useSelector(state => state.listEnums);
-    const userOptions1 = useSelector(state => state.listUserUserOptions);
+  const dispatch = useDispatch();
+  const candidateProfiles = useSelector(state => state.listCandidateProfile);
+  const users1 = useSelector(state => state.listUsers);
+  const options1 = useSelector(state => state.listOptions);
+  const enums1 = useSelector(state => state.listEnums);
+  const userOptions1 = useSelector(state => state.listUserUserOptions);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                if (candidateProfiles > 0) {
-                    setCandidatesFromServer(candidateProfiles);
-                } else {
-                    const response = await CandidateProfilesAxios.getAllCandidateProfiles();
-                    setCandidatesFromServer(response);
-                    dispatch(FillCavdidateProfileData(response.data));
-                }
-                if (users1 > 0) {
-                    setUsers(users1);
-                } else {
-                    const response = await UserAxios.getAllUsers();
-                    setUsers(response);
-                    dispatch(FillUsersData(response.data));
-                }
-                if (options1 > 0) {
-                    setOptions(options1);
-                } else {
-                    const response = await OptionsAxios.getAllOptions();
-                    setOptions(response);
-                    dispatch(FillOptionData(response.data));
-                }
-                if (enums1 > 0) {
-                    setEnums(enums1);
-                } else {
-                    const response = await EnumsAxios.getAllEnums();
-                    setEnums(response);
-                    dispatch(FillEnumData(response.data));
-                }
-                if (userOptions1 > 0) {
-                    setUserOptions(userOptions1);
-                } else {
-                    const response = await UserOptionsAxios.getAllUserOptions();
-                    setUserOptions(response);
-                    dispatch(FillUsersOptionsData(response.data));
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        };
-        fetchData();
-    }, [dispatch, candidateProfiles, users1, options1, enums1, userOptions1]);
-
-    useEffect(() => {
-        setFilteredCandidates(candidatesFromServer);
-    }, [candidatesFromServer]);
-
-    const copyTextToClipboard = async (text) => {
-        try {
-            await navigator.clipboard.writeText(text);
-            console.log('Text copied to clipboard:', text);
-        } catch (err) {
-            console.error('Failed to copy text', err);
-        }
-    };
-
-    const handleCopyEmails = async () => {
-        const emailsToCopy = selectedCandidates.map(candidate => candidate.email);
-        if (emailsToCopy.length > 0) {
-            for (const email of emailsToCopy) {
-                await copyTextToClipboard(email);
-                await new Promise(resolve => setTimeout(resolve, 500));
-            }
-            alert('Emails copied successfully');
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (candidateProfiles > 0) {
+          setCandidatesFromServer(candidateProfiles);
         } else {
-            alert("No emails to copy");
+          const response = await CandidateProfilesAxios.getAllCandidateProfiles();
+          setCandidatesFromServer(response);
+          dispatch(FillCavdidateProfileData(response.data));
         }
+        if (users1 > 0) {
+          setUsers(users1);
+        } else {
+          const response = await UserAxios.getAllUsers();
+          setUsers(response);
+          dispatch(FillUsersData(response.data));
+        }
+        if (options1 > 0) {
+          setOptions(options1);
+        } else {
+          const response = await OptionsAxios.getAllOptions();
+          setOptions(response);
+          dispatch(FillOptionData(response.data));
+        }
+        if (enums1 > 0) {
+          setEnums(enums1);
+        } else {
+          const response = await EnumsAxios.getAllEnums();
+          setEnums(response);
+          dispatch(FillEnumData(response.data));
+        }
+        if (userOptions1 > 0) {
+          setUserOptions(userOptions1);
+        } else {
+          const response = await UserOptionsAxios.getAllUserOptions();
+          setUserOptions(response);
+          dispatch(FillUsersOptionsData(response.data));
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
     };
+    fetchData();
+  }, [dispatch, candidateProfiles, users1, options1, enums1, userOptions1]);
 
-    const handleClearEmails = () => {
-        setSelectedCandidates([]);
-        setCheckedCandidates({});
-        alert('Email selection cleared');
-    };
+  useEffect(() => {
+    setFilteredCandidates(candidatesFromServer);
+  }, [candidatesFromServer]);
 
-    const handleFilterCandidates = () => {
-        const filterByType = (type, selectedValues) => {
-            if (selectedValues.length === 0) return candidatesFromServer.map(c => c.candidateId);
+  const copyTextToClipboard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      console.log('Text copied to clipboard:', text);
+    } catch (err) {
+      console.error('Failed to copy text', err);
+    }
+  };
 
-            const enumItem = enums.find(e => e.enumType === type);
-            const optionsByType = options.filter(o => o.enumId === enumItem.enumId);
-            const optionsIds = selectedValues.map(value => {
-                const option = optionsByType.find(o => o.optionsValue === value);
-                return option ? option.optionsId : null;
-            }).filter(id => id !== null);
+  const handleCopyEmails = async () => {
+    const emailsToCopy = selectedCandidates.map(candidate => candidate.email);
+    if (emailsToCopy.length > 0) {
+      for (const email of emailsToCopy) {
+        await copyTextToClipboard(email);
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      alert('Emails copied successfully');
+    } else {
+      alert("No emails to copy");
+    }
+  };
 
-            return candidatesFromServer.filter(candidate => {
-                return optionsIds.every(optionsId =>
-                    userOptions.some(userOption =>
-                        userOption.candidateId === candidate.candidateId && userOption.optionsId === optionsId
-                    )
-                );
-            }).map(c => c.candidateId);
-        };
+  const handleClearEmails = () => {
+    setSelectedCandidates([]);
+    setCheckedCandidates({});
+    alert('Email selection cleared');
+  };
 
-        const languageCandidates = filterByType("Languages", selectedLanguages);
-        const techCandidates = filterByType("Technologies", selectedTechnologies);
-        const locationCandidates = filterByType("City", selectedLocations);
-        const programmingLangCandidates = filterByType("Programming Languages", selectedProgrammingLanguages);
+  const handleFilterCandidates = () => {
+    const filterByType = (type, selectedValues) => {
+      if (selectedValues.length === 0) return candidatesFromServer.map(c => c.candidateId);
 
-        const finalCandidates = candidatesFromServer.filter(candidate =>
-            languageCandidates.includes(candidate.candidateId) &&
-            techCandidates.includes(candidate.candidateId) &&
-            locationCandidates.includes(candidate.candidateId) &&
-            programmingLangCandidates.includes(candidate.candidateId)
+      const enumItem = enums.find(e => e.enumType === type);
+      const optionsByType = options.filter(o => o.enumId === enumItem.enumId);
+      const optionsIds = selectedValues.map(value => {
+        const option = optionsByType.find(o => o.optionsValue === value);
+        return option ? option.optionsId : null;
+      }).filter(id => id !== null);
+
+      return candidatesFromServer.filter(candidate => {
+        return optionsIds.every(optionsId =>
+          userOptions.some(userOption =>
+            userOption.candidateId === candidate.candidateId && userOption.optionsId === optionsId
+          )
         );
-
-        setFilteredCandidates(finalCandidates);
+      }).map(c => c.candidateId);
     };
 
-    const handleChange = (type, value) => {
-        if (type === "Languages") {
-            setSelectedLanguages(value);
-        } else if (type === "Technologies") {
-            setSelectedTechnologies(value);
-        } else if (type === "City") {
-            setSelectedLocations(value);
-        } else if (type === "Programming Languages") {
-            setSelectedProgrammingLanguages(value);
-        }
-    };
+    const languageCandidates = filterByType("Languages", selectedLanguages);
+    const techCandidates = filterByType("Technologies", selectedTechnologies);
+    const locationCandidates = filterByType("City", selectedLocations);
+    const programmingLangCandidates = filterByType("Programming Languages", selectedProgrammingLanguages);
 
-const renderAutocomplete = (enumItem) => {
+    const finalCandidates = candidatesFromServer.filter(candidate =>
+      languageCandidates.includes(candidate.candidateId) &&
+      techCandidates.includes(candidate.candidateId) &&
+      locationCandidates.includes(candidate.candidateId) &&
+      programmingLangCandidates.includes(candidate.candidateId)
+    );
+
+    setFilteredCandidates(finalCandidates);
+  };
+
+  const handleChange = (type, value) => {
+    if (type === "Languages") {
+      setSelectedLanguages(value);
+    } else if (type === "Technologies") {
+      setSelectedTechnologies(value);
+    } else if (type === "City") {
+      setSelectedLocations(value);
+    } else if (type === "Programming Languages") {
+      setSelectedProgrammingLanguages(value);
+    }
+  };
+
+  const renderAutocomplete = (enumItem) => {
     const enumId = enumItem.enumId;
     const enumType = enumItem.enumType;
     const filteredOptions = options.filter(option => option.enumId === enumId).map(option => option.optionsValue);
 
     return (
-      <Grid item xs={12} sm={6} md={3} lg={2} key={enumId} style={{ margin: '5px',marginTop: '50px' }}>
+      <Grid item xs={12} sm={6} md={3} lg={2} key={enumId} style={{ margin: '5px', marginTop: '50px' }}>
         <CacheProvider value={cacheRtl}>
           <ThemeProvider theme={theme}>
             <div dir="rtl">
@@ -239,7 +238,7 @@ const renderAutocomplete = (enumItem) => {
       <Box display="flex" justifyContent="center">
         <Grid container spacing={0} justifyContent="center" alignItems="center">
           {enums.map(enumItem => renderAutocomplete(enumItem))}
-          <Grid item xs={12} sm={6} md={3} lg={2} style={{ margin: '5px' ,marginTop:'50px'}}>
+          <Grid item xs={12} sm={6} md={3} lg={2} style={{ margin: '5px', marginTop: '50px' }}>
             <Button
               variant="contained"
               className="btnView1"
@@ -303,7 +302,7 @@ const renderAutocomplete = (enumItem) => {
                   </TableCell>
                   <TableCell align="center">
                     <Box display="flex" justifyContent="center" gap={2}>
-                      <Tooltip title="דף הסטוריה">
+                      <Tooltip title="היסטוריית פרטי מועמד">
                         <IconButton
                           color="primary"
                           sx={{ borderRadius: '50%' }}
@@ -311,7 +310,16 @@ const renderAutocomplete = (enumItem) => {
                           <HistoryIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="צפיה בקורות חיים">
+                      <Tooltip title="עריכת פרטי מועמד">
+                        <IconButton
+                          color="primary"
+                          sx={{ borderRadius: '50%' }}
+                          onClick={() => navigate(`/History/${candidate.candidateId}?mode=edit`)}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="צפייה בקורות חיים">
                         <IconButton
                           color="primary"
                           sx={{ borderRadius: '50%' }}
