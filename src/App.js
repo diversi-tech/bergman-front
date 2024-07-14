@@ -5,39 +5,39 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import Footer from './components/footer';
 import { Box } from '@mui/material';
+import background from './images/background4.jpg'; // תוודא שהנתיב נכון
+import { AuthProvider } from './components/authContext';
 
 function App() {
   return (
     <Provider store={store}>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100vh',
-        }}
-      >
-      <div className="App">
-        {/* <header><RouterLink></RouterLink></header> */}
-        <RouterLink/>
-        <Box component="main" sx={{ flex: 1, mt: '64px' }}>
-          {/* כאן יש להוסיף את התוכן המרכזי של העמוד */}
+      <AuthProvider>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100vh',
+            backgroundImage: `url(${background})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+            color: 'white',
+            // position:'relative',
+            // zIndex: -2
+          }}
+        >
+          <div className="App">
+            <RouterLink />
+            <Box component="main" sx={{ flex: 1 }}>
+              {/* כאן יש להוסיף את התוכן המרכזי של העמוד */}
+              {/* <Home/> */}
+            </Box>
+          </div>
         </Box>
-        <Footer/>
-
-      </div>
-      </Box>
+        <Footer />
+      </AuthProvider>
     </Provider>
   );
 }
 
 export default App;
-
-// const pic = require('./images/logo.jpg');
-
-// function Image() {
-//   return (
-//     <div>
-//       <img src={pic} alt="תיאור תמונה" className='image'/>
-//     </div>
-//   );
-// }
