@@ -9,6 +9,24 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 
 export const Nav = () => {
+    const user = useSelector(state => state.currentUser1);
+    const [currentUser, setCurrentUser] = useState({});
+
+    useEffect(() => {
+        if (user && Object.keys(user).length > 0) {
+          setCurrentUser(user);
+        }
+      }, [user]);
+    // const [currentUser, setCurrentUser] = useState(null);
+
+    // useEffect(() => {
+    //     if (user && Object.keys(user).length > 0) {
+    //         setCurrentUser(user);
+    //     } else {
+    //         setCurrentUser(null);
+    //     }
+    // }, [user]);
+
     return (
         <AppBar position="fixed">
             <Toolbar>
@@ -61,4 +79,5 @@ export const Nav = () => {
             </Toolbar>
         </AppBar>
     );
-}
+};
+
