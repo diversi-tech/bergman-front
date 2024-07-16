@@ -17,14 +17,15 @@ export const Nav = () => {
                         <HomeIcon />
                     </Button>
                 </Tooltip>
+
                 <Button color="inherit" component={Link} to="/Manager" >
                     מנהלת                </Button>
                 <Tooltip title="חיפוש מועמדים" arrow>
-
                     <Button color="inherit" component={Link} to="/Filter">
                         <PersonSearchIcon />
                     </Button>
                 </Tooltip>
+
                 <Button color="inherit" component={Link} to="/Secretary">
                     מזכירה
                 </Button>
@@ -33,25 +34,29 @@ export const Nav = () => {
                         <ManageSearchIcon />
                     </Button>
                 </Tooltip>
+
                 <Tooltip title="ניהול עובדים" arrow>
                     <Button color="inherit" component={Link} to="/WorkersManagement">
                         <ManageAccountsIcon />
                     </Button>
                 </Tooltip>
-                <Tooltip title="פרופיל" arrow>
 
+                <Tooltip title="פרופיל" arrow>
                     <Button color="inherit" component={Link} to="/Profile">
                         <PersonIcon />
                     </Button>
                 </Tooltip>
-                <Tooltip title="התחברות" arrow>
 
+                <Tooltip title="התחברות" arrow>
                     <Button color="inherit" component={Link} to="/Login" >
                         <LoginIcon />
                     </Button>
                 </Tooltip>
                 <Button color="inherit" component={Link} to="/SignUp">
                     הרשמה
+                </Button>
+                <Button color='inherit' component={Link} to="/HomeCandidate">
+                דף הבית של מעומד
                 </Button>
             </Toolbar>
         </AppBar>

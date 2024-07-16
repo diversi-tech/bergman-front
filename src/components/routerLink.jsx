@@ -13,6 +13,7 @@ import { Profile } from './profile';
 import { Nav } from './nav';
 import { Box } from '@mui/material';
 import { useAuth } from './authContext';
+import { HomeCandidate } from './homeCandidate';
 
 export const RouterLink = () => {
     const { isAuthenticated } = useAuth();
@@ -33,6 +34,7 @@ export const RouterLink = () => {
                     <Route path="/Profile" element={<Profile />} />
                     <Route path="/Login" element={<LoginModal />} />
                     <Route path="/SignUp" element={<SignUpModal />} />
+                    <Route path='/HomeCandidate' element={<HomeCandidate/>}/>
                     <Route path="/" element={<Home />} />
                 </Routes>
             </Box>
