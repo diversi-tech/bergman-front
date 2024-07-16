@@ -37,9 +37,10 @@ function App() {
   return (
     <Provider store={store}>
       <div className="App">
-        <header><RouterLink></RouterLink>
-
-          <Image /></header>
+        <header>
+          <RouterLink></RouterLink>
+          <Image />
+        </header>
       </div>
     </Provider>
   );
