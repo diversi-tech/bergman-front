@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Filter } from './filtering';
 import { EditingFilters } from './editingFilters';
@@ -12,15 +12,21 @@ import { WorkersManagement } from './workersManagement';
 import { Profile } from './profile';
 import { Nav } from './nav';
 import { Box } from '@mui/material';
-import { useAuth } from './authContext';
+import { HomeCandidate } from './homeCandidate';
+import { useSelector } from 'react-redux';
+
 
 export const RouterLink = () => {
-    const { isAuthenticated } = useAuth();
 
+    const userType = useSelector(state => state.userReducer.currentUserType);
+  
     return (
         <BrowserRouter>
-            {/* {isAuthenticated && <Nav />} */}
-            <Nav/>
+
+            {(userType === 1) && (
+                <Nav />
+            )}
+            {/* <Nav /> */}
             <Box sx={{ pt: '60px' }}>
                 <Routes>
                     <Route path="/Filter" element={<Filter />} />
@@ -33,6 +39,7 @@ export const RouterLink = () => {
                     <Route path="/Profile" element={<Profile />} />
                     <Route path="/Login" element={<LoginModal />} />
                     <Route path="/SignUp" element={<SignUpModal />} />
+                    <Route path='/HomeCandidate' element={<HomeCandidate />} />
                     <Route path="/" element={<Home />} />
                 </Routes>
             </Box>
