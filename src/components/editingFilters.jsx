@@ -1,25 +1,26 @@
-
+import React, { useState } from 'react';
 import {
     Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, InputLabel,
     MenuItem, Paper, Select, TextField, IconButton, Typography, Grid, Tooltip,
-    ListItem, List, Collapse
+    ListItem, List, Collapse, Divider, Box
 } from '@mui/material';
-import { ExpandMore, ExpandLess, Edit as EditIcon, Add as AddIcon } from '@mui/icons-material';
-import React, { useState } from 'react';
+import { ExpandMore, ExpandLess, Edit as EditIcon, Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { prefixer } from 'stylis';
 import rtlPlugin from 'stylis-plugin-rtl';
-import optionsAxios from '../axios/optionsAxios';
-import { FillOptionData } from '../redux/action/optionsAction';
-import enumAxios from '../axios/enumAxios';
-import { FillEnumData } from '../redux/action/enamActions';
 
 const theme = createTheme({
     direction: 'rtl',
     palette: {
         mode: 'light',
+        primary: {
+            main: '#1976d2',
+        },
+        secondary: {
+            main: '#dc004e',
+        },
     },
 });
 
@@ -47,6 +48,8 @@ export const EditingFilters = () => {
     const [currentItem, setCurrentItem] = useState({});
     const [emailError, setEmailError] = useState('');
     const [expandedCategory, setExpandedCategory] = useState(null);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [itemToDelete, setItemToDelete] = useState(null);
 
     const handleEditOpen = (item) => {
         setCurrentItem(item);
@@ -78,42 +81,69 @@ export const EditingFilters = () => {
         setExpandedCategory(expandedCategory === category ? null : category);
     };
 
+    const handleDeleteDialogOpen = (item) => {
+        setItemToDelete(item);
+        setDeleteDialogOpen(true);
+    };
+
+    const handleDeleteDialogClose = () => {
+        setDeleteDialogOpen(false);
+        setItemToDelete(null);
+    };
+
+    const handleDelete = () => {
+        if (itemToDelete) {
+            setData(data.filter(item => item.id !== itemToDelete.id));
+            setDeleteDialogOpen(false);
+            setItemToDelete(null);
+        }
+    };
+
     const renderList = () => (
-        <Grid container spacing={2} style={{ padding: '20px', direction: 'rtl', justifyContent: 'center' }}>
-            <Grid item xs={12} style={{ maxWidth: '300px' }}>
-                <Paper style={{ padding: '20px', border: '1px solid #ccc', width: '100%' }}>
-                    <List>
+        <Grid container spacing={2} style={{ padding: '80px', direction: 'rtl', justifyContent: 'center', height: '80vh' }}>
+            <Grid item xs={12} md={6} lg={4}>
+                <Paper elevation={3} style={{ padding: '20px' }}>
+                    <Typography variant="h6" style={{ marginBottom: '16px', textAlign: 'center' }}>
+                        קטגוריות
+                    </Typography>
+                    <List style={{ height: '100%', overflow: 'auto' }}>
                         {categories.map((category) => (
                             <div key={category.id}>
                                 <ListItem style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        <Typography variant="body2" color="textSecondary" style={{ marginRight: '8px' }}>
+                                        <Typography variant="body1" style={{ marginRight: '8px', fontSize: '1.2rem' }}>
                                             {category.name}
                                         </Typography>
                                         <IconButton onClick={() => handleExpandClick(category.id)}>
                                             {expandedCategory === category.id ? <ExpandLess /> : <ExpandMore />}
                                         </IconButton>
                                     </div>
-                                    <div>
-                                        <Tooltip title="ערוך">
-                                            <IconButton onClick={() => handleEditOpen(category)}>
-                                                <EditIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title="הוסף">
-                                            <IconButton onClick={() => handleEditOpen(category)}>
-                                                <AddIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </div>
+                                    <Tooltip title="הוסף">
+                                        <IconButton color="primary" onClick={() => handleEditOpen(category)}>
+                                            <AddIcon />
+                                        </IconButton>
+                                    </Tooltip>
                                 </ListItem>
+                                <Divider />
                                 <Collapse in={expandedCategory === category.id} timeout="auto" unmountOnExit>
                                     <List component="div" disablePadding>
                                         {data.filter(item => item.category === category.name).map((item, index) => (
-                                            <ListItem key={index} style={{ paddingRight: '32px' }}>
-                                                <Typography variant="body2" color="textSecondary">
+                                            <ListItem key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                                <Typography variant="body2" style={{ fontSize: '1rem' }}>
                                                     {item.name}
                                                 </Typography>
+                                                <div>
+                                                    <Tooltip title="ערוך">
+                                                        <IconButton color="secondary" onClick={() => handleEditOpen(item)}>
+                                                            <EditIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                    <Tooltip title="מחק">
+                                                        <IconButton color="error" onClick={() => handleDeleteDialogOpen(item)}>
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                </div>
                                             </ListItem>
                                         ))}
                                     </List>
@@ -125,291 +155,89 @@ export const EditingFilters = () => {
             </Grid>
         </Grid>
     );
+
     return (
-        <>
-            {renderList()}
+        <CacheProvider value={cacheRtl}>
+            <ThemeProvider theme={theme}>
+                <Box dir="rtl">
+                    {renderList()}
 
-            <Dialog open={openEdit} onClose={handleEditClose} style={{ textAlign: 'center' }} dir="rtl"
-                fullWidth
-                maxWidth="sm"
-                PaperProps={{
-                    style: {
-                        minHeight: '50vh',
-                        maxHeight: '90vh',
-                    },
-                }}>
-                <DialogTitle>ערוך קטגוריה</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>מלאי את הנתון לקטגוריה ולאיזה קטגוריה לשייך אותו</DialogContentText>
-                    <CacheProvider value={cacheRtl}>
-                        <ThemeProvider theme={theme}>
-                            <div dir="rtl">
-                                <TextField
-                                    margin="dense"
-                                    name="name"
-                                    label="שם פריט"
-                                    type="text"
-                                    fullWidth
-                                    value={currentItem.name || ''}
-                                    onChange={handleEditChange}
-                                />
-                            </div>
-                        </ThemeProvider>
-                    </CacheProvider>
-
-                    <CacheProvider value={cacheRtl}>
-                        <ThemeProvider theme={theme}>
-                            <div dir="rtl">
-                                <FormControl fullWidth margin="dense">
-                                    <InputLabel>סוג הקטגוריה</InputLabel>
-                                    <Select
-                                        value={currentItem.category || ''}
-                                        onChange={handleCategoryChange}
-                                        name="category"
-                                        label="סוג הקטגוריה"
-                                        MenuProps={{
-                                            PaperProps: {
-                                                style: {
-                                                    direction: 'rtl',
-                                                },
+                    <Dialog open={openEdit} onClose={handleEditClose} fullWidth maxWidth="sm">
+                        <DialogTitle style={{ textAlign: 'right' }}>ערוך קטגוריה</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText style={{ textAlign: 'right' }}>
+                                מלאי את הנתון לקטגוריה ולאיזה קטגוריה לשייך אותו
+                            </DialogContentText>
+                            <TextField
+                                margin="dense"
+                                name="name"
+                                label="שם פריט"
+                                type="text"
+                                fullWidth
+                                value={currentItem.name || ''}
+                                onChange={handleEditChange}
+                                InputProps={{
+                                    style: { textAlign: 'right' }, // Align text to the right
+                                }}
+                            />
+                            <FormControl fullWidth margin="dense">
+                                <InputLabel style={{ textAlign: 'right' }}>סוג הקטגוריה</InputLabel>
+                                <Select
+                                    value={currentItem.category || ''}
+                                    onChange={handleCategoryChange}
+                                    name="category"
+                                    label="סוג הקטגוריה"
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                direction: 'rtl',
                                             },
-                                        }}
-                                    >
-                                        {categories.map((category) => (
-                                            <MenuItem
-                                                key={category.id}
-                                                value={category.name}>
-                                                {category.name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </div>
-                        </ThemeProvider>
-                    </CacheProvider>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleEditClose}>ביטול</Button>
-                    <Button variant="contained" color="primary" onClick={handleEditSubmit} >שמור שינויים</Button>
-                </DialogActions>
-            </Dialog>
-        </>
+                                        },
+                                    }}
+                                >
+                                    {categories.map((category) => (
+                                        <MenuItem key={category.id} value={category.name}>
+                                            {category.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleEditClose} color="primary">
+                                ביטול
+                            </Button>
+                            <Button onClick={handleEditSubmit} color="primary">
+                                שמור שינויים
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+
+
+                    <Dialog
+                        open={deleteDialogOpen}
+                        onClose={handleDeleteDialogClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">{"אישור מחיקה"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                האם אתה בטוח שברצונך למחוק את הפריט?
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleDeleteDialogClose} color="primary">
+                                ביטול
+                            </Button>
+                            <Button onClick={handleDelete} color="primary" autoFocus>
+                                אישור
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </Box>
+            </ThemeProvider>
+        </CacheProvider>
     );
 };
 
-
-// import {
-//     Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, InputLabel,
-//     MenuItem, Paper, Select, TextField, IconButton, Typography, Grid, Tooltip,
-//     ListItem, List, Collapse
-// } from '@mui/material';
-// import { ExpandMore, ExpandLess, Edit as EditIcon, Add as AddIcon } from '@mui/icons-material';
-// import React, { useState, useEffect } from 'react';
-// import createCache from '@emotion/cache';
-// import { CacheProvider } from '@emotion/react';
-// import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import { prefixer } from 'stylis';
-// import rtlPlugin from 'stylis-plugin-rtl';
-// import optionsAxios from '../axios/optionsAxios';
-// import { FillOptionData } from '../redux/action/optionsAction';
-// import enumAxios from '../axios/enumAxios';
-// import { FillEnumData } from '../redux/action/enamActions';
-// import { useDispatch, useSelector } from 'react-redux';
-
-// const theme = createTheme({
-//     direction: 'rtl',
-//     palette: {
-//         mode: 'light',
-//     },
-// });
-
-// const cacheRtl = createCache({
-//     key: 'muirtl',
-//     stylisPlugins: [prefixer, rtlPlugin],
-// });
-
-// export const EditingFilters = () => {
-//     const dispatch = useDispatch();
-//     const enums = useSelector(state => state.enums);
-//     const options = useSelector(state => state.options);
-
-//     const [openEdit, setOpenEdit] = useState(false);
-//     const [currentItem, setCurrentItem] = useState({});
-//     const [emailError, setEmailError] = useState('');
-//     const [expandedCategory, setExpandedCategory] = useState(null);
-
-//     useEffect(() => {
-//         // Fetch all enums on component mount
-//         const fetchEnums = async () => {
-//             try {
-//                 const data = await enumAxios.getAllEnums();
-//                 dispatch(FillEnumData.FillEnumData(data));
-//             } catch (error) {
-//                 console.error('Error fetching enums:', error);
-//             }
-//         };
-//         fetchEnums();
-//     }, [dispatch]);
-
-//     const handleEditOpen = (item) => {
-//         setCurrentItem(item);
-//         setOpenEdit(true);
-//     };
-
-//     const handleEditClose = () => {
-//         setOpenEdit(false);
-//         setEmailError('');
-//     };
-
-//     const handleEditChange = (e) => {
-//         const { name, value } = e.target;
-//         setCurrentItem({ ...currentItem, [name]: value });
-//     };
-
-//     const handleCategoryChange = (e) => {
-//         const category = e.target.value;
-//         setCurrentItem({ ...currentItem, category });
-//     };
-
-//     const handleEditSubmit = () => {
-//         if (emailError) return;
-//         // Update the state with the edited item
-//         setOpenEdit(false);
-//     };
-
-//     const handleExpandClick = async (category) => {
-//         if (expandedCategory === category.id) {
-//             setExpandedCategory(null); // Collapse the category if it's already expanded
-//         } else {
-//             setExpandedCategory(category.id); // Expand the category
-
-//             // Fetch options for the clicked category
-//             try {
-//                 const data = await optionsAxios.getAllOptions();
-//                 const filteredOptions = data.filter(option => option.enum_id === category.id);
-//                 dispatch(FillOptionData.FillOptionData({ enumId: category.id, options: filteredOptions }));
-//             } catch (error) {
-//                 console.error('Error fetching options:', error);
-//             }
-//         }
-//     };
-
-//     const renderList = () => (
-//         <Grid container spacing={2} style={{ padding: '20px', direction: 'rtl', justifyContent: 'center' }}>
-//             <Grid item xs={12} style={{ maxWidth: '300px' }}>
-//                 <Paper style={{ padding: '20px', border: '1px solid #ccc', width: '100%' }}>
-//                     <List>
-//                         {enums.map((category) => (
-//                             <div key={category.id}>
-//                                 <ListItem style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-//                                     <div style={{ display: 'flex', alignItems: 'center' }}>
-//                                         <Typography variant="body2" color="textSecondary" style={{ marginRight: '8px' }}>
-//                                             {category.enum_type}
-//                                         </Typography>
-//                                         <IconButton onClick={() => handleExpandClick(category)}>
-//                                             {expandedCategory === category.id ? <ExpandLess /> : <ExpandMore />}
-//                                         </IconButton>
-//                                     </div>
-//                                     <div>
-//                                         <Tooltip title="ערוך">
-//                                             <IconButton onClick={() => handleEditOpen(category)}>
-//                                                 <EditIcon />
-//                                             </IconButton>
-//                                         </Tooltip>
-//                                         <Tooltip title="הוסף">
-//                                             <IconButton onClick={() => handleEditOpen(category)}>
-//                                                 <AddIcon />
-//                                             </IconButton>
-//                                         </Tooltip>
-//                                     </div>
-//                                 </ListItem>
-//                                 <Collapse in={expandedCategory === category.id} timeout="auto" unmountOnExit>
-//                                     <List component="div" disablePadding>
-//                                         {options[category.id] && options[category.id].map((option, index) => (
-//                                             <ListItem key={index} style={{ paddingRight: '32px' }}>
-//                                                 <Typography variant="body2" color="textSecondary">
-//                                                     {option.options_value}
-//                                                 </Typography>
-//                                             </ListItem>
-//                                         ))}
-//                                     </List>
-//                                 </Collapse>
-//                             </div>
-//                         ))}
-//                     </List>
-//                 </Paper>
-//             </Grid>
-//         </Grid>
-//     );
-
-//     return (
-//         <>
-//             {renderList()}
-
-//             <Dialog open={openEdit} onClose={handleEditClose} style={{ textAlign: 'center' }} dir="rtl"
-//                 fullWidth
-//                 maxWidth="sm"
-//                 PaperProps={{
-//                     style: {
-//                         minHeight: '50vh',
-//                         maxHeight: '90vh',
-//                     },
-//                 }}>
-//                 <DialogTitle>ערוך קטגוריה</DialogTitle>
-//                 <DialogContent>
-//                     <DialogContentText>מלאי את הנתון לקטגוריה ולאיזה קטגוריה לשייך אותו</DialogContentText>
-//                     <CacheProvider value={cacheRtl}>
-//                         <ThemeProvider theme={theme}>
-//                             <div dir="rtl">
-//                                 <TextField
-//                                     margin="dense"
-//                                     name="name"
-//                                     label="שם פריט"
-//                                     type="text"
-//                                     fullWidth
-//                                     value={currentItem.name || ''}
-//                                     onChange={handleEditChange}
-//                                 />
-//                             </div>
-//                         </ThemeProvider>
-//                     </CacheProvider>
-
-//                     <CacheProvider value={cacheRtl}>
-//                         <ThemeProvider theme={theme}>
-//                             <div dir="rtl">
-//                                 <FormControl fullWidth margin="dense">
-//                                     <InputLabel>סוג הקטגוריה</InputLabel>
-//                                     <Select
-//                                         value={currentItem.category || ''}
-//                                         onChange={handleCategoryChange}
-//                                         name="category"
-//                                         label="סוג הקטגוריה"
-//                                         MenuProps={{
-//                                             PaperProps: {
-//                                                 style: {
-//                                                     direction: 'rtl',
-//                                                 },
-//                                             },
-//                                         }}
-//                                     >
-//                                         {enums.map((category) => (
-//                                             <MenuItem
-//                                                 key={category.id}
-//                                                 value={category.enum_type}>
-//                                                 {category.enum_type}
-//                                             </MenuItem>
-//                                         ))}
-//                                     </Select>
-//                                 </FormControl>
-//                             </div>
-//                         </ThemeProvider>
-//                     </CacheProvider>
-//                 </DialogContent>
-//                 <DialogActions>
-//                     <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleEditClose}>ביטול</Button>
-//                     <Button variant="contained" color="primary" onClick={handleEditSubmit} >שמור שינויים</Button>
-//                 </DialogActions>
-//             </Dialog>
-//         </>
-//     );
-// };
