@@ -59,9 +59,9 @@ export const Nav = () => {
                 <Button color="inherit" component={Link} to="/SignUp">
                     הרשמה
                 </Button>
-                <Button color='inherit' component={Link} to="/HomeCandidate">
+                {/* <Button color='inherit' component={Link} to="/HomeCandidate">
                 דף הבית של מעומד
-                </Button>
+                </Button> */}
             </Toolbar>
         </AppBar>
     );
