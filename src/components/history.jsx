@@ -55,12 +55,14 @@ export const History = () => {
 
         const fetchHistory = async () => {
             try {
-                const data = await ReferralsAxios.getReferralById(candidateId);
-                setHistory([data]);
+                const response = await ReferralsAxios.getAllReferrals();
+                console.log("referrals:", response);
+                const candidateReferrals = response.filter(referral => referral.candidateId === parseInt(candidateId));
+                setHistory(candidateReferrals);
             } catch (error) {
-                console.error('Error fetching history:', error);
+                console.error('Error fetching referrals:', error);
             }
-        };
+        };        
 
         const fetchUser = async () => {
             try {
@@ -83,8 +85,8 @@ export const History = () => {
         };
 
         fetchCandidateProfile();
-        fetchHistory();
         fetchUser();
+        fetchHistory();
     }, [candidateId, candidateDetails.userId]);
 
     const handleDetails = () => {
@@ -116,7 +118,7 @@ export const History = () => {
 
     return (
         <Box p={3} sx={{ direction: 'rtl' }}>
-            <Typography variant="h4" gutterBottom fontWeight='bold'>היסטוריית מועמד</Typography>
+            <Typography variant="h4" gutterBottom fontWeight='bold' color='black'>פרטי מועמד</Typography>
             <Paper elevation={3} sx={{ p: 2, mb: 3 }}>
                 <div className="details">
                     <label className="lbl">שם: {candidateDetails.name}</label>

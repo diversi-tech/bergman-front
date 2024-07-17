@@ -12,7 +12,7 @@ import UserAxios from "../axios/userAxios";
 import { FillUsersData } from "../redux/action/userAction";
 import OptionsAxios from "../axios/optionsAxios";
 import { FillOptionData } from "../redux/action/optionsAction";
-import { FillEnumData } from "../redux/action/enamActions";
+import { FillEnumData } from "../redux/action/enumActions";
 import EnumsAxios from "../axios/enumAxios";
 import UserOptionsAxios from "../axios/userOptionsAxios";
 import { FillUsersOptionsData } from "../redux/action/userOptionsAction";
