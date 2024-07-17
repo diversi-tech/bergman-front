@@ -14,17 +14,16 @@ import { store } from '../redux/store';
 
 
 export const Login = () => {
-  debugger
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [usersList, setUsersList] = useState([]);
   const [error, setError] = useState(false);
   const [isNewUser, setIsNewUser] = useState(false); // מצב חדש עבור משתמש חדש
 
-   // מצב לדיאלוג איפוס סיסמה
-   const [openResetDialog, setOpenResetDialog] = useState(false);
-   const [resetEmail, setResetEmail] = useState('');
-   const [resetEmailError, setResetEmailError] = useState('');
+  // מצב לדיאלוג איפוס סיסמה
+  const [openResetDialog, setOpenResetDialog] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetEmailError, setResetEmailError] = useState('');
 
 
   // הוספת משתני שגיאה חדשים
@@ -34,11 +33,12 @@ export const Login = () => {
   const myDispatch = useDispatch();
   const myNavigate = useNavigate();
   const users = useSelector(state => state.listUsers);
+  // const userType = useSelector(state=>state.currentUserType);
+  // const [type,setType]=useState()
   const loggedInUser = useSelector(state => state.myUser); // הוספת סלקטור למשתמש המחובר
 
   useEffect(() => {
     const fetchUsers = async () => {
-      debugger
       if (users > 0)
         setUsersList(users)
       else {
@@ -55,8 +55,8 @@ export const Login = () => {
     fetchUsers()
   }, [myDispatch, users]);
 
-   // הוספת פונקציות ולידציה
-   const validateEmail = (email) => {
+  // הוספת פונקציות ולידציה
+  const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
       return 'האימייל הוא שדה חובה';
@@ -93,29 +93,24 @@ export const Login = () => {
 
   const handleLogin = () => {
 
-     // ולידציה על השדות לפני התחברות
-     const emailValidationError = validateEmail(email);
-     const passwordValidationError = validatePassword(password);
-     setEmailError(emailValidationError);
-     setPasswordError(passwordValidationError);
- 
-     if (emailValidationError || passwordValidationError) {
-       setError(true);
-       return;
-     }
-    
+    // ולידציה על השדות לפני התחברות
+    const emailValidationError = validateEmail(email);
+    const passwordValidationError = validatePassword(password);
+    setEmailError(emailValidationError);
+    setPasswordError(passwordValidationError);
+
+    if (emailValidationError || passwordValidationError) {
+      setError(true);
+      return;
+    }
+
     // הוספת הלוגיקה להתחברות כאן
-    // console.log('Email:', email);
-    // console.log('Password:', password);
+
     const user = usersList.find(user => user.email === email && user.password === password);
     if (user) {
-      alert("user"+user)
-      myDispatch(setMyUser(user))
-      // debugger
-      // alert("user"+user)
-      if (user.userType === 1)
-      {
-        alert("מנהל")
+      myDispatch(setMyUser(user.userType))
+
+      if (user.userType === 1) {
         myNavigate('/Manager')
       }
       else if (user.userType === 2)
@@ -131,16 +126,16 @@ export const Login = () => {
 
   const handleSignUp = () => {
 
-     // ולידציה על השדות לפני הרשמה
-     const emailValidationError = validateEmail(email);
-     const passwordValidationError = validatePassword(password);
-     setEmailError(emailValidationError);
-     setPasswordError(passwordValidationError);
- 
-     if (emailValidationError || passwordValidationError) {
-       setError(true);
-       return;
-     }
+    // ולידציה על השדות לפני הרשמה
+    const emailValidationError = validateEmail(email);
+    const passwordValidationError = validatePassword(password);
+    setEmailError(emailValidationError);
+    setPasswordError(passwordValidationError);
+
+    if (emailValidationError || passwordValidationError) {
+      setError(true);
+      return;
+    }
 
     // לוגיקה להרשמה
     // alert("ניווט לעמוד הרשמה");
@@ -148,8 +143,8 @@ export const Login = () => {
   };
 
 
-   // פתיחה וסגירה של דיאלוג איפוס סיסמה
-   const handleOpenResetDialog = () => {
+  // פתיחה וסגירה של דיאלוג איפוס סיסמה
+  const handleOpenResetDialog = () => {
     setOpenResetDialog(true);
   };
 
@@ -197,7 +192,7 @@ export const Login = () => {
         minHeight="10vh"
       >
         {/* ///////////////// */}
-  {loggedInUser ? (
+        {loggedInUser ? (
           <Box display="flex" alignItems="center" justifyContent="center">
             <Typography variant="h6" component="span" style={{ marginRight: '8px' }}>
               שלום, {loggedInUser.name}
@@ -209,95 +204,95 @@ export const Login = () => {
         ) : (
           <>
 
-        <Typography variant="h5" component="h1" gutterBottom>
-          התחברות
-        </Typography>
-        <CacheProvider value={cacheRtl}>
-          <ThemeProvider theme={theme}>
-            <div dir="rtl">
-              <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
-                width="100%"
-              >
-                <TextField
-                  label="אימייל"
-                  type="email"
-                  value={email}
-                  // onChange={(e) => setEmail(e.target.value)}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    setEmailError(validateEmail(e.target.value));
-                  }}
-                  onBlur={() => handleBlur('email', email)}
-                  // fullWidth
-                  margin="normal"
-                  variant="outlined"
-                  error={Boolean(emailError)}
-                  helperText={emailError}
-                />
-                <TextField
-                  label="סיסמא"
-                  type="password"
-                  value={password}
-                  // onChange={(e) => setPassword(e.target.value)}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    setPasswordError(validatePassword(e.target.value));
-                  }}
-                  onBlur={() => handleBlur('password', password)}
-                  // fullWidth
-                  margin="normal"
-                  variant="outlined"
-                  error={Boolean(passwordError)}
-                  helperText={passwordError}
-                />
-              </Box>
-            </div>
-          </ThemeProvider>
-        </CacheProvider>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleLogin}
-          // fullWidth
-          style={{ marginTop: '16px' }}
-          disabled={Boolean(emailError || passwordError)}
-        >
-          התחבר
-        </Button>
-        
-        <Button
-          variant="text"
-          onClick={handleOpenResetDialog}
-          // style={{ marginTop: '16px' }}
-          color="error" style={{ fontSize: '13px' }}
-        >
-          ?שכחת סיסמא
-        </Button>
-        {error && (
-           <Box display="flex" flexDirection="column" alignItems="center" marginTop="16px">
-           <Typography color="error" style={{ fontSize: '13px' }}>אתה משתמש חדש</Typography>
-           <Button
-              variant="outlined"
-              // color="secondary"
-              // color="primary"
-              onClick={handleSignUp}
+            <Typography variant="h5" component="h1" gutterBottom>
+              התחברות
+            </Typography>
+            <CacheProvider value={cacheRtl}>
+              <ThemeProvider theme={theme}>
+                <div dir="rtl">
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    width="100%"
+                  >
+                    <TextField
+                      label="אימייל"
+                      type="email"
+                      value={email}
+                      // onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        setEmailError(validateEmail(e.target.value));
+                      }}
+                      onBlur={() => handleBlur('email', email)}
+                      // fullWidth
+                      margin="normal"
+                      variant="outlined"
+                      error={Boolean(emailError)}
+                      helperText={emailError}
+                    />
+                    <TextField
+                      label="סיסמא"
+                      type="password"
+                      value={password}
+                      // onChange={(e) => setPassword(e.target.value)}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        setPasswordError(validatePassword(e.target.value));
+                      }}
+                      onBlur={() => handleBlur('password', password)}
+                      // fullWidth
+                      margin="normal"
+                      variant="outlined"
+                      error={Boolean(passwordError)}
+                      helperText={passwordError}
+                    />
+                  </Box>
+                </div>
+              </ThemeProvider>
+            </CacheProvider>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleLogin}
+              // fullWidth
               style={{ marginTop: '16px' }}
               disabled={Boolean(emailError || passwordError)}
             >
-              להרשמה
+              התחבר
             </Button>
-          </Box>
+
+            <Button
+              variant="text"
+              onClick={handleOpenResetDialog}
+              // style={{ marginTop: '16px' }}
+              color="error" style={{ fontSize: '13px' }}
+            >
+              ?שכחת סיסמא
+            </Button>
+            {error && (
+              <Box display="flex" flexDirection="column" alignItems="center" marginTop="16px">
+                <Typography color="error" style={{ fontSize: '13px' }}>אתה משתמש חדש</Typography>
+                <Button
+                  variant="outlined"
+                  // color="secondary"
+                  // color="primary"
+                  onClick={handleSignUp}
+                  style={{ marginTop: '16px' }}
+                  disabled={Boolean(emailError || passwordError)}
+                >
+                  להרשמה
+                </Button>
+              </Box>
+            )}
+          </>
         )}
-        </>
-      )}
 
 
-           {/* דיאלוג לאיפוס סיסמה */}
-           <Dialog open={openResetDialog} onClose={handleCloseResetDialog}>
+        {/* דיאלוג לאיפוס סיסמה */}
+        <Dialog open={openResetDialog} onClose={handleCloseResetDialog}>
           <DialogTitle>איפוס סיסמא</DialogTitle>
           <DialogContent>
             <DialogContentText>

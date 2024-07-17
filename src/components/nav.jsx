@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppBar, Button, Toolbar, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
@@ -7,25 +7,11 @@ import PersonIcon from '@mui/icons-material/Person';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import { useSelector } from 'react-redux';
 
 export const Nav = () => {
-    const user = useSelector(state => state.currentUser1);
-    const [currentUser, setCurrentUser] = useState({});
-
-    useEffect(() => {
-        if (user && Object.keys(user).length > 0) {
-          setCurrentUser(user);
-        }
-      }, [user]);
-    // const [currentUser, setCurrentUser] = useState(null);
-
-    // useEffect(() => {
-    //     if (user && Object.keys(user).length > 0) {
-    //         setCurrentUser(user);
-    //     } else {
-    //         setCurrentUser(null);
-    //     }
-    // }, [user]);
+    const user = useSelector(state => state.currentUserType);
+    
 
     return (
         <AppBar position="fixed">
@@ -59,11 +45,11 @@ export const Nav = () => {
                     </Button>
                 </Tooltip>
 
-                <Tooltip title="פרופיל" arrow>
+                {/* <Tooltip title="פרופיל" arrow>
                     <Button color="inherit" component={Link} to="/Profile">
                         <PersonIcon />
                     </Button>
-                </Tooltip>
+                </Tooltip> */}
 
                 <Tooltip title="התחברות" arrow>
                     <Button color="inherit" component={Link} to="/Login" >
