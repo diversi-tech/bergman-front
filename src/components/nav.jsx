@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AppBar, Button, Toolbar, Tooltip } from "@mui/material";
+import { AppBar, Box, Button, Toolbar, Tooltip, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
 import LoginIcon from '@mui/icons-material/Login';
@@ -10,7 +10,7 @@ import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import { useSelector } from 'react-redux';
 
 export const Nav = () => {
-    const user = useSelector(state => state.currentUserType);
+    const user = useSelector(state => state.userReducer.currentUser)
 
 
     return (
@@ -60,9 +60,8 @@ export const Nav = () => {
                 <Button color="inherit" component={Link} to="/SignUp">
                     הרשמה
                 </Button>
-                {/* <Button color='inherit' component={Link} to="/HomeCandidate">
-                דף הבית של מעומד
-                </Button> */}
+                <Box sx={{ flexGrow: 1 }}></Box>
+                <Typography>שלום {user.username}</Typography>
             </Toolbar>
         </AppBar>
     );
