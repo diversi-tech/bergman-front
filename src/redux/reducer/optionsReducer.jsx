@@ -1,15 +1,21 @@
-import { produce } from 'immer'
-
-export const InitalState = {
-    listOptions: []
-}
-
-export const OptionsReducer = produce((state, action) => {
+const initialState = {
+    listOptions: {
+      skills: [],
+      locations: [],
+    },
+  };
+  
+  const OptionsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'FILL_OPTIONS_DATA':
-             state.listOptions = action.payload
-             break;
-        default:
-             return state;
+      case 'FILL_OPTIONS_DATA':
+        return {
+          ...state,
+          listOptions: action.payload,
+        };
+      default:
+        return state;
     }
-}, InitalState)
+  };
+  
+  export default OptionsReducer;
+  

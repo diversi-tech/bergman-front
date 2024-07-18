@@ -1,53 +1,25 @@
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { FillOptionData } from '../redux/action/optionsAction';
 import { Autocomplete, Box, Button, Chip, Container, FormControl, TextField, Typography } from '@mui/material';
-import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CV } from './CV';
-
-
-const skills = [
-  'JavaScript', 'Java', 'Python', 'C', 'C#', 'C++', 'Ruby', 'Swift', 'Kotlin',
-  'Go', 'Rust', 'HTML', 'CSS', 'React', 'Angular', 'Vue', 'Node.js',
-  'Django', 'Flask', 'Spring', 'Hibernate', 'Kubernetes', 'Docker',
-  'AWS', 'Azure', 'GCP', 'Git', 'MySQL', 'PostgreSQL', 'MongoDB', 'SQL',
-  'NoSQL', 'Blockchain', 'AI', 'Machine Learning', 'Data Science', 'Big Data',
-  'Cybersecurity', 'DevOps', 'Networking', 'System Administration',
-  'Mobile Development', 'iOS Development', 'Android Development',
-  'Cloud Computing', 'IoT', 'AR/VR', 'Game Development', 'UI/UX Design',
-  'Project Management', 'Agile', 'Scrum', 'Software Testing', 'QA',
-  'Business Analysis', 'E-commerce', 'SEO', 'Digital Marketing',
-  'Product Management', 'Tech Support', 'Help Desk', 'CRM', 'ERP',
-  'ITIL', 'COBIT', 'Lean IT', 'Six Sigma', 'IT Governance', 'IT Strategy',
-  'Visual Studio', 'Eclipse', 'IntelliJ IDEA', 'NetBeans', 'Xcode',
-
-  'אנגלית', 'עברית', 'ספרדית', 'צרפתית', 'גרמנית', 'סינית', 'יפנית',
-  'קוריאנית', 'איטלקית', 'רוסית', 'פורטוגזית', 'ערבית', 'הינדי', 'בנגלית',
-  'פונג׳אבית', 'ג׳אוונזית', 'ויאטנמית', 'טלוגו', 'מרטהי', 'טמילית',
-  'אורדו', 'טורקית', 'פרסית', 'פולנית', 'הולנדית', 'יוונית', 'צ׳כית',
-  'הונגרית', 'שוודית', 'פינית', 'נורווגית', 'דנית', 'רומנית',
-  'תאית', 'מלזית', 'אינדונזית', 'סוואהילית', 'זולו', 'אמהרית', 'יורובה'
-];
-
-const locations = [
-  'תל אביב', 'ירושלים', 'אשדוד', 'חיפה', 'ראשון לציון', 'פתח תקווה',
-  'נתניה', 'באר שבע', 'חולון', 'רמת גן', 'אשקלון', 'רחובות',
-  'בית שמש', 'הרצליה', 'כפר סבא', 'חדרה', 'מודיעין-מכבים-רעות',
-  'לוד', 'רעננה', 'רמלה', 'נהריה', 'יבנה', 'קריית גת', 'אילת',
-  'קריית ביאליק', 'קריית מוצקין', 'עפולה', 'קריית אונו', 'קריית ים',
-  'קריית אתא', 'צפת', 'טבריה', 'אופקים', 'סחנין', 'שפרעם', 'טייבה',
-  'נצרת', 'באקה אל-גרביה', 'עכו', 'טמרה', 'כפר קאסם', 'דימונה', 'אריאל',
-  'קלנסווה', 'טירת כרמל', 'נשר', 'אור עקיבא', 'מגדל העמק', 'קריית מלאכי',
-  'שדרות', 'קריית שמונה', 'ערד', 'יקנעם עילית', 'כפר יונה',
-  'יהוד-מונוסון', 'ראש העין', 'גבעת שמואל', 'נוף הגליל', 'מעלות-תרשיחא'
-];
-
-const categorizedSkills = {
-  'שפות תכנות': ['JavaScript', 'Java', 'Python', 'C', 'C#', 'C++', 'Ruby', 'Swift', 'Kotlin', 'Go', 'Rust', 'HTML', 'CSS'],
-  'טכנולוגיות': ['React', 'Angular', 'Vue', 'Node.js', 'Django', 'Flask', 'Spring', 'Hibernate', 'Kubernetes', 'Docker', 'AWS', 'Azure', 'GCP', 'Git', 'MySQL', 'PostgreSQL', 'MongoDB', 'SQL', 'NoSQL', 'Blockchain', 'AI', 'Machine Learning', 'Data Science', 'Big Data', 'Cybersecurity', 'DevOps', 'Networking', 'System Administration', 'Mobile Development', 'iOS Development', 'Android Development', 'Cloud Computing', 'IoT', 'AR/VR', 'Game Development', 'UI/UX Design'],
-  'כללי': ['Project Management', 'Agile', 'Scrum', 'Software Testing', 'QA', 'Business Analysis', 'E-commerce', 'SEO', 'Digital Marketing', 'Product Management', 'Tech Support', 'Help Desk', 'CRM', 'ERP', 'ITIL', 'COBIT', 'Lean IT', 'Six Sigma', 'IT Governance', 'IT Strategy', 'Visual Studio', 'Eclipse', 'IntelliJ IDEA', 'NetBeans', 'Xcode'],
-  'שפות מדוברות': ['אנגלית', 'עברית', 'ספרדית', 'צרפתית', 'גרמנית', 'סינית', 'יפנית', 'קוריאנית', 'איטלקית', 'רוסית', 'פורטוגזית', 'ערבית', 'הינדי', 'בנגלית', 'פונג׳אבית', 'ג׳אוונזית', 'ויאטנמית', 'טלוגו', 'מרטהי', 'טמילית', 'אורדו', 'טורקית', 'פרסית', 'פולנית', 'הולנדית', 'יוונית', 'צ׳כית', 'הונגרית', 'שוודית', 'פינית', 'נורווגית', 'דנית', 'רומנית', 'תאית', 'מלזית', 'אינדונזית', 'סוואהילית', 'זולו', 'אמהרית', 'יורובה']
-};
+import OptionsAxios from '../axios/optionsAxios';
 
 export const Profile = () => {
+  const dispatch = useDispatch();
+  const options = useSelector((state) => state.optionsReducer.listOptions);
+  
+  const skills = options.skills || [];
+  
+  // Define locations based on enumId in options
+  let locations = [];
+
+  if (options.enumId === 1) {
+    locations = options.locations || [];
+      
+  }
+
   const [selectedSkills, setSelectedSkills] = React.useState([]);
   const [selectedLocations, setSelectedLocations] = React.useState([]);
   const [linkedinUrl, setLinkedinUrl] = React.useState('');
@@ -63,6 +35,20 @@ export const Profile = () => {
   const [originalLinkedinUrl, setOriginalLinkedinUrl] = React.useState('');
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const options = await OptionsAxios.getAllOptions();
+        console.log('Options fetched:', options);
+        dispatch(FillOptionData(options));
+      } catch (error) {
+        console.error('Error fetching options:', error);
+      }
+    };
+
+    fetchOptions();
+  }, [dispatch]);
 
   const handleSkillsChange = (event, newValue, reason) => {
     if ((reason === 'selectOption' || reason === 'blur') && newValue && newValue !== 'אין תוצאות' && !selectedSkills.includes(newValue)) {
@@ -93,14 +79,6 @@ export const Profile = () => {
     );
     return filtered.length > 0 ? filtered : ['אין תוצאות'];
   };
-
-  const categorizedSelectedSkills = Object.keys(categorizedSkills).reduce((acc, category) => {
-    const selected = selectedSkills.filter(skill => categorizedSkills[category].includes(skill));
-    if (selected.length > 0) {
-      acc[category] = selected;
-    }
-    return acc;
-  }, {});
 
   const handleSubmit = () => {
     const isUpdated =
@@ -161,17 +139,12 @@ export const Profile = () => {
           />
         </FormControl>
         <Box mt={2}>
-          {Object.keys(categorizedSelectedSkills).map((category, index) => (
-            <Box key={index} mt={2}>
-              <Typography variant="subtitle1">{category}</Typography>
-              {categorizedSelectedSkills[category].map((skill, idx) => (
-                <Chip
-                  key={idx}
-                  label={skill}
-                  onDelete={() => setSelectedSkills(selectedSkills.filter(item => item !== skill))}
-                />
-              ))}
-            </Box>
+          {selectedSkills.map((skill, idx) => (
+            <Chip
+              key={idx}
+              label={skill}
+              onDelete={() => setSelectedSkills(selectedSkills.filter(item => item !== skill))}
+            />
           ))}
         </Box>
       </Box>
