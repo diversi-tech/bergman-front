@@ -1,23 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Tooltip } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, IconButton, Dialog,
-    DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Button, Avatar, Select, MenuItem,
-    InputLabel, FormControl, Autocomplete, Snackbar, Alert
-} from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import MailIcon from '@mui/icons-material/Mail';
-import userAxios from '../axios/userAxios';
-import { FillUsersData } from '../redux/action/userAction';
-import userTypeAxios from '../axios/userTypeAxios';
-import { FillUsersTypeData } from '../redux/action/userTypeAction';
-import { createTheme, ThemeProvider, Theme } from '@mui/material/styles';
-import rtlPlugin from 'stylis-plugin-rtl';
-import { prefixer } from 'stylis';
-import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
+import { CacheProvider } from '@emotion/react';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import MailIcon from '@mui/icons-material/Mail';
+import {
+    Alert, Autocomplete, Avatar, Box, Button, Dialog,
+    DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Tooltip
+} from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { prefixer } from 'stylis';
+import rtlPlugin from 'stylis-plugin-rtl';
+import userAxios from '../axios/userAxios';
+import userTypeAxios from '../axios/userTypeAxios';
+import { FillUsersData } from '../redux/action/userAction';
+import { FillUsersTypeData } from '../redux/action/userTypeAction';
 const emailDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'walla.co.il', 'hotmail.com'];
 const theme =
     createTheme({
