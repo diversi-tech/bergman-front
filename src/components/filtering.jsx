@@ -161,9 +161,7 @@ export const Filter = ({ open, onClose, candidate }) => {
   };
 
   const handleEditClose = () => {
-    onClose();
-    // setCurrentCandidate({});
-    // setOpenEdit(false);
+   setOpenEdit(false)
   };
 
 
@@ -184,9 +182,14 @@ export const Filter = ({ open, onClose, candidate }) => {
 
   const handleEditSubmit = async () => {
     try {
+      // dispatch(FillCavdidateProfileData(response.data));
+
       await CandidateProfilesAxios.updateCandidateProfile(currentCandidate.candidateId, currentCandidate);
       setOpenEdit(false)
-      alert(`השינויים עבור ${currentCandidate.name} נשמרו בהצלחה`); // הצגת הודעה שהשינויים נשמרו
+      const candidate1=await CandidateProfilesAxios.getAllCandidateProfiles()
+      setCandidatesFromServer(candidate1);
+      dispatch(FillCavdidateProfileData(candidate1.data))
+      alert(`השינויים עבור ${currentCandidate.firstName} ${currentCandidate.lastName} נשמרו בהצלחה`); // הצגת הודעה שהשינויים נשמרו
       setSnackbarOpen(true)
     } catch (error) {
       console.error('Error updating candidate:', error);
@@ -285,10 +288,6 @@ export const Filter = ({ open, onClose, candidate }) => {
       setSelectedProgrammingLanguages(value);
     }
   };
-
-  function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
 
   const renderAutocomplete = (enumItem) => {
     const enumId = enumItem.enumId;
