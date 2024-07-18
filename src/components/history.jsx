@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Table, TableBody, TableCell, TableHead, TableRow, Button, Typography, Paper, TextField, IconButton, Tooltip, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import './history.css';
+import { Box, Table, TableBody, TableCell, TableHead, TableRow, Button, Typography, Paper, TextField, IconButton, Tooltip, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment, Grid } from '@mui/material';
 import ReferralsAxios from '../axios/referralsAxios';
 import CandidateProfilesAxios from '../axios/candidateProfileAxios';
 import UserAxios from '../axios/userAxios';
 import { useParams } from 'react-router-dom';
-
 export const History = () => {
     const { userId } = useParams();
     const [candidateDetails, setCandidateDetails] = useState({
@@ -28,7 +25,6 @@ export const History = () => {
     const [history, setHistory] = useState([]);
     const [user, setUser] = useState([]);
     const candidateId = userId; // ניתן להחליף את ה-ID הזה ב-ID האמיתי של המועמד
-
     useEffect(() => {
         const fetchCandidateProfile = async () => {
             try {
@@ -52,7 +48,6 @@ export const History = () => {
                 console.error('Error fetching candidate profile:', error);
             }
         };
-
         const fetchHistory = async () => {
             try {
                 const response = await ReferralsAxios.getAllReferrals();
@@ -62,17 +57,14 @@ export const History = () => {
             } catch (error) {
                 console.error('Error fetching referrals:', error);
             }
-        };        
-
+        };
         const fetchUser = async () => {
             try {
                 const response = await UserAxios.getAllUsers();
                 console.log(response);
                 const users = response;
                 setUser(users);
-
                 const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
-
                 if (filteredUser) {
                     setCandidateDetails(prevDetails => ({
                         ...prevDetails,
@@ -83,23 +75,18 @@ export const History = () => {
                 console.error('Error fetching users:', error);
             }
         };
-
         fetchCandidateProfile();
         fetchUser();
         fetchHistory();
     }, [candidateId, candidateDetails.userId]);
-
     const handleDetails = () => {
         setShowDetails(true);
     };
-
     const [newHistory, setNewHistory] = useState({ name: '', date: '', comment: '' });
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewHistory({ ...newHistory, [name]: value });
     };
-
     const addHistory = async () => {
         try {
             const addedHistory = await ReferralsAxios.addReferral(newHistory);
@@ -111,61 +98,76 @@ export const History = () => {
             console.error('Error adding history:', error);
         }
     };
-
     const toggleAddDialog = () => {
         setOpenAddDialog(!openAddDialog);
     };
-
     return (
         <Box p={3} sx={{ direction: 'rtl' }}>
             <Typography variant="h4" gutterBottom fontWeight='bold' color='black'>פרטי מועמד</Typography>
-            <Paper elevation={3} sx={{ p: 2, mb: 3 }}>
-                <div className="details">
-                    <label className="lbl">שם: {candidateDetails.name}</label>
-                    <label className="lbl" style={{ flexBasis: '50%' }}>פלאפון: {candidateDetails.phone}</label>
-                    <label className="lbl">מייל: {candidateDetails.email}</label>
-                </div>
+            <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
+                <Grid container spacing={1} alignItems="center">
+                    <Grid item xs={4}>
+                        <Typography variant="h5" component="div">
+                            <strong>שם:</strong> {candidateDetails.name}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Typography variant="h5" component="div">
+                            <strong>פלאפון:</strong> {candidateDetails.phone}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Typography variant="h5" component="div">
+                            <strong>מייל:</strong> {candidateDetails.email}
+                        </Typography>
+                    </Grid>
+                </Grid>
             </Paper>
             <Paper elevation={3} sx={{ p: 2, mb: 3 }}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell align='center'>שם החברה</TableCell>
-                            <TableCell align='center'>תאריך</TableCell>
-                            <TableCell align='center'>תגובה</TableCell>
+                            <TableCell align="center" sx={{ p: 1 }}>
+                                <Typography variant="subtitle1" component="div">
+                                    שם החברה
+                                </Typography>
+                            </TableCell>
+                            <TableCell align="center" sx={{ p: 1 }}>
+                                <Typography variant="subtitle1" component="div">
+                                    תאריך
+                                </Typography>
+                            </TableCell>
+                            <TableCell align="center" sx={{ p: 1 }}>
+                                <Typography variant="subtitle1" component="div">
+                                    תגובה
+                                </Typography>
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {history.map((historyItem, index) => (
                             <TableRow key={index}>
-                                <TableCell align='center'>{historyItem.referralSource}</TableCell>
-                                <TableCell align='center'>{historyItem.referralDate}</TableCell>
-                                <TableCell align='center'>{historyItem.remarks}</TableCell>
+                                <TableCell align="center" sx={{ p: 1 }}>
+                                    <Typography variant="body1" component="div">
+                                        {historyItem.referralSource}
+                                    </Typography>
+                                </TableCell>
+                                <TableCell align="center" sx={{ p: 1 }}>
+                                    <Typography variant="body1" component="div">
+                                        {historyItem.referralDate}
+                                    </Typography>
+                                </TableCell>
+                                <TableCell align="center" sx={{ p: 1 }}>
+                                    <Typography variant="body1" component="div">
+                                        {historyItem.remarks}
+                                    </Typography>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </Paper>
-
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mb: 2 }}>
-                <Tooltip title="הוספת היסטוריה" arrow>
-                    <IconButton
-                        onClick={toggleAddDialog}
-                        sx={{
-                            backgroundColor: '#2976D2',
-                            color: 'white',
-                            '&:hover': {
-                                backgroundColor: '#1b5da0'
-                            }
-                        }}
-                    >
-                        <AddIcon />
-                    </IconButton>
-                </Tooltip>
-            </Box>
-
-            <Dialog open={openAddDialog} onClose={toggleAddDialog}>
-                <DialogTitle>הוסף היסטוריה חדשה</DialogTitle>
+            {/* <Dialog open={openAddDialog} onClose={toggleAddDialog}>
                 <DialogContent>
                     <TextField
                         margin="dense"
@@ -204,12 +206,7 @@ export const History = () => {
                         fullWidth
                     />
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={toggleAddDialog}>ביטול</Button>
-                    <Button onClick={addHistory} variant="contained">הוסף</Button>
-                </DialogActions>
-            </Dialog>
-
+            </Dialog> */}
             <Button variant="contained" onClick={handleDetails}>
                 להצגת כל פרטי המועמד
             </Button>
