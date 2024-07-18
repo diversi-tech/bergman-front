@@ -618,7 +618,7 @@ export const Filter = ({ open, onClose, candidate }) => {
           </CacheProvider>
         </DialogContent>
         <DialogActions>
-          <Tooltip title='ביטול' style={{ top: '100px' }}>
+          <Tooltip title='ביטול' style={{ top: '100%' }}>
             <Button variant="contained" color="primary" style={{ margin: '15px' }} onClick={handleEditClose}>
               <CancelIcon />
             </Button>

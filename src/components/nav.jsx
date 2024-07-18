@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 
 export const Nav = () => {
     const user = useSelector(state => state.currentUserType);
-    
+
 
     return (
         <AppBar position="fixed">
@@ -23,7 +23,8 @@ export const Nav = () => {
                 </Tooltip>
 
                 <Button color="inherit" component={Link} to="/Manager" >
-                    מנהלת                </Button>
+                    מנהלת
+                </Button>
                 <Tooltip title="חיפוש מועמדים" arrow>
                     <Button color="inherit" component={Link} to="/Filter">
                         <PersonSearchIcon />
