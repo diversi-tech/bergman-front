@@ -23,7 +23,8 @@ export const Nav = () => {
                 </Tooltip>
 
                 <Button color="inherit" component={Link} to="/Manager" >
-                    מנהלת                </Button>
+                    מנהלת
+                </Button>
                 <Tooltip title="חיפוש מועמדים" arrow>
                     <Button color="inherit" component={Link} to="/Filter">
                         <PersonSearchIcon />
