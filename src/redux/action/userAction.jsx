@@ -11,7 +11,7 @@ export const setMyUser = (user) => {
     };
 };
 
-// export const setMyUser = (user) => ({
-//     type: 'SET_USER',
-//     payload: user,
-//   });
+export const currentUser = (user) => ({
+    type: 'CURRENT_USER',
+    payload: user,
+  });

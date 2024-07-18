@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Box, Container, Typography, Toolbar, CssBaseline, Tooltip, keyframes } from '@mui/material';
+import { Button, Box, Container, Typography, Toolbar, CssBaseline, Tooltip, keyframes, AppBar } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -19,6 +19,7 @@ export const Home = () => {
 
 
     const userType = useSelector(state => state.userReducer.currentUserType);
+    const user = useSelector(state => state.userReducer.currentUser)
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const handleNavigation = (path) => {
@@ -34,44 +35,57 @@ export const Home = () => {
     const upload = () => {
         if (userType !== 0)
             handleNavigation('/Profile')
-        else
-        {
+        else {
             alert("על מנת להעלות קורות חיים יש להתחבר תחילה")
             handleNavigation('/login')
         }
-        
     }
+
+
 
     return (
         <React.Fragment>
             <CssBaseline />
-            <Toolbar sx={{ justifyContent: 'space-between' }}>
-                <Box>
-                    <Button
-                        id="profile"
-                        onClick={handleOpen}
-                        sx={{ borderRadius: '50%' }}
-                    >
-                        <Tooltip title='שינוי פרופיל ' arrow>
-                            <AccountCircleIcon fontSize='large' />
-                        </Tooltip>
-                    </Button>
-                </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Button variant='contained' id="register" onClick={() => handleNavigation('/login')}>
-                        התחברות
-                    </Button>
-                    <Button variant='contained' onClick={() => handleNavigation('/SignUp')}>
-                        הרשמה
-                    </Button>
-                </Box>
-            </Toolbar>
+            <AppBar position='fixed'>
+                <Toolbar sx={{ justifyContent: 'space-between' }}>
+                    <Box sx={{ border: '1px solid white', borderRadius: '5px', display: 'flex', direction: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box >
+                <Button
+                    id="profile"
+                    onClick={handleOpen}
+                    sx={{ borderRadius: '50%' }}
+                >
+                    <Tooltip title='שינוי פרופיל ' arrow>
+                        <AccountCircleIcon fontSize='large' sx={{ color: 'white' }}/>
+                    </Tooltip>
+                </Button>
+            </Box>
+                        {(userType !== 0 && userType !== 1) && (
+                            <Box sx={{ paddingLeft: '10px' }}>
+                                <Typography variant='body5' >שלום {user.username}</Typography>
+                            </Box>
+                        )}
+                    </Box>
+
+
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Button variant='contained' id="register" onClick={() => handleNavigation('/login')}>
+                            התחברות
+                        </Button>
+                        <Button variant='contained' onClick={() => handleNavigation('/SignUp')}>
+                            הרשמה
+                        </Button>
+                    </Box>
+                </Toolbar>
+            </AppBar>
+            
             <Box
                 sx={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     textAlign: 'center',
+                    pt: '60px'
                 }}
             >
                 <Box>
