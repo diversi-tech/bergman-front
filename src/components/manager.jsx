@@ -207,10 +207,10 @@ export const Manager = () => {
         setEmailBody('');
     };
 
-    const handleEmailSend = () => {
-        window.open(`mailto:${emailRecipient}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`);
-        handleEmailDialogClose();
-    };
+    // const handleEmailSend = () => {
+    //     window.open(`mailto:${emailRecipient}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`);
+    //     handleEmailDialogClose();
+    // };
 
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -566,7 +566,7 @@ export const Manager = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button variant="contained" color="primary" onClick={handleEmailDialogClose}>ביטול</Button>
-                    <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleEmailSend}>שלח</Button>
+                    {/* <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleEmailSend}>שלח</Button> */}
                 </DialogActions>
             </Dialog>
 

@@ -1,10 +1,11 @@
-import { combineReducers, createStore } from "redux";
+import { combineReducers, createStore, applyMiddleware } from "redux";
 import { CandidateProfileReducer } from "./reducer/candidateProfileReducer";
 import { ReferralsReducer } from "./reducer/referralsReducer";
 import { UserReducer } from "./reducer/userReducer";
 import { UserOptionsReducer } from "./reducer/userOptionsReducer";
 import { UserTypeReducer } from "./reducer/userTypeReducer";
-import { EnumReducer } from "./reducer/enamReducer";
+import { EnumReducer } from "./reducer/enumReducer";
+import {thunk} from 'redux-thunk';
 import OptionsReducer from "./reducer/optionsReducer";
 
 
@@ -19,5 +20,5 @@ export const reduser = combineReducers({
     optionsReducer:OptionsReducer
 })
 
-export const store = createStore(reduser)
+export const store = createStore(reduser, applyMiddleware(thunk))
 window.store = store

@@ -5,7 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^5.15.20",
+    "@mui/icons-material": "^5.16.0",
     "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.21",
     "@mui/styles": "^5.16.0",
@@ -22,9 +22,9 @@
     "react-router-dom": "^6.23.1",
     "react-scripts": "^3.4.4",
     "redux": "^5.0.1",
+    "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^3.1.0",
     "styled-components": "^6.1.11",
-    "stylis-plugin-rtl": "^2.1.1",
     "web-vitals": "^2.1.4",
     "yup": "^1.4.0"
   },
@@ -51,5 +51,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "stylis-plugin-rtl": "^2.1.1"
   }
 }

@@ -102,14 +102,14 @@ export const Profile = () => {
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, textAlign: 'right' }}>
-      <Box mt={4} sx={{ border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
-        <Typography variant="h6">
+      <Box mt={4} sx={{backgroundColor:'white' , border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
+        <Typography variant="h6" color={'black'}>
           העלאת קורות חיים
         </Typography>
         <CV />
       </Box>
 
-      <Box mt={4} sx={{ border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
+      <Box mt={4} sx={{ backgroundColor:'white' ,border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
         <Typography variant="h6" sx={{ mb: 2 }}>
           כישורים
         </Typography>
@@ -149,7 +149,7 @@ export const Profile = () => {
         </Box>
       </Box>
 
-      <Box mt={4} sx={{ border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
+      <Box mt={4} sx={{backgroundColor:'white' ,border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
         <Typography variant="h6" sx={{ mb: 2 }}>
           מיקומים
         </Typography>
@@ -188,7 +188,7 @@ export const Profile = () => {
         </Box>
       </Box>
 
-      <Box mt={4} sx={{ border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
+      <Box mt={4} sx={{backgroundColor:'white' , border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
         <Typography variant="body1" sx={{ mb: 1 }}>
           קישור לפרופיל LinkedIn:
         </Typography>
