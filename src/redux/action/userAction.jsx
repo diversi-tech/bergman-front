@@ -9,7 +9,12 @@ export const setMyUser = (user) => {
         type: 'SET_MY_USER',
         payload: user
     };
+
 };
+export const currentUser = (user) => ({
+    type: 'CURRENT_USER',
+    payload: user,
+  });
 
 export const currentUser = (user) => ({
     type: 'CURRENT_USER',
