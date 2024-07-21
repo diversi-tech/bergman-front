@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Table, TableBody, TableCell, TableHead, TableRow, Button, Typography, Paper, TextField, IconButton, Tooltip, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment, Grid } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableHead, TableRow, Button, Typography, Paper, Grid } from '@mui/material';
 import ReferralsAxios from '../axios/referralsAxios';
 import CandidateProfilesAxios from '../axios/candidateProfileAxios';
 import UserAxios from '../axios/userAxios';
@@ -24,7 +24,7 @@ export const History = () => {
     const [openAddDialog, setOpenAddDialog] = useState(false);
     const [history, setHistory] = useState([]);
     const [user, setUser] = useState([]);
-    const candidateId = userId; // ניתן להחליף את ה-ID הזה ב-ID האמיתי של המועמד
+    const candidateId = userId;
     useEffect(() => {
         const fetchCandidateProfile = async () => {
             try {
@@ -167,46 +167,6 @@ export const History = () => {
                     </TableBody>
                 </Table>
             </Paper>
-            {/* <Dialog open={openAddDialog} onClose={toggleAddDialog}>
-                <DialogContent>
-                    <TextField
-                        margin="dense"
-                        label="שם החברה"
-                        name="name"
-                        value={newHistory.name}
-                        onChange={handleInputChange}
-                        fullWidth
-                    />
-                    <TextField
-                        margin="dense"
-                        label="תאריך"
-                        type='date'
-                        name="date"
-                        value={newHistory.date}
-                        onChange={handleInputChange}
-                        fullWidth
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        InputProps={{
-                            endAdornment: <InputAdornment position="end" />,
-                        }}
-                        sx={{
-                            '& input[type="date"]::-webkit-calendar-picker-indicator': {
-                                marginLeft: '10px',
-                            },
-                        }}
-                    />
-                    <TextField
-                        margin="dense"
-                        label="תגובה"
-                        name="comment"
-                        value={newHistory.comment}
-                        onChange={handleInputChange}
-                        fullWidth
-                    />
-                </DialogContent>
-            </Dialog> */}
             <Button variant="contained" onClick={handleDetails}>
                 להצגת כל פרטי המועמד
             </Button>
