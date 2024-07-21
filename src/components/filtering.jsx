@@ -31,6 +31,8 @@ import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import FileAxios from '../axios/fileAxios';
+import { Downloading } from '@mui/icons-material';
 
 const theme =
   createTheme({
@@ -65,6 +67,11 @@ export const Filter = () => {
   const [emailError, setEmailError] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [fileName, setFileName] = useState('');
+  const [open, setOpen] = useState(false);
+  const [fileUrl, setFileUrl] = useState('');
+
+
 
   const dispatch = useDispatch();
   const candidateProfiles = useSelector(state => state.listCandidateProfile);
@@ -271,6 +278,48 @@ export const Filter = () => {
 
     setFilteredCandidates(finalCandidates);
   };
+  const handleView = async (fileName) => {
+    debugger
+    if (!fileName) {
+      alert('Please enter a file name.');
+      return;
+    }
+
+    try {
+      setFileName(fileName)
+      const response = await FileAxios.getFileUrl(fileName);
+      setFileUrl(response);
+      setOpen(true);
+    } catch (error) {
+      alert('Error viewing file');
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setFileUrl('');
+  };
+
+  const handleDownload = async () => {
+    debugger
+    if (!fileName) {
+      alert('Please enter a file name to download.');
+      return;
+    }
+
+    try {
+      const response = await FileAxios.downloadFile(fileName);
+      const url = window.URL.createObjectURL(new Blob([response]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      alert('Error downloading file');
+    }
+  };
+
 
   const handleChange = (type, value) => {
     if (type === "Languages") {
@@ -376,6 +425,7 @@ export const Filter = () => {
             <TableBody>
               {filteredCandidates.map((candidate, index) => (
                 <TableRow key={index}>
+
                   <TableCell align="center">{candidate.firstName}</TableCell>
                   <TableCell align="center">{users.find(u => u.userId === candidate.userId)?.email || 'N/A'}</TableCell>
                   <TableCell align="center">{candidate.phoneNumber}</TableCell>
@@ -414,14 +464,59 @@ export const Filter = () => {
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="צפייה בקורות חיים">
-                        <IconButton
-                          color="primary"
-                          sx={{ borderRadius: '50%' }}
-                          onClick={() => window.open(candidate.cvUrl, '_blank')} // קישור לקובץ
-                        >
+                        <IconButton variant="contained" onClick={() => handleView(candidate.cvEnglishFile)} color="primary"
+                          sx={{ borderRadius: '50%' }}>
                           <DescriptionIcon />
                         </IconButton>
                       </Tooltip>
+                      <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
+                        <DialogTitle>AA</DialogTitle>
+                        <DialogContent>
+                          {fileUrl && (
+                            <Box position="relative">
+                              <iframe
+                                src={fileUrl}
+                                style={{ width: '100%', height: '80vh', border: 'none' }}
+                                title="File Preview"
+                              />
+                              <IconButton
+                                variant="contained"
+                                onClick={handleDownload}
+                                style={{ position: 'absolute', top: '10px', left: '10px', color: 'white', backgroundColor: 'rgba(0,0,0,0.5)' }}
+                              >
+                                <Downloading />
+                              </IconButton>
+                            </Box>
+                          )}
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleClose} color="primary">
+                            סגור
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                      {/* <Dialog open={open} onClose={handleClose}>
+                        <DialogContent>
+                          {fileUrl && (
+                            <Box position="relative">
+                              <img
+                                src={fileUrl}
+                                alt="File Preview"
+                                style={{ width: '100%', height: 'auto' }}
+                              />
+                              <IconButton variant="contained" 
+                                onClick={handleDownload}
+                                style={{ position: 'absolute', top: '10px', left: '10px', color: 'white', backgroundColor: 'rgba(0,0,0,0.5)' }}
+                              >
+                                <Downloading />
+                              </IconButton>
+                            </Box>
+                          )}
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleClose}>Close</Button>
+                        </DialogActions>
+                      </Dialog> */}
                     </Box>
                   </TableCell>
                 </TableRow>
