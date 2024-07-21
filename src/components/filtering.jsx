@@ -139,7 +139,7 @@ export const Filter = ({ onClose, candidate }) => {
 
   useEffect(() => {
     if (open) {
-      setCurrentCandidate(candidate);
+      setCurrentCandidate(candidatesFromServer);
     }
   }, [open, candidate]);
 
