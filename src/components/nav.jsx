@@ -1,69 +1,41 @@
-import React, { useEffect, useState } from 'react'
-import { AppBar, Button, Toolbar, Tooltip } from "@mui/material";
+import { AppBar, Button, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import HomeIcon from '@mui/icons-material/Home';
-import LoginIcon from '@mui/icons-material/Login';
-import PersonIcon from '@mui/icons-material/Person';
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import ManageSearchIcon from '@mui/icons-material/ManageSearch';
-import { useSelector } from 'react-redux';
+import React from 'react'
 
 export const Nav = () => {
-    const user = useSelector(state => state.currentUserType);
-    
-
     return (
-        <AppBar position="fixed">
+        <AppBar position="static">
             <Toolbar>
-                <Tooltip title="דף הבית" arrow>
-                    <Button color="inherit" component={Link} to="/Home">
-                        <HomeIcon />
-                    </Button>
-                </Tooltip>
-
+                <Button color="inherit" component={Link} to="/Home">
+                    עמוד בית
+                </Button>
                 <Button color="inherit" component={Link} to="/Manager" >
                     מנהלת                </Button>
-                <Tooltip title="חיפוש מועמדים" arrow>
-                    <Button color="inherit" component={Link} to="/Filter">
-                        <PersonSearchIcon />
-                    </Button>
-                </Tooltip>
-
+                <Button color="inherit" component={Link} to="/Filter">
+                    מסננים
+                </Button>
                 <Button color="inherit" component={Link} to="/Secretary">
                     מזכירה
                 </Button>
-                <Tooltip title="עריכת מסננים" arrow>
-                    <Button color="inherit" component={Link} to="/EditingFilters">
-                        <ManageSearchIcon />
-                    </Button>
-                </Tooltip>
-
-                <Tooltip title="ניהול עובדים" arrow>
-                    <Button color="inherit" component={Link} to="/WorkersManagement">
-                        <ManageAccountsIcon />
-                    </Button>
-                </Tooltip>
-
-                {/* <Tooltip title="פרופיל" arrow>
-                    <Button color="inherit" component={Link} to="/Profile">
-                        <PersonIcon />
-                    </Button>
-                </Tooltip> */}
-
-                <Tooltip title="התחברות" arrow>
-                    <Button color="inherit" component={Link} to="/Login" >
-                        <LoginIcon />
-                    </Button>
-                </Tooltip>
-                <Button color="inherit" component={Link} to="/SignUp">
-                    הרשמה
+                <Button color="inherit" component={Link} to="/Editing_filters">
+                    עריכת מסננים
                 </Button>
-                {/* <Button color='inherit' component={Link} to="/HomeCandidate">
-                דף הבית של מעומד
-                </Button> */}
+                <Button color="inherit" component={Link} to="/Workers_management">
+                    ניהול עובדים
+                </Button>
+                <Button color="inherit" component={Link} to="/History">
+                היסטוריה
+                </Button>
+                <Button color="inherit" component={Link} to="/Profile">
+                פרופיל
+                </Button>
+                <Button color="inherit" component={Link} to="/Login">
+                התחברות
+                </Button>
+                <Button color="inherit" component={Link} to="/Sign_up">
+                הרשמה
+                </Button>
             </Toolbar>
         </AppBar>
     );
-};
-
+}

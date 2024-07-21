@@ -8,6 +8,8 @@ import { Box } from '@mui/material';
 import background from './images/background4.jpg'; // תוודא שהנתיב נכון
 import { AuthProvider } from './components/authContext';
 
+import {Profile} from './components/shoshiProfile';
+
 function App() {
   return (
     <Provider store={store}>
@@ -34,6 +36,9 @@ function App() {
             </Box>
           </div>
         </Box>
+        <div>
+          <Profile/>
+        </div>
         <Footer />
       </AuthProvider>
     </Provider>
