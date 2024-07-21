@@ -1,4 +1,5 @@
 import { produce } from 'immer';
+import { currentUser } from '../action/userAction';
 
 export const InitalState = {
      listUsers: [],
@@ -13,12 +14,9 @@ export const UserReducer = produce((state, action) => {
                break;
           case 'SET_MY_USER':
                state.currentUserType = action.payload
-               console.log("currentUserType:" + state.currentUserType)
-               break;
+               break
           case 'CURRENT_USER':
                state.currentUser = action.payload
-               break
-
           default:
                return state;
      }

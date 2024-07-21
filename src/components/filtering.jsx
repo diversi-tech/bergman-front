@@ -47,7 +47,7 @@ const cacheRtl = createCache({
   stylisPlugins: [prefixer, rtlPlugin],
 });
 
-export const Filter = () => {
+export const Filter = ({ open, onClose, candidate }) => {
   const navigate = useNavigate();
   const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
@@ -137,6 +137,12 @@ export const Filter = () => {
     setFilteredCandidates(candidatesFromServer);
   }, [candidatesFromServer]);
 
+  useEffect(() => {
+    if (open) {
+      setCurrentCandidate(candidate);
+    }
+  }, [open, candidate]);
+
   const handleEditOpen = (candidate) => {
     const candidateEmail = users.find(u => u.userId === candidate.userId)?.email || '';
     const referral = referrals.find(r => r.candidateId === candidate.candidateId) || {};
@@ -162,8 +168,7 @@ export const Filter = () => {
   };
 
   const handleEditClose = () => {
-    setCurrentCandidate({});
-    setOpenEdit(false);
+   setOpenEdit(false)
   };
 
 
@@ -184,23 +189,23 @@ export const Filter = () => {
 
   const handleEditSubmit = async () => {
     try {
-      const response = await CandidateProfilesAxios.updateCandidateProfile(currentCandidate);
-      setSnackbarMessage('Candidate updated successfully');
-      setSnackbarOpen(true);
-      console.log('Candidate updated successfully:', response.data);
-      setOpenEdit(false);
+      // dispatch(FillCavdidateProfileData(response.data));
+
+      await CandidateProfilesAxios.updateCandidateProfile(currentCandidate.candidateId, currentCandidate);
+      setOpenEdit(false)
+      const candidate1=await CandidateProfilesAxios.getAllCandidateProfiles()
+      setCandidatesFromServer(candidate1);
+      dispatch(FillCavdidateProfileData(candidate1.data))
+      alert(`השינויים עבור ${currentCandidate.firstName} ${currentCandidate.lastName} נשמרו בהצלחה`); // הצגת הודעה שהשינויים נשמרו
+      setSnackbarOpen(true)
     } catch (error) {
-      console.error('Failed to update candidate:', error);
-      // Handle error if needed
+      console.error('Error updating candidate:', error);
     }
   };
 
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
-  };
+  // const handleSnackbarClose = () => {
+  //   setSnackbarOpen(false);
+  // };
 
   const copyTextToClipboard = async (text) => {
     try {
@@ -332,10 +337,6 @@ export const Filter = () => {
       setSelectedProgrammingLanguages(value);
     }
   };
-
-  function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
 
   const renderAutocomplete = (enumItem) => {
     const enumId = enumItem.enumId;
@@ -684,6 +685,8 @@ export const Filter = () => {
                   label="כישורים"
                   type="text"
                   fullWidth
+                  multiline
+                  rows={4}
                   value={currentCandidate.skills}
                   onChange={handleEditChange}
                 />
@@ -710,7 +713,7 @@ export const Filter = () => {
           </CacheProvider>
         </DialogContent>
         <DialogActions>
-          <Tooltip title='ביטול' style={{ top: '100px' }}>
+          <Tooltip title='ביטול' style={{ top: '100%' }}>
             <Button variant="contained" color="primary" style={{ margin: '15px' }} onClick={handleEditClose}>
               <CancelIcon />
             </Button>
@@ -721,11 +724,11 @@ export const Filter = () => {
             </Button>
           </Tooltip>
         </DialogActions>
-        <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-          <Alert onClose={handleCloseSnackbar} severity="success">
+        {/* <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+          <Alert onClose={handleSnackbarClose} severity="success">
             {snackbarMessage}
           </Alert>
-        </Snackbar>
+        </Snackbar> */}
 
       </Dialog>
 

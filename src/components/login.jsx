@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { prefixer } from 'stylis';
 import rtlPlugin from 'stylis-plugin-rtl';
 import UserAxios from '../axios/userAxios';
-import { FillUsersData, currentUser, setMyUser } from '../redux/action/userAction';
+import { currentUser, FillUsersData, setMyUser } from '../redux/action/userAction';
 import { store } from '../redux/store';
 
 
@@ -110,6 +110,7 @@ export const Login = () => {
     if (user) {
       myDispatch(setMyUser(user.userType))
       myDispatch(currentUser(user))
+      console.log(user)
 
       if (user.userType === 1) {
         myNavigate('/Manager')
