@@ -47,7 +47,7 @@ const cacheRtl = createCache({
   stylisPlugins: [prefixer, rtlPlugin],
 });
 
-export const Filter = ({ open, onClose, candidate }) => {
+export const Filter = ({ onClose, candidate }) => {
   const navigate = useNavigate();
   const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [selectedLanguages, setSelectedLanguages] = useState([]);

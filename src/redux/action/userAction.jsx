@@ -16,7 +16,3 @@ export const currentUser = (user) => ({
     payload: user,
   });
 
-export const currentUser = (user) => ({
-    type: 'CURRENT_USER',
-    payload: user,
-  });
