@@ -14,7 +14,6 @@ export const reduser = combineReducers({
     UserOptionsReducer: UserOptionsReducer,
     ReferralsReducer: ReferralsReducer,
     userReducer: UserReducer,
-    referralsReducer: ReferralsReducer,
     userTypeReducer: UserTypeReducer,
     enamReducer: EnumReducer,
     optionsReducer:OptionsReducer

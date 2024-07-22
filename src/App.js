@@ -7,8 +7,7 @@ import Footer from './components/footer';
 import { Box } from '@mui/material';
 import background from './images/background4.jpg'; // תוודא שהנתיב נכון
 import { AuthProvider } from './components/authContext';
-
-import {Profile} from './components/shoshiProfile';
+import ShoshiProfile from './components/shoshiProfile';
 
 function App() {
   return (
@@ -34,11 +33,9 @@ function App() {
               {/* כאן יש להוסיף את התוכן המרכזי של העמוד */}
               {/* <Home/> */}
             </Box>
+            <ShoshiProfile/>
           </div>
         </Box>
-        <div>
-          <Profile/>
-        </div>
         <Footer />
       </AuthProvider>
     </Provider>

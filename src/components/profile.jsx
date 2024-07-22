@@ -1,18 +1,14 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FillOptionData } from '../redux/action/optionsAction';
-import { Autocomplete, Box, Button, Chip, Container, FormControl, List, ListItem, ListItemText, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Button, Chip, Container, FormControl, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { CV } from './CV';
 import OptionsAxios from '../axios/optionsAxios';
 
 export const Profile = () => {
-
   const dispatch = useDispatch();
-  const optionsSelector = useSelector((state) => state.optionsReducer.listOptions) || { skills: [], locations: [] }; // Default value
-  // console.log('optionsSelector:', optionsSelector);
-  const skills = optionsSelector.skills || [];
-  const locations = optionsSelector.locations || [];
+  const { skills = [], locations = [] } = useSelector((state) => state.optionsReducer);
 
   const [selectedSkills, setSelectedSkills] = React.useState([]);
   const [selectedLocations, setSelectedLocations] = React.useState([]);
@@ -29,8 +25,8 @@ export const Profile = () => {
   const [originalLinkedinUrl, setOriginalLinkedinUrl] = React.useState('');
 
   const navigate = useNavigate();
+
   useEffect(() => {
-    
     const fetchOptions = async () => {
       try {
         const options = await OptionsAxios.getAllOptions();
@@ -40,9 +36,10 @@ export const Profile = () => {
         console.error('Error fetching options:', error);
       }
     };
+
     fetchOptions();
   }, [dispatch]);
- 
+
   const handleSkillsChange = (event, newValue, reason) => {
     if ((reason === 'selectOption' || reason === 'blur') && newValue && newValue !== 'אין תוצאות' && !selectedSkills.includes(newValue)) {
       setSelectedSkills([...selectedSkills, newValue]);
@@ -95,21 +92,21 @@ export const Profile = () => {
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, textAlign: 'right' }}>
-      <Box mt={4} sx={{ backgroundColor: 'white', border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
+      <Box mt={4} sx={{backgroundColor:'white' , border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
         <Typography variant="h6" color={'black'}>
           העלאת קורות חיים
         </Typography>
         <CV />
       </Box>
 
-      <Box mt={4} sx={{ backgroundColor: 'white', border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
+      <Box mt={4} sx={{ backgroundColor:'white' ,border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
         <Typography variant="h6" sx={{ mb: 2 }}>
           כישורים
         </Typography>
         <FormControl fullWidth variant="outlined" focused={skillsFocused}>
           <Autocomplete
             id="skills"
-            value={null}
+            value={null} 
             options={skills.filter(skill => !selectedSkills.includes(skill)).sort()}
             onChange={handleSkillsChange}
             filterOptions={filterOptions}
@@ -142,7 +139,7 @@ export const Profile = () => {
         </Box>
       </Box>
 
-      <Box mt={4} sx={{ backgroundColor: 'white', border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
+      <Box mt={4} sx={{backgroundColor:'white' ,border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
         <Typography variant="h6" sx={{ mb: 2 }}>
           מיקומים
         </Typography>
@@ -181,7 +178,7 @@ export const Profile = () => {
         </Box>
       </Box>
 
-      <Box mt={4} sx={{ backgroundColor: 'white', border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
+      <Box mt={4} sx={{backgroundColor:'white' , border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
         <Typography variant="body1" sx={{ mb: 1 }}>
           קישור לפרופיל LinkedIn:
         </Typography>
@@ -198,26 +195,16 @@ export const Profile = () => {
       </Box>
 
       <Box mt={4}>
-        <Button
-          variant="contained"
-          color="primary"
+        <Button 
+          variant="contained" 
+          color="primary" 
           onClick={handleSubmit}
         >
           שמירת עדכונים
         </Button>
       </Box>
-
-      {/* <Box>
-        <TextField>
-      <List>
-        {options.map((option, index) => (
-          <ListItem key={index}>
-            <ListItemText primary={option} />
-          </ListItem>
-        ))}
-      </List>
-      </TextField>
-    </Box> */}
     </Container>
   );
 };
+
+export default Profile;

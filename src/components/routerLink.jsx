@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Filter } from './filtering';
 import { EditingFilters } from './editingFilters';
-import { History } from './History';
+import { History } from './history';
 import { Home } from './home';
 import LoginModal from './login';
 import SignUpModal from './signUp';
@@ -10,7 +10,7 @@ import { Manager } from './manager';
 import { Secretary } from './secretary';
 import { WorkersManagement } from './workersManagement';
 import { Profile } from './profile';
-import { Nav } from './Nav';
+import { Nav } from './nav';
 import { Box } from '@mui/material';
 import { HomeCandidate } from './homeCandidate';
 import { useSelector } from 'react-redux';
@@ -22,11 +22,9 @@ export const RouterLink = () => {
   
     return (
         <BrowserRouter>
-
             {(userType === 1) && (
                 <Nav />
             )}
-            {/* <Nav /> */}
             <Box sx={{ pt: '60px' }}>
                 <Routes>
                     <Route path="/Filter" element={<Filter />} />
