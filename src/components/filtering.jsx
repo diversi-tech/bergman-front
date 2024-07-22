@@ -31,6 +31,8 @@ import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import FileAxios from '../axios/fileAxios';
+import { Downloading } from '@mui/icons-material';
 
 const theme =
   createTheme({
@@ -45,7 +47,7 @@ const cacheRtl = createCache({
   stylisPlugins: [prefixer, rtlPlugin],
 });
 
-export const Filter = () => {
+export const Filter = ({ onClose, candidate }) => {
   const navigate = useNavigate();
   const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
@@ -65,6 +67,11 @@ export const Filter = () => {
   const [emailError, setEmailError] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [fileName, setFileName] = useState('');
+  const [open, setOpen] = useState(false);
+  const [fileUrl, setFileUrl] = useState('');
+
+
 
   const dispatch = useDispatch();
   const candidateProfiles = useSelector(state => state.listCandidateProfile);
@@ -130,6 +137,12 @@ export const Filter = () => {
     setFilteredCandidates(candidatesFromServer);
   }, [candidatesFromServer]);
 
+  useEffect(() => {
+    if (open) {
+      setCurrentCandidate(candidatesFromServer);
+    }
+  }, [open, candidate]);
+
   const handleEditOpen = (candidate) => {
     const candidateEmail = users.find(u => u.userId === candidate.userId)?.email || '';
     const referral = referrals.find(r => r.candidateId === candidate.candidateId) || {};
@@ -155,8 +168,7 @@ export const Filter = () => {
   };
 
   const handleEditClose = () => {
-    setCurrentCandidate({});
-    setOpenEdit(false);
+   setOpenEdit(false)
   };
 
 
@@ -177,23 +189,23 @@ export const Filter = () => {
 
   const handleEditSubmit = async () => {
     try {
-      const response = await CandidateProfilesAxios.updateCandidateProfile(currentCandidate);
-      setSnackbarMessage('Candidate updated successfully');
-      setSnackbarOpen(true);
-      console.log('Candidate updated successfully:', response.data);
-      setOpenEdit(false);
+      // dispatch(FillCavdidateProfileData(response.data));
+
+      await CandidateProfilesAxios.updateCandidateProfile(currentCandidate.candidateId, currentCandidate);
+      setOpenEdit(false)
+      const candidate1=await CandidateProfilesAxios.getAllCandidateProfiles()
+      setCandidatesFromServer(candidate1);
+      dispatch(FillCavdidateProfileData(candidate1.data))
+      alert(`השינויים עבור ${currentCandidate.firstName} ${currentCandidate.lastName} נשמרו בהצלחה`); // הצגת הודעה שהשינויים נשמרו
+      setSnackbarOpen(true)
     } catch (error) {
-      console.error('Failed to update candidate:', error);
-      // Handle error if needed
+      console.error('Error updating candidate:', error);
     }
   };
 
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
-  };
+  // const handleSnackbarClose = () => {
+  //   setSnackbarOpen(false);
+  // };
 
   const copyTextToClipboard = async (text) => {
     try {
@@ -271,6 +283,48 @@ export const Filter = () => {
 
     setFilteredCandidates(finalCandidates);
   };
+  const handleView = async (fileName) => {
+    debugger
+    if (!fileName) {
+      alert('Please enter a file name.');
+      return;
+    }
+
+    try {
+      setFileName(fileName)
+      const response = await FileAxios.getFileUrl(fileName);
+      setFileUrl(response);
+      setOpen(true);
+    } catch (error) {
+      alert('Error viewing file');
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setFileUrl('');
+  };
+
+  const handleDownload = async () => {
+    debugger
+    if (!fileName) {
+      alert('Please enter a file name to download.');
+      return;
+    }
+
+    try {
+      const response = await FileAxios.downloadFile(fileName);
+      const url = window.URL.createObjectURL(new Blob([response]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      alert('Error downloading file');
+    }
+  };
+
 
   const handleChange = (type, value) => {
     if (type === "Languages") {
@@ -283,10 +337,6 @@ export const Filter = () => {
       setSelectedProgrammingLanguages(value);
     }
   };
-
-  function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
 
   const renderAutocomplete = (enumItem) => {
     const enumId = enumItem.enumId;
@@ -376,6 +426,7 @@ export const Filter = () => {
             <TableBody>
               {filteredCandidates.map((candidate, index) => (
                 <TableRow key={index}>
+
                   <TableCell align="center">{candidate.firstName}</TableCell>
                   <TableCell align="center">{users.find(u => u.userId === candidate.userId)?.email || 'N/A'}</TableCell>
                   <TableCell align="center">{candidate.phoneNumber}</TableCell>
@@ -414,14 +465,59 @@ export const Filter = () => {
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="צפייה בקורות חיים">
-                        <IconButton
-                          color="primary"
-                          sx={{ borderRadius: '50%' }}
-                          onClick={() => window.open(candidate.cvUrl, '_blank')} // קישור לקובץ
-                        >
+                        <IconButton variant="contained" onClick={() => handleView(candidate.cvEnglishFile)} color="primary"
+                          sx={{ borderRadius: '50%' }}>
                           <DescriptionIcon />
                         </IconButton>
                       </Tooltip>
+                      <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
+                        <DialogTitle>AA</DialogTitle>
+                        <DialogContent>
+                          {fileUrl && (
+                            <Box position="relative">
+                              <iframe
+                                src={fileUrl}
+                                style={{ width: '100%', height: '80vh', border: 'none' }}
+                                title="File Preview"
+                              />
+                              <IconButton
+                                variant="contained"
+                                onClick={handleDownload}
+                                style={{ position: 'absolute', top: '10px', left: '10px', color: 'white', backgroundColor: 'rgba(0,0,0,0.5)' }}
+                              >
+                                <Downloading />
+                              </IconButton>
+                            </Box>
+                          )}
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleClose} color="primary">
+                            סגור
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                      {/* <Dialog open={open} onClose={handleClose}>
+                        <DialogContent>
+                          {fileUrl && (
+                            <Box position="relative">
+                              <img
+                                src={fileUrl}
+                                alt="File Preview"
+                                style={{ width: '100%', height: 'auto' }}
+                              />
+                              <IconButton variant="contained" 
+                                onClick={handleDownload}
+                                style={{ position: 'absolute', top: '10px', left: '10px', color: 'white', backgroundColor: 'rgba(0,0,0,0.5)' }}
+                              >
+                                <Downloading />
+                              </IconButton>
+                            </Box>
+                          )}
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleClose}>Close</Button>
+                        </DialogActions>
+                      </Dialog> */}
                     </Box>
                   </TableCell>
                 </TableRow>
@@ -589,6 +685,8 @@ export const Filter = () => {
                   label="כישורים"
                   type="text"
                   fullWidth
+                  multiline
+                  rows={4}
                   value={currentCandidate.skills}
                   onChange={handleEditChange}
                 />
@@ -615,7 +713,7 @@ export const Filter = () => {
           </CacheProvider>
         </DialogContent>
         <DialogActions>
-          <Tooltip title='ביטול' style={{ top: '100px' }}>
+          <Tooltip title='ביטול' style={{ top: '100%' }}>
             <Button variant="contained" color="primary" style={{ margin: '15px' }} onClick={handleEditClose}>
               <CancelIcon />
             </Button>
@@ -626,11 +724,11 @@ export const Filter = () => {
             </Button>
           </Tooltip>
         </DialogActions>
-        <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-          <Alert onClose={handleCloseSnackbar} severity="success">
+        {/* <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+          <Alert onClose={handleSnackbarClose} severity="success">
             {snackbarMessage}
           </Alert>
-        </Snackbar>
+        </Snackbar> */}
 
       </Dialog>
 
