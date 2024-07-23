@@ -168,7 +168,7 @@ export const Filter = ({ onClose, candidate }) => {
   };
 
   const handleEditClose = () => {
-   setOpenEdit(false)
+    setOpenEdit(false)
   };
 
 
@@ -193,7 +193,7 @@ export const Filter = ({ onClose, candidate }) => {
 
       await CandidateProfilesAxios.updateCandidateProfile(currentCandidate.candidateId, currentCandidate);
       setOpenEdit(false)
-      const candidate1=await CandidateProfilesAxios.getAllCandidateProfiles()
+      const candidate1 = await CandidateProfilesAxios.getAllCandidateProfiles()
       setCandidatesFromServer(candidate1);
       dispatch(FillCavdidateProfileData(candidate1.data))
       alert(`השינויים עבור ${currentCandidate.firstName} ${currentCandidate.lastName} נשמרו בהצלחה`); // הצגת הודעה שהשינויים נשמרו
@@ -365,12 +365,13 @@ export const Filter = ({ onClose, candidate }) => {
                     {...params}
                     label={enumType}
                     inputProps={{ ...params.inputProps, readOnly: true }}
-                    style={{ margin: '0px 0px', width: '100%' }} // הוספת רווח והתאמת רוחב
+                    style={{ margin: '0px 0px', width: '100%', backgroundColor: '#fff' }} // רקע לבן
                   />
                 )}
                 popupIcon={<ArrowDropDownIcon style={{ fill: 'black' }} />} // חץ קטן ועדין עם צבע מלא
               />
             </div>
+
           </ThemeProvider>
         </CacheProvider>
       </Grid>
