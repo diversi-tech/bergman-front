@@ -71,9 +71,6 @@ export const Home = () => {
                         <Button variant='contained' id="register" onClick={() => handleNavigation('/login')}>
                             התחברות
                         </Button>
-                        <Button variant='contained' onClick={() => handleNavigation('/SignUp')}>
-                            הרשמה
-                        </Button>
                     </Box>
                 </Toolbar>
             </AppBar>
