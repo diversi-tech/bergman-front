@@ -161,7 +161,7 @@ export const Filter = ({ onClose, candidate }) => {
       education: candidate.education || '',
       certifications: candidate.certifications || '',
       skills: candidate.skills || '',
-      portfolioWebsite: candidate.portfolioWebsite || '',
+      githubProfile: candidate.githubProfile || '',
       linkedinProfile: candidate.linkedinProfile || '',
     });
     setOpenEdit(true);
@@ -497,28 +497,6 @@ export const Filter = ({ onClose, candidate }) => {
                           </Button>
                         </DialogActions>
                       </Dialog>
-                      {/* <Dialog open={open} onClose={handleClose}>
-                        <DialogContent>
-                          {fileUrl && (
-                            <Box position="relative">
-                              <img
-                                src={fileUrl}
-                                alt="File Preview"
-                                style={{ width: '100%', height: 'auto' }}
-                              />
-                              <IconButton variant="contained" 
-                                onClick={handleDownload}
-                                style={{ position: 'absolute', top: '10px', left: '10px', color: 'white', backgroundColor: 'rgba(0,0,0,0.5)' }}
-                              >
-                                <Downloading />
-                              </IconButton>
-                            </Box>
-                          )}
-                        </DialogContent>
-                        <DialogActions>
-                          <Button onClick={handleClose}>Close</Button>
-                        </DialogActions>
-                      </Dialog> */}
                     </Box>
                   </TableCell>
                 </TableRow>
@@ -585,6 +563,33 @@ export const Filter = ({ onClose, candidate }) => {
                 />
                 <TextField
                   margin="dense"
+                  name="state"
+                  label="מדינה"
+                  type="text"
+                  fullWidth
+                  value={currentCandidate.state}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="city"
+                  label="עיר"
+                  type="text"
+                  fullWidth
+                  value={currentCandidate.city}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="address"
+                  label="כתובת"
+                  type="text"
+                  fullWidth
+                  value={currentCandidate.address}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
                   name="referralSource"
                   label="שם החברה"
                   type="text"
@@ -613,33 +618,6 @@ export const Filter = ({ onClose, candidate }) => {
                   multiline
                   rows={4}
                   value={currentCandidate.remarks}
-                  onChange={handleEditChange}
-                />
-                <TextField
-                  margin="dense"
-                  name="state"
-                  label="מדינה"
-                  type="text"
-                  fullWidth
-                  value={currentCandidate.state}
-                  onChange={handleEditChange}
-                />
-                <TextField
-                  margin="dense"
-                  name="city"
-                  label="עיר"
-                  type="text"
-                  fullWidth
-                  value={currentCandidate.city}
-                  onChange={handleEditChange}
-                />
-                <TextField
-                  margin="dense"
-                  name="address"
-                  label="כתובת"
-                  type="text"
-                  fullWidth
-                  value={currentCandidate.address}
                   onChange={handleEditChange}
                 />
                 <TextField
@@ -673,17 +651,17 @@ export const Filter = ({ onClose, candidate }) => {
                 />
                 <TextField
                   margin="dense"
-                  name="certifications"
-                  label="תעודות"
+                  name="area to work"
+                  label="אזור בו מעוניין לעבוד"
                   type="text"
                   fullWidth
-                  value={currentCandidate.certifications}
+                  value={currentCandidate.locationCandidates}
                   onChange={handleEditChange}
                 />
                 <TextField
                   margin="dense"
                   name="skills"
-                  label="כישורים"
+                  label="כשרונות"
                   type="text"
                   fullWidth
                   multiline
@@ -693,11 +671,11 @@ export const Filter = ({ onClose, candidate }) => {
                 />
                 <TextField
                   margin="dense"
-                  name="portfolioWebsite"
-                  label="אתר המועמד"
+                  name="githubProfile"
+                  label="גיטהב"
                   type="url"
                   fullWidth
-                  value={currentCandidate.portfolioWebsite}
+                  value={currentCandidate.githubProfile}
                   onChange={handleEditChange}
                 />
                 <TextField
