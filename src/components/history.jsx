@@ -4,7 +4,6 @@ import ReferralsAxios from '../axios/referralsAxios';
 import CandidateProfilesAxios from '../axios/candidateProfileAxios';
 import UserAxios from '../axios/userAxios';
 import { useParams } from 'react-router-dom';
-// import { Paper, Typography, Box } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import WorkIcon from '@mui/icons-material/Work';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -13,6 +12,9 @@ import VerifiedIcon from '@mui/icons-material/Verified';
 import BuildIcon from '@mui/icons-material/Build';
 import LanguageIcon from '@mui/icons-material/Language';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import PersonIcon from '@mui/icons-material/Person';
+import PhoneIcon from '@mui/icons-material/Phone';
+import EmailIcon from '@mui/icons-material/Email';
 export const History = () => {
     const { userId } = useParams();
     const [candidateDetails, setCandidateDetails] = useState({
@@ -89,7 +91,7 @@ export const History = () => {
         fetchHistory();
     }, [candidateId, candidateDetails.userId]);
     const handleDetails = () => {
-        setShowDetails(true);
+        setShowDetails(prevShowDetails => !prevShowDetails);
     };
     const [newHistory, setNewHistory] = useState({ name: '', date: '', comment: '' });
     const handleInputChange = (e) => {
@@ -113,20 +115,23 @@ export const History = () => {
     return (
         <Box p={3} sx={{ direction: 'rtl' }}>
             <Typography variant="h4" gutterBottom fontWeight='bold' color='black'>פרטי מועמד</Typography>
-            <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-                <Grid container spacing={1} alignItems="center">
+            <Paper elevation={3} sx={{ p: 3, mb: 3, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Grid container spacing={1} justifyContent="center" alignItems="center">
                     <Grid item xs={4}>
-                        <Typography variant="h6" component="div">
+                        <Typography variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <PersonIcon color="primary" />
                             <strong>שם:</strong> {candidateDetails.name}
                         </Typography>
                     </Grid>
                     <Grid item xs={4}>
-                        <Typography variant="h6" component="div">
+                        <Typography variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <PhoneIcon color="primary" />
                             <strong>פלאפון:</strong> {candidateDetails.phone}
                         </Typography>
                     </Grid>
                     <Grid item xs={4}>
-                        <Typography variant="h6" component="div">
+                        <Typography variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <EmailIcon color="primary" />
                             <strong>מייל:</strong> {candidateDetails.email}
                         </Typography>
                     </Grid>
@@ -177,7 +182,8 @@ export const History = () => {
                 </Table>
             </Paper>
             <Button variant="contained" onClick={handleDetails}>
-                לפרטים נוספים            </Button>
+                {showDetails ? "פחות פרטים " : " פרטים נוספים"}
+            </Button>
             {showDetails && (
                 <Box p={3} sx={{ direction: 'rtl' }}>
                     <Paper elevation={3} sx={{ p: 2, mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', bgcolor: '#f5f5f5' }}>
