@@ -8,34 +8,24 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import WorkIcon from '@mui/icons-material/Work';
 import DescriptionIcon from '@mui/icons-material/Description';
 import SchoolIcon from '@mui/icons-material/School';
-import VerifiedIcon from '@mui/icons-material/Verified';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import BuildIcon from '@mui/icons-material/Build';
-import LanguageIcon from '@mui/icons-material/Language';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
+import FileAxios from '../axios/fileAxios';
 export const History = () => {
     const { userId } = useParams();
-    const [candidateDetails, setCandidateDetails] = useState({
-        name: '',
-        phone: '',
-        email: '',
-        address: '',
-        experience: '',
-        summary: '',
-        skills: '',
-        education: '',
-        certifications: '',
-        portfolioWebsite: '',
-        linkedinProfile: '',
-        userId: 0
-    });
+    const [candidateDetails, setCandidateDetails] = useState({});
     const [showDetails, setShowDetails] = useState(false);
     const [openAddDialog, setOpenAddDialog] = useState(false);
     const [history, setHistory] = useState([]);
     const [user, setUser] = useState([]);
-    const candidateId = userId; // ניתן להחליף את ה-ID הזה ב-ID האמיתי של המועמד
+    const [fileName, setFileName] = useState('');
+    const [open, setOpen] = useState(false);
+    const [fileUrl, setFileUrl] = useState('');
+    const candidateId = userId;
     useEffect(() => {
         const fetchCandidateProfile = async () => {
             try {
@@ -51,9 +41,10 @@ export const History = () => {
                     skills: data.skills,
                     education: data.education,
                     certifications: data.certifications,
-                    portfolioWebsite: data.portfolioWebsite,
+                    githubProfile: data.githubProfile,
                     linkedinProfile: data.linkedinProfile,
-                    userId: data.userId
+                    userId: data.userId,
+                    cv: data.cvEnglishFile
                 }));
             } catch (error) {
                 console.error('Error fetching candidate profile:', error);
@@ -112,28 +103,58 @@ export const History = () => {
     const toggleAddDialog = () => {
         setOpenAddDialog(!openAddDialog);
     };
+
+    const handleView = async (fileName) => {
+        if (!fileName) {
+            alert('Please enter a file name.');
+            return;
+        }
+
+        try {
+            setFileName(fileName)
+            const response = await FileAxios.getFileUrl(fileName);
+            setFileUrl(response);
+            setOpen(true);
+        } catch (error) {
+            alert('Error viewing file');
+        }
+    };
     return (
         <Box p={3} sx={{ direction: 'rtl' }}>
             <Typography variant="h4" gutterBottom fontWeight='bold' color='black'>פרטי מועמד</Typography>
             <Paper elevation={3} sx={{ p: 3, mb: 3, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Grid container spacing={1} justifyContent="center" alignItems="center">
-                    <Grid item xs={4}>
-                        <Typography variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Grid item xs={2}>
+                        <Typography variant="h7" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                             <PersonIcon color="primary" />
                             <strong>שם:</strong> {candidateDetails.name}
                         </Typography>
                     </Grid>
-                    <Grid item xs={4}>
-                        <Typography variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Grid item xs={3}>
+                        <Typography variant="h7" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                             <PhoneIcon color="primary" />
                             <strong>פלאפון:</strong> {candidateDetails.phone}
                         </Typography>
                     </Grid>
-                    <Grid item xs={4}>
-                        <Typography variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Grid item xs={3}>
+                        <Typography variant="h7" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                             <EmailIcon color="primary" />
                             <strong>מייל:</strong> {candidateDetails.email}
                         </Typography>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Typography variant="h7" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <LocationOnIcon color="primary" />
+                            <strong>מיקום:</strong> {candidateDetails.address}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={1}>
+                        <Tooltip title="צפייה בקורות חיים">
+                            <IconButton variant="contained" onClick={() => handleView(candidateDetails.cv)} color="primary"
+                                sx={{ borderRadius: '50%' }}>
+                                <DescriptionIcon />
+                            </IconButton>
+                        </Tooltip>
                     </Grid>
                 </Grid>
             </Paper>
@@ -186,11 +207,11 @@ export const History = () => {
             </Button>
             {showDetails && (
                 <Box p={3} sx={{ direction: 'rtl' }}>
-                    <Paper elevation={3} sx={{ p: 2, mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', bgcolor: '#f5f5f5' }}>
+                    <Paper elevation={3} sx={{ p: 2, mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', bgcolor: 'white' }}>
                         <Box sx={{ width: '90%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 3 }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                 <LocationOnIcon color="primary" />
-                                <Typography sx={{ fontWeight: 'bold' }}>מיקום:</Typography>
+                                <Typography sx={{ fontWeight: 'bold' }}>אזור בו מעוניין לעבוד:</Typography>
                                 <Typography variant="body1">{candidateDetails.address}</Typography>
                             </Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -209,19 +230,14 @@ export const History = () => {
                                 <Typography variant="body1">{candidateDetails.education}</Typography>
                             </Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                <VerifiedIcon color="primary" />
-                                <Typography sx={{ fontWeight: 'bold' }}>תעודות:</Typography>
-                                <Typography variant="body1">{candidateDetails.certifications}</Typography>
-                            </Box>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                 <BuildIcon color="primary" />
-                                <Typography sx={{ fontWeight: 'bold' }}>כישורים:</Typography>
+                                <Typography sx={{ fontWeight: 'bold' }}>כישרונות:</Typography>
                                 <Typography variant="body1">{candidateDetails.skills}</Typography>
                             </Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                <LanguageIcon color="primary" />
-                                <Typography sx={{ fontWeight: 'bold' }}>אתר המועמד:</Typography>
-                                <Typography variant="body1">{candidateDetails.portfolioWebsite}</Typography>
+                                <GitHubIcon color="primary" />
+                                <Typography sx={{ fontWeight: 'bold' }}>גיטהב:</Typography>
+                                <Typography variant="body1">{candidateDetails.githubProfile}</Typography>
                             </Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                 <LinkedInIcon color="primary" />
@@ -230,44 +246,6 @@ export const History = () => {
                             </Box>
                         </Box>
                     </Paper>
-
-                    {/* <Paper elevation={3} sx={{ p: 2, mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-                        <Typography variant="h5" sx={{ mb: 2, fontWeight: 'bold' }}>פרטי מועמד</Typography>
-                        <Box sx={{ width: '80%', display: 'flex', flexDirection: 'column', gap: 2 }}>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Typography>מיקום:</Typography>
-                                <Typography variant="body1">{candidateDetails.address}</Typography>
-                            </Box>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Typography>וותק:</Typography>
-                                <Typography variant="body1">{candidateDetails.experience}</Typography>
-                            </Box>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Typography>תקציר:</Typography>
-                                <Typography variant="body1">{candidateDetails.summary}</Typography>
-                            </Box>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Typography>השכלה:</Typography>
-                                <Typography variant="body1">{candidateDetails.education}</Typography>
-                            </Box>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Typography>תעודות:</Typography>
-                                <Typography variant="body1">{candidateDetails.certifications}</Typography>
-                            </Box>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Typography>כישורים:</Typography>
-                                <Typography variant="body1">{candidateDetails.skills}</Typography>
-                            </Box>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Typography>אתר המועמד:</Typography>
-                                <Typography variant="body1">{candidateDetails.portfolioWebsite}</Typography>
-                            </Box>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Typography>linkedinProfile:</Typography>
-                                <Typography variant="body1">{candidateDetails.linkedinProfile}</Typography>
-                            </Box>
-                        </Box>
-                    </Paper> */}
                 </Box>
             )}
         </Box>
