@@ -74,7 +74,7 @@ const ChangeProfile = () => {
                     alignItems: 'center',
                 }}
             >
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h5" color={'black'}>
                     שינוי פרופיל
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>

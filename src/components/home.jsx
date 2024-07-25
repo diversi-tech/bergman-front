@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Box, Container, Typography, Toolbar, CssBaseline, Tooltip, keyframes, AppBar } from '@mui/material';
+import { Button, Box, Container, Typography, Toolbar, CssBaseline, Tooltip, keyframes, AppBar, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -46,19 +46,19 @@ export const Home = () => {
             <CssBaseline />
             <AppBar position='fixed'>
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
-                    <Box sx={{ border: '1px solid white', borderRadius: '5px', display: 'flex', direction: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    {(userType !== 0 && userType !== 1) && (
-                    <Box >
-                <Button
-                    id="profile"
-                    onClick={()=>handleNavigation('/changeProfile')}
-                    sx={{ borderRadius: '50%' }}
-                >
-                    <Tooltip title='שינוי פרופיל ' arrow>
-                        <AccountCircleIcon fontSize='large' sx={{ color: 'white' }}/>
-                    </Tooltip>
-                </Button>
-            </Box>)}
+                    <Box sx={{ border: '1px solid white', borderRadius: '30px', display: 'flex', direction: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                        {(userType !== 0 && userType !== 1) && (
+                            <Box >
+                                <Button
+                                    id="profile"
+                                    onClick={() => handleNavigation('/changeProfile')}
+                                    sx={{ borderRadius: '50%' }}
+                                >
+                                    <Tooltip title='שינוי פרופיל ' arrow>
+                                        <AccountCircleIcon fontSize='large' sx={{ color: 'white' }} />
+                                    </Tooltip>
+                                </Button>
+                            </Box>)}
                         {(userType !== 0 && userType !== 1) && (
                             <Box sx={{ paddingLeft: '10px' }}>
                                 <Typography variant='body5' >שלום {user.username}</Typography>
@@ -71,13 +71,10 @@ export const Home = () => {
                         <Button variant='contained' id="register" onClick={() => handleNavigation('/login')}>
                             התחברות
                         </Button>
-                        <Button variant='contained' onClick={() => handleNavigation('/SignUp')}>
-                            הרשמה
-                        </Button>
                     </Box>
                 </Toolbar>
             </AppBar>
-            
+
             <Box
                 sx={{
                     display: 'flex',
