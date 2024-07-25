@@ -5,94 +5,99 @@ import { Autocomplete, Box, Button, Chip, Container, FormControl, TextField, Typ
 import { useNavigate } from 'react-router-dom';
 import { CV } from './CV';
 import OptionsAxios from '../axios/optionsAxios';
+import Candidate from './candidate';
 
 export const Profile = () => {
-  const dispatch = useDispatch();
-  const { skills = [], locations = [] } = useSelector((state) => state.optionsReducer);
+  // const dispatch = useDispatch();
+  // const { skills = [], locations = [] } = useSelector((state) => state.optionsReducer);
 
-  const [selectedSkills, setSelectedSkills] = React.useState([]);
-  const [selectedLocations, setSelectedLocations] = React.useState([]);
-  const [linkedinUrl, setLinkedinUrl] = React.useState('');
-  const [urlError, setUrlError] = React.useState(false);
-  const [skillsInputValue, setSkillsInputValue] = React.useState('');
-  const [locationsInputValue, setLocationsInputValue] = React.useState('');
-  const [skillsOpen, setSkillsOpen] = React.useState(false);
-  const [locationsOpen, setLocationsOpen] = React.useState(false);
-  const [skillsFocused, setSkillsFocused] = React.useState(false);
-  const [locationsFocused, setLocationsFocused] = React.useState(false);
-  const [originalSkills, setOriginalSkills] = React.useState([]);
-  const [originalLocations, setOriginalLocations] = React.useState([]);
-  const [originalLinkedinUrl, setOriginalLinkedinUrl] = React.useState('');
+  // const [selectedSkills, setSelectedSkills] = React.useState([]);
+  // const [selectedLocations, setSelectedLocations] = React.useState([]);
+  // const [linkedinUrl, setLinkedinUrl] = React.useState('');
+  // const [urlError, setUrlError] = React.useState(false);
+  // const [skillsInputValue, setSkillsInputValue] = React.useState('');
+  // const [locationsInputValue, setLocationsInputValue] = React.useState('');
+  // const [skillsOpen, setSkillsOpen] = React.useState(false);
+  // const [locationsOpen, setLocationsOpen] = React.useState(false);
+  // const [skillsFocused, setSkillsFocused] = React.useState(false);
+  // const [locationsFocused, setLocationsFocused] = React.useState(false);
+  // const [originalSkills, setOriginalSkills] = React.useState([]);
+  // const [originalLocations, setOriginalLocations] = React.useState([]);
+  // const [originalLinkedinUrl, setOriginalLinkedinUrl] = React.useState('');
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchOptions = async () => {
-      try {
-        const options = await OptionsAxios.getAllOptions();
-        console.log('Options fetched:', options);
-        dispatch(FillOptionData(options));
-      } catch (error) {
-        console.error('Error fetching options:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchOptions = async () => {
+  //     try {
+  //       const options = await OptionsAxios.getAllOptions();
+  //       console.log('Options fetched:', options);
+  //       dispatch(FillOptionData(options));
+  //     } catch (error) {
+  //       console.error('Error fetching options:', error);
+  //     }
+  //   };
 
-    fetchOptions();
-  }, [dispatch]);
+  //   fetchOptions();
+  // }, [dispatch]);
 
-  const handleSkillsChange = (event, newValue, reason) => {
-    if ((reason === 'selectOption' || reason === 'blur') && newValue && newValue !== 'אין תוצאות' && !selectedSkills.includes(newValue)) {
-      setSelectedSkills([...selectedSkills, newValue]);
-      setSkillsInputValue('');
-      setSkillsOpen(false);
-    }
-  };
+  // const handleSkillsChange = (event, newValue, reason) => {
+  //   if ((reason === 'selectOption' || reason === 'blur') && newValue && newValue !== 'אין תוצאות' && !selectedSkills.includes(newValue)) {
+  //     setSelectedSkills([...selectedSkills, newValue]);
+  //     setSkillsInputValue('');
+  //     setSkillsOpen(false);
+  //   }
+  // };
 
-  const handleLocationsChange = (event, newValue, reason) => {
-    if ((reason === 'selectOption' || reason === 'blur') && newValue && newValue !== 'אין תוצאות' && !selectedLocations.includes(newValue)) {
-      setSelectedLocations([...selectedLocations, newValue]);
-      setLocationsInputValue('');
-      setLocationsOpen(false);
-    }
-  };
+  // const handleLocationsChange = (event, newValue, reason) => {
+  //   if ((reason === 'selectOption' || reason === 'blur') && newValue && newValue !== 'אין תוצאות' && !selectedLocations.includes(newValue)) {
+  //     setSelectedLocations([...selectedLocations, newValue]);
+  //     setLocationsInputValue('');
+  //     setLocationsOpen(false);
+  //   }
+  // };
 
-  const handleLinkedinChange = (event) => {
-    const url = event.target.value;
-    setLinkedinUrl(url);
-    setUrlError(!(url.startsWith('https://www.linkedin.com/') || url === ''));
-  };
+  // const handleLinkedinChange = (event) => {
+  //   const url = event.target.value;
+  //   setLinkedinUrl(url);
+  //   setUrlError(!(url.startsWith('https://www.linkedin.com/') || url === ''));
+  // };
 
-  const filterOptions = (options, { inputValue }) => {
-    if (inputValue === '') return [];
-    const filtered = options.filter(option =>
-      option.toLowerCase().startsWith(inputValue.toLowerCase())
-    );
-    return filtered.length > 0 ? filtered : ['אין תוצאות'];
-  };
+  // const filterOptions = (options, { inputValue }) => {
+  //   if (inputValue === '') return [];
+  //   const filtered = options.filter(option =>
+  //     option.toLowerCase().startsWith(inputValue.toLowerCase())
+  //   );
+  //   return filtered.length > 0 ? filtered : ['אין תוצאות'];
+  // };
 
-  const handleSubmit = () => {
-    const isUpdated =
-      JSON.stringify(selectedSkills) !== JSON.stringify(originalSkills) ||
-      JSON.stringify(selectedLocations) !== JSON.stringify(originalLocations) ||
-      linkedinUrl !== originalLinkedinUrl;
+  // const handleSubmit = () => {
+  //   const isUpdated =
+  //     JSON.stringify(selectedSkills) !== JSON.stringify(originalSkills) ||
+  //     JSON.stringify(selectedLocations) !== JSON.stringify(originalLocations) ||
+  //     linkedinUrl !== originalLinkedinUrl;
 
-    if (isUpdated) {
-      console.log('Submitted Data:', {
-        skills: selectedSkills,
-        locations: selectedLocations,
-        linkedinUrl: linkedinUrl,
-        cv: true,
-      });
-      alert('העדכונים נשמרו בהצלחה');
-      navigate('/home');
-    } else {
-      alert('לא היו שינויים לשמירה');
-    }
-  };
+  //   if (isUpdated) {
+  //     console.log('Submitted Data:', {
+  //       skills: selectedSkills,
+  //       locations: selectedLocations,
+  //       linkedinUrl: linkedinUrl,
+  //       cv: true,
+  //     });
+  //     alert('העדכונים נשמרו בהצלחה');
+  //     navigate('/home');
+  //   } else {
+  //     alert('לא היו שינויים לשמירה');
+  //   }
+  // };
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, textAlign: 'right' }}>
-      <Box mt={4} sx={{backgroundColor:'white' , border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
+     
+      <Candidate/>
+
+      {/* <Box mt={4} sx={{backgroundColor:'white' , border: '1px solid #e0e0e0', borderRadius: 1, p: 2 }}>
+     
         <Typography variant="h6" color={'black'}>
           העלאת קורות חיים
         </Typography>
@@ -193,7 +198,6 @@ export const Profile = () => {
           helperText={urlError ? "הקישור אינו תקין" : ""}
         />
       </Box>
-
       <Box mt={4}>
         <Button 
           variant="contained" 
@@ -202,7 +206,7 @@ export const Profile = () => {
         >
           שמירת עדכונים
         </Button>
-      </Box>
+      </Box> */}
     </Container>
   );
 };

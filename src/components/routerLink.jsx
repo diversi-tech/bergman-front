@@ -14,7 +14,6 @@ import { Nav } from './nav';
 import { Box } from '@mui/material';
 import { HomeCandidate } from './homeCandidate';
 import { useSelector } from 'react-redux';
-import ChangeProfile from './changeProfile';
 
 
 export const RouterLink = () => {
@@ -39,7 +38,6 @@ export const RouterLink = () => {
                     <Route path="/Login" element={<LoginModal />} />
                     <Route path="/SignUp" element={<SignUpModal />} />
                     <Route path='/HomeCandidate' element={<HomeCandidate />} />
-                    <Route path='/changeProfile' element={<ChangeProfile/>}/>
                     <Route path="/" element={<Home />} />
                 </Routes>
             </Box>
