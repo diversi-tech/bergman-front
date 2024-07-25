@@ -1,13 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, TextField, Box, Typography, Container, CssBaseline } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import UserAxios from '../axios/userAxios'; // עדכן את הנתיב בהתאם למיקום הקובץ
+import { FillUsersData, currentUser as setCurrentUser } from '../redux/action/userAction';
+import { useNavigate } from 'react-router-dom';
+import DoneIcon from '@mui/icons-material/Done';
 
-export const ChangeProfile = () => {
+const ChangeProfile = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const reduxUser = useSelector(state => state.userReducer.currentUser);
+
     const [profile, setProfile] = useState({
         username: '',
         email: '',
         password: '',
         phone: ''
     });
+
+    useEffect(() => {
+        if (reduxUser) {
+            setProfile({
+                username: reduxUser.username || '',
+                email: reduxUser.email || '',
+                password: reduxUser.password || '',
+                phone: reduxUser.phone || ''
+            });
+        }
+    }, [reduxUser]);
+
+    const handleNavigation = (path) => {
+        navigate(path);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -17,10 +41,26 @@ export const ChangeProfile = () => {
         }));
     };
 
+    const save = async () => {
+        try {
+            const updatedUser = {
+                ...reduxUser,
+                ...profile
+            };
+            await UserAxios.updateUser(reduxUser.userId, updatedUser);
+            dispatch(setCurrentUser(updatedUser));
+            const allUsers = await UserAxios.getAllUsers();
+            dispatch(FillUsersData(allUsers));
+            console.log('פרופיל עודכן בהצלחה:', updatedUser);
+            handleNavigation('/Home');
+        } catch (error) {
+            console.error('שגיאה בעדכון הפרופיל:', error);
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        // כאן תוסיף את הקוד לשמירת השינויים
-        console.log('פרופיל נשמר:', profile);
+        save();
     };
 
     return (
@@ -45,7 +85,6 @@ export const ChangeProfile = () => {
                         id="username"
                         label="שם משתמש"
                         name="username"
-                        autoComplete="username"
                         autoFocus
                         value={profile.username}
                         onChange={handleChange}
@@ -57,7 +96,6 @@ export const ChangeProfile = () => {
                         id="email"
                         label="אימייל"
                         name="email"
-                        autoComplete="email"
                         value={profile.email}
                         onChange={handleChange}
                     />
@@ -69,7 +107,6 @@ export const ChangeProfile = () => {
                         label="סיסמא"
                         name="password"
                         type="password"
-                        autoComplete="current-password"
                         value={profile.password}
                         onChange={handleChange}
                     />
@@ -80,7 +117,6 @@ export const ChangeProfile = () => {
                         id="phone"
                         label="פלאפון"
                         name="phone"
-                        autoComplete="phone"
                         value={profile.phone}
                         onChange={handleChange}
                     />
@@ -91,6 +127,8 @@ export const ChangeProfile = () => {
                         sx={{ mt: 3, mb: 2 }}
                     >
                         שמור שינויים
+                        <DoneIcon/>
+
                     </Button>
                 </Box>
             </Box>
@@ -98,4 +136,4 @@ export const ChangeProfile = () => {
     );
 };
 
-
+export default ChangeProfile;

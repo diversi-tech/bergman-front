@@ -17,7 +17,6 @@ const pulseAnimation = keyframes`
 
 export const Home = () => {
 
-
     const userType = useSelector(state => state.userReducer.currentUserType);
     const user = useSelector(state => state.userReducer.currentUser)
     const navigate = useNavigate();
@@ -42,24 +41,24 @@ export const Home = () => {
     }
 
 
-
     return (
         <React.Fragment>
             <CssBaseline />
             <AppBar position='fixed'>
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
                     <Box sx={{ border: '1px solid white', borderRadius: '5px', display: 'flex', direction: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    {(userType !== 0 && userType !== 1) && (
                     <Box >
                 <Button
                     id="profile"
-                    onClick={handleOpen}
+                    onClick={()=>handleNavigation('/changeProfile')}
                     sx={{ borderRadius: '50%' }}
                 >
                     <Tooltip title='שינוי פרופיל ' arrow>
                         <AccountCircleIcon fontSize='large' sx={{ color: 'white' }}/>
                     </Tooltip>
                 </Button>
-            </Box>
+            </Box>)}
                         {(userType !== 0 && userType !== 1) && (
                             <Box sx={{ paddingLeft: '10px' }}>
                                 <Typography variant='body5' >שלום {user.username}</Typography>
