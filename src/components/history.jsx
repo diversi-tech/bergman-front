@@ -15,6 +15,10 @@ import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import FileAxios from '../axios/fileAxios';
+import AddIcon from '@mui/icons-material/Add';
+import { useDispatch } from 'react-redux';
+import { FillReferralsData } from '../redux/action/referralsAction';
+
 export const History = () => {
     const { userId } = useParams();
     const [candidateDetails, setCandidateDetails] = useState({});
@@ -25,6 +29,7 @@ export const History = () => {
     const [fileName, setFileName] = useState('');
     const [open, setOpen] = useState(false);
     const [fileUrl, setFileUrl] = useState('');
+    const myDispatch = useDispatch()
     const candidateId = userId;
     useEffect(() => {
         const fetchCandidateProfile = async () => {
@@ -84,22 +89,44 @@ export const History = () => {
     const handleDetails = () => {
         setShowDetails(prevShowDetails => !prevShowDetails);
     };
-    const [newHistory, setNewHistory] = useState({ name: '', date: '', comment: '' });
+    const [newHistory, setNewHistory] = useState({ name: '', date: '', comment: '', created: '', updated: '' });
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewHistory({ ...newHistory, [name]: value });
     };
     const addHistory = async () => {
+        debugger
+        // יצירת אובייקט חדש עבור ההיסטוריה
+        const newHistoryItem = {
+            candidateId: candidateId, // או מזהה מתאים
+            referralSource: newHistory.name,
+            referralDate: newHistory.date,
+            remarks: newHistory.comment,
+            created: new Date().toISOString(),
+            updated: newHistory.updated,
+        };
         try {
-            const addedHistory = await ReferralsAxios.addReferral(newHistory);
-            console.log("addedHistory:" + addedHistory);
-            setHistory([...history, addedHistory]);
-            setNewHistory({ name: '', date: '', comment: '' });
-            setOpenAddDialog(false);
+
+
+            // קריאה ל-API להוספת ההיסטוריה החדשה
+            const response = await ReferralsAxios.addReferral(newHistoryItem);
+            console.log("newHistoryItem" + newHistoryItem)
+            const allReferrals = await ReferralsAxios.getAllReferrals();
+            myDispatch(FillReferralsData(allReferrals))
+
+
+            // עדכון רשימת ההיסטוריה עם ההיסטוריה החדשה שנוספה
+            setHistory((prevHistory) => [...prevHistory, response]);
+
+            // סגירת הדיאלוג וניקוי השדות
+            toggleAddDialog();
+            setNewHistory({ name: '', date: '', comment: '', created: '', updated: '' });
+
         } catch (error) {
             console.error('Error adding history:', error);
         }
     };
+
     const toggleAddDialog = () => {
         setOpenAddDialog(!openAddDialog);
     };
@@ -202,6 +229,62 @@ export const History = () => {
                     </TableBody>
                 </Table>
             </Paper>
+            <Box mt={2} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <IconButton
+                    variant="contained"
+                    startIcon={<AddIcon />}
+                    onClick={toggleAddDialog}
+                    color="primary">
+                    <AddIcon />
+                </IconButton>
+            </Box>
+            <Dialog open={openAddDialog} onClose={toggleAddDialog}>
+                <DialogTitle>הוסף היסטוריה חדשה</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        name="name"
+                        label="שם החברה"
+                        type="text"
+                        fullWidth
+                        variant="outlined"
+                        value={newHistory.name}
+                        onChange={handleInputChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        name="date"
+                        label="תאריך"
+                        type="datetime-local"
+                        fullWidth
+                        variant="outlined"
+                        value={newHistory.date}
+                        onChange={handleInputChange}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                    <TextField
+                        margin="dense"
+                        name="comment"
+                        label="תגובה"
+                        type="text"
+                        fullWidth
+                        variant="outlined"
+                        value={newHistory.comment}
+                        onChange={handleInputChange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={toggleAddDialog} color="primary">
+                        ביטול
+                    </Button>
+                    <Button onClick={addHistory} color="primary">
+                        הוסף
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <Button variant="contained" onClick={handleDetails}>
                 {showDetails ? "פחות פרטים " : " פרטים נוספים"}
             </Button>
