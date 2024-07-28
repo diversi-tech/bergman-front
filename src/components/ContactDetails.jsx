@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, TextField, Typography, Paper, Box, Autocomplete, Alert, Button } from '@mui/material';
+import { Container, TextField, Typography, Paper, Box, Autocomplete, Alert } from '@mui/material';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -49,8 +49,8 @@ const ContactDetails = ({ data, setData }) => {
     <Container maxWidth="md">
       <Paper elevation={3} sx={{ padding: 4, marginTop: 4 }}>
         <Box display="flex" alignItems="center" mb={2}>
-          <ContactMailIcon sx={{ marginRight: 2, color: 'blue' }} />
-          <Typography variant="h5" gutterBottom>פרטי קשר</Typography>
+          <ContactMailIcon sx={{ marginRight: 2, color: 'black' }} />
+          <Typography variant="h5" gutterBottom sx={{ color: 'black' }}>פרטי קשר</Typography>
         </Box>
         {errorMessage && (
           <Alert severity="error" sx={{ marginBottom: 2 }}>
@@ -87,6 +87,7 @@ const ContactDetails = ({ data, setData }) => {
                 onBlur={formik.handleBlur}
                 error={formik.touched.city && Boolean(formik.errors.city)}
                 helperText={formik.touched.city && formik.errors.city}
+                sx={{ backgroundColor: 'white' }} // צבע רקע לבן
               />
             )}
           />
@@ -102,6 +103,7 @@ const ContactDetails = ({ data, setData }) => {
             onBlur={formik.handleBlur}
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
+            sx={{ backgroundColor: 'white' }} // צבע רקע לבן
           />
           <TextField
             fullWidth
@@ -115,8 +117,8 @@ const ContactDetails = ({ data, setData }) => {
             onBlur={formik.handleBlur}
             error={formik.touched.phone && Boolean(formik.errors.phone)}
             helperText={formik.touched.phone && formik.errors.phone}
+            sx={{ backgroundColor: 'white' }} // צבע רקע לבן
           />
-          
         </form>
       </Paper>
     </Container>

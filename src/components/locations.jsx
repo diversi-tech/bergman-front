@@ -6,7 +6,7 @@ const locations = [
   'צפון', 'דרום', 'מרכז', 'ירושלים והסביבה'
 ];
 
-const Locations = () => {
+const Locations = ({ iconColor = 'black' }) => {
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [locationsInputValue, setLocationsInputValue] = useState('');
   const [locationsOpen, setLocationsOpen] = useState(false);
@@ -32,12 +32,13 @@ const Locations = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor: 'white', border: '1px solid #ddd', borderRadius: 2, padding: 2, textAlign: 'left', direction: 'rtl', marginTop: 4 }}>
-      <Paper elevation={3} sx={{ padding: 2, marginBottom: 2 }}>
+    <Box sx={{   padding: 2, textAlign: 'left', direction: 'rtl', marginTop: 4 }}>
+      <Paper elevation={3} sx={{ padding: 2, marginBottom: 2, backgroundColor: 'white' }}>
         <Box display="flex" alignItems="center" mb={2}>
-          <LocationOnIcon sx={{ marginRight: 1 }} />
-          <Typography variant="h7" gutterBottom>באיזה אזור תרצה לעבוד?</Typography>
+          <LocationOnIcon color="primary" sx={{ marginRight: 1 }} />
+          <Typography variant="h6" gutterBottom>מיקום</Typography>
         </Box>
+          <Typography variant="h7" gutterBottom>באיזה אזור תרצה לעבוד?</Typography>
         
         <FormControl fullWidth variant="outlined" focused={locationsOpen}>
           <Autocomplete
@@ -63,9 +64,7 @@ const Locations = () => {
               />
             )}
           />
-        </FormControl>
-      </Paper>
-      <Box mt={2}>
+          <Box mt={2}>
         {selectedLocations.length > 0 ? (
           selectedLocations.map((location, index) => (
             <Chip
@@ -81,6 +80,9 @@ const Locations = () => {
           </Typography>
         )}
       </Box>
+        </FormControl>
+      </Paper>
+      
     </Box>
   );
 };

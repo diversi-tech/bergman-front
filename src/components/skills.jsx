@@ -91,9 +91,7 @@ const Skills = () => {
             />
           )}
         />
-      </FormControl>
-      </Paper>
-      {Object.keys(categorizedSelectedSkills).map((category) => (
+        {Object.keys(categorizedSelectedSkills).map((category) => (
         <Box key={category} sx={{ marginTop: 2 }}>
           <Typography variant="subtitle1" gutterBottom>
             {category}
@@ -113,7 +111,10 @@ const Skills = () => {
             </Typography>
           )}
         </Box>
-      ))}
+         ))}
+      </FormControl>
+      </Paper>
+      
     </Box>
   );
 };

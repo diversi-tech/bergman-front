@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Typography, 
   FormControl, 
@@ -8,16 +8,23 @@ import {
   Paper,
   Box,
   TextField,
-  IconButton,
-  Divider
+  IconButton
 } from '@mui/material';
 import SchoolIcon from '@mui/icons-material/School';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const Education = () => {
-  const [hasHigherEducation, setHasHigherEducation] = useState('no');
-  const [educationFields, setEducationFields] = useState(['']);
+const Education = ({ data, setData, setHasChanged }) => {
+  const [hasHigherEducation, setHasHigherEducation] = useState(data.hasHigherEducation || 'no');
+  const [educationFields, setEducationFields] = useState(data.educationFields || ['']);
+
+  useEffect(() => {
+    setData({ hasHigherEducation, educationFields });
+  }, [hasHigherEducation, educationFields]);
+
+  useEffect(() => {
+    setHasChanged(true);
+  }, [hasHigherEducation, educationFields]);
 
   const handleEducationChange = (index, event) => {
     const newEducationFields = [...educationFields];
@@ -45,7 +52,7 @@ const Education = () => {
   return (
     <Paper elevation={1} sx={{ p: 3, width: '100%' }}>
       <Box display="flex" alignItems="center" mb={2}>
-        <SchoolIcon sx={{ mr: 1, color: 'orange' }} />
+        <SchoolIcon color="black" sx={{ mr: 1 }} />
         <Typography variant="h6">השכלה גבוהה</Typography>
       </Box>
       <FormControl component="fieldset" sx={{ mb: 2 }}>

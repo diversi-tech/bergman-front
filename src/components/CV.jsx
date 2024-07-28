@@ -1,11 +1,16 @@
 import React from 'react';
-import { Container, Button, Box, Paper, Typography, IconButton, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, Backdrop } from '@mui/material';
-import DescriptionIcon from '@mui/icons-material/Description';
-import DocumentIcon from '@mui/icons-material/Article'; // Used Document Icon
-import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  Box, Button, Container, Snackbar, Alert, CircularProgress, Typography,
+  Dialog, DialogTitle, DialogContent, DialogActions, Backdrop, IconButton, Tooltip, Paper
+} from '@mui/material';
 import { styled } from '@mui/system';
-import { useSelector } from 'react-redux'; // assuming you are using redux
-import FileAxios from '../axios/fileAxios'; // adjust the path to your axios instance
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import DescriptionIcon from '@mui/icons-material/Description';
+import Downloading from '@mui/icons-material/Downloading';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DocumentIcon from '@mui/icons-material/Article';
+import { useSelector } from 'react-redux';
+import FileAxios from '../axios/fileAxios'; 
 
 const FileInput = styled('input')({
   display: 'none',
@@ -22,6 +27,7 @@ const CV = () => {
   const [dialogTitle, setDialogTitle] = React.useState('');
   const [dialogSeverity, setDialogSeverity] = React.useState('success');
   const [viewFile, setViewFile] = React.useState(null);
+  const [fileUrl, setFileUrl] = React.useState(null);
   const [fileUploaded, setFileUploaded] = React.useState({
     hebrew: false,
     english: false,
@@ -31,6 +37,12 @@ const CV = () => {
 
   const handleFileChange = (e, language) => {
     const file = e.target.files[0];
+    if (!file) {
+      console.log(`No file selected for ${language}`);
+      return;
+    }
+    console.log(`Selected file for ${language}: ${file.name}, size: ${file.size}`);
+
     if (file.size > MAX_FILE_SIZE) {
       setDialogTitle('Error');
       setDialogMessage('ניתן להעלות קבצים עד 10MB בלבד.');
@@ -48,15 +60,21 @@ const CV = () => {
   };
 
   const handleFileUpload = async (file, language) => {
-    if (!file) return;
+    if (!file) {
+      console.log(`No file to upload for ${language}`);
+      return;
+    }
 
     const newFileName = `${user.userId}_${language}_${file.name}`;
     const renamedFile = new File([file], newFileName, { type: file.type });
 
     try {
+      console.log(`Uploading file for ${language}: ${newFileName}`);
       await FileAxios.uploadFile(renamedFile);
+      console.log(`File uploaded successfully for ${language}`);
       setFileUploaded(prevState => ({ ...prevState, [language]: true }));
     } catch (error) {
+      console.error(`Error uploading file for ${language}:`, error);
       setDialogTitle('Error');
       setDialogMessage('Error uploading file');
       setDialogSeverity('error');
@@ -85,16 +103,16 @@ const CV = () => {
       }
 
       setDialogTitle('Success');
-      setDialogMessage('הקבצים הועלו בהצלחה: ' + 
-        (hebrewFile ? hebrewFile.name : '') + 
-        (hebrewFile && englishFile ? ', ' : '') + 
+      setDialogMessage('הקבצים הועלו בהצלחה: ' +
+        (hebrewFile ? hebrewFile.name : '') +
+        (hebrewFile && englishFile ? ', ' : '') +
         (englishFile ? englishFile.name : ''));
       setDialogSeverity('success');
       setDialogOpen(true);
       setHebrewFile(null);
       setEnglishFile(null);
     } catch (error) {
-      console.error(error);
+      console.error('Error in handleSubmit:', error);
     } finally {
       setLoading(false);
     }
@@ -128,16 +146,26 @@ const CV = () => {
   const handleViewFile = (file) => {
     if (file) {
       const fileURL = URL.createObjectURL(file);
-      setViewFile(fileURL);
+      setFileUrl(fileURL);
+      setViewFile(file);
       setDialogTitle('File Preview');
-      setDialogMessage(file.name);
       setDialogOpen(true);
+    }
+  };
+
+  const handleDownload = () => {
+    if (viewFile) {
+      const link = document.createElement('a');
+      link.href = fileUrl;
+      link.download = viewFile.name;
+      link.click();
     }
   };
 
   const handleCloseDialog = () => {
     setDialogOpen(false);
     setViewFile(null);
+    setFileUrl(null);
   };
 
   return (
@@ -145,7 +173,7 @@ const CV = () => {
       <Paper elevation={1} sx={{ padding: 2, marginTop: 2, width: '100%' }}>
         <Box display="flex" alignItems="center" mb={2}>
           <Box marginRight={1}>
-            <DescriptionIcon sx={{ color: 'rgb(244, 179, 76)' }} />
+            <DescriptionIcon sx={{ color: "primary" }} />
           </Box>
           <Typography variant="h6">העלאת קורות חיים</Typography>
         </Box>
@@ -198,31 +226,53 @@ const CV = () => {
               )}
             </Box>
           </Box>
-          <Button type="submit" variant="contained" className="submit-button" disabled={loading} sx={{ marginTop: 2, width: '100%' }}>
-            {loading ? <CircularProgress size={24} /> : 'העלה קבצים'}
+          <Button
+            variant="contained"
+            type="submit"
+            color="primary"
+            sx={{ marginTop: 2 }}
+            fullWidth
+            disabled={loading}
+          >
+            {loading ? <CircularProgress size={24} /> : 'העלה קובץ'}
           </Button>
         </form>
-        <Backdrop open={loading} style={{ zIndex: 1000, color: '#fff', display: 'flex', flexDirection: 'column' }}>
-          <CircularProgress color="inherit" sx={{ width: '80px !important', height: '80px !important' }} />
-        </Backdrop>
-        <Dialog open={dialogOpen} onClose={handleCloseDialog} fullWidth maxWidth="xl">
-          <DialogTitle>{dialogTitle}</DialogTitle>
-          <DialogContent>
-            {viewFile ? (
-              <iframe src={viewFile} width="100%" height="800px" title="File Preview" style={{ border: 'none' }} />
-            ) : (
-              <Typography variant="body2">
-                {dialogMessage}
-              </Typography>
-            )}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog} color="primary">
-              סגור
-            </Button>
-          </DialogActions>
-        </Dialog>
       </Paper>
+
+      <Snackbar open={dialogOpen} autoHideDuration={6000} onClose={handleCloseDialog}>
+        <Alert onClose={handleCloseDialog} severity={dialogSeverity} sx={{ width: '100%' }}>
+          {dialogMessage}
+        </Alert>
+      </Snackbar>
+
+      <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="lg">
+        <DialogTitle>{dialogTitle}</DialogTitle>
+        <DialogContent>
+          {viewFile && (
+            <Box display="flex" justifyContent="center" mb={2}>
+              <iframe
+                src={fileUrl}
+                width="100%"
+                height="400px"
+                title="File Preview"
+                frameBorder="0"
+              ></iframe>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          {viewFile && (
+            <Tooltip title="Download File">
+              <IconButton onClick={handleDownload} color="primary">
+                <Downloading />
+              </IconButton>
+            </Tooltip>
+          )}
+          <Button onClick={handleCloseDialog} color="primary">
+            סגור
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };
