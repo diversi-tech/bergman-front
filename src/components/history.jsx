@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Table, TableBody, TableCell, TableHead, TableRow, Button, Typography, Paper, TextField, IconButton, Tooltip, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment, Grid } from '@mui/material';
 import ReferralsAxios from '../axios/referralsAxios';
-import CandidateProfilesAxios from '../axios/candidateProfileAxios';
+import CandidateAxios from '../axios/candidateAxios';
 import UserAxios from '../axios/userAxios';
 import { useParams } from 'react-router-dom';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -32,14 +32,15 @@ export const History = () => {
     const myDispatch = useDispatch()
     const candidateId = userId;
     useEffect(() => {
-        const fetchCandidateProfile = async () => {
+        const fetchCandidate = async () => {
             try {
-                const data = await CandidateProfilesAxios.getCandidateProfileById(candidateId);
+                const data = await CandidateAxios.getCandidateById(candidateId);
                 console.log("candidate:" + data);
                 setCandidateDetails(prevDetails => ({
                     ...prevDetails,
                     name: data.firstName + " " + data.lastName,
                     phone: data.phoneNumber,
+                    email: data.email,
                     address: data.city + " " + data.address + " " + data.state,
                     experience: data.experienceYears,
                     summary: data.summary,
@@ -51,6 +52,7 @@ export const History = () => {
                     userId: data.userId,
                     cv: data.cvEnglishFile
                 }));
+
             } catch (error) {
                 console.error('Error fetching candidate profile:', error);
             }
@@ -59,7 +61,10 @@ export const History = () => {
             try {
                 const response = await ReferralsAxios.getAllReferrals();
                 console.log("referrals:", response);
-                const candidateReferrals = response.filter(referral => referral.candidateId === parseInt(candidateId));
+                console.log("candidateId:"+candidateId)
+                // console.log("response:", response.referralSource[candidateId].id);
+                const candidateReferrals = response.filter(referral => referral.referralSource.id === parseInt(candidateId));
+                console.log("candidateReferrals:",candidateReferrals)
                 setHistory(candidateReferrals);
             } catch (error) {
                 console.error('Error fetching referrals:', error);
@@ -68,24 +73,26 @@ export const History = () => {
         const fetchUser = async () => {
             try {
                 const response = await UserAxios.getAllUsers();
-                console.log(response);
+                // console.log(response);
                 const users = response;
                 setUser(users);
-                const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
-                if (filteredUser) {
-                    setCandidateDetails(prevDetails => ({
-                        ...prevDetails,
-                        email: filteredUser.email
-                    }));
-                }
+                // const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
+                // if (filteredUser) {
+                //     setCandidateDetails(prevDetails => ({
+                //         ...prevDetails,
+                //         email: filteredUser.email
+                //     }));
+                // }
             } catch (error) {
                 console.error('Error fetching users:', error);
             }
         };
-        fetchCandidateProfile();
+        fetchCandidate();
         fetchUser();
         fetchHistory();
     }, [candidateId, candidateDetails.userId]);
+    console.log("history",history)
+
     const handleDetails = () => {
         setShowDetails(prevShowDetails => !prevShowDetails);
     };
@@ -211,7 +218,7 @@ export const History = () => {
                             <TableRow key={index}>
                                 <TableCell align="center" sx={{ p: 1 }}>
                                     <Typography variant="body1" component="div">
-                                        {historyItem.referralSource}
+                                        {historyItem.referralSource.companyName}
                                     </Typography>
                                 </TableCell>
                                 <TableCell align="center" sx={{ p: 1 }}>
