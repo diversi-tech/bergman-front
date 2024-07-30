@@ -219,24 +219,8 @@
 //         setSnackbarOpen(false);
 //     };
 
-//     const renderButtons = () => (
-//         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '60vh', direction: 'rtl' }}>
-//             <Button
-//                 variant="contained"
-//                 color="primary"
-//                 onClick={handleAddOpen}
-//                 style={{ marginBottom: '20px', padding: '20px 40px', fontSize: '20px' }}
-//             >הוסף מנהל</Button>
-//             <Button
-//                 variant="contained"
-//                 color="primary"
-//                 onClick={() => setShowTable(true)}
-//                 style={{ padding: '20px 40px', fontSize: '20px' }}
-//             >
-//                 הצג מנהלים
-//             </Button>
-//         </div>
-//     );
+
+
 
 //     const renderTable = () => (
 //         <div style={{ padding: '20px', textAlign: 'center', direction: 'rtl', marginTop: '80px' }}>
@@ -583,16 +567,6 @@
 
 
 
-
-import React, { useEffect, useState } from 'react';
-import { Box, Tooltip } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, IconButton, Dialog,
-    DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Button, Avatar, Select, MenuItem,
-    InputLabel, FormControl, Autocomplete, Snackbar, Alert
-} from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import MailIcon from '@mui/icons-material/Mail';
@@ -601,6 +575,9 @@ import {
     InputLabel, MenuItem, Paper, Select, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Tooltip,
     Typography
 } from '@mui/material';
+import createCache from '@emotion/cache';
+import { CacheProvider } from '@emotion/react';
+// import { renderButtons, renderTable } from './yourHelperFunctions';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -810,6 +787,25 @@ export const Manager = () => {
         setSnackbarOpen(false);
     };
 
+        const renderButtons = () => (
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '60vh', direction: 'rtl' }}>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={handleAddOpen}
+                style={{ marginBottom: '20px', padding: '20px 40px', fontSize: '20px' }}
+            >הוסף מנהל</Button>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setShowTable(true)}
+                style={{ padding: '20px 40px', fontSize: '20px' }}
+            >
+                הצג מנהלים
+            </Button>
+        </div>
+    );
+
     const renderTable = () => (
         <div style={{ padding: '20px', textAlign: 'center', direction: 'rtl', marginTop: '80px' }}>
             <TableContainer component={Paper} style={{ margin: '0 auto', maxWidth: '80%' }}>
@@ -971,13 +967,16 @@ export const Manager = () => {
                                         ))}
                                     </Select>
                                 </FormControl>
-                            </form>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleAddClose} color="primary">ביטול</Button>
-                            <Button onClick={handleAddSubmit} color="primary">שמור</Button>
-                        </DialogActions>
-                    </Dialog>
+                                </form> 
+                            {/* </div> */}
+                        {/* </ThemeProvider> */}
+                    {/* </CacheProvider> */}
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleAddClose}>ביטול</Button>
+                    <Button variant="contained" color="primary" onClick={handleAddSubmit} disabled={!!emailError}>הוסף</Button>
+                </DialogActions>
+            </Dialog>
 
                     <Dialog open={openDeleteWarning} onClose={handleDeleteWarningClose}>
                         <DialogTitle>אזהרה</DialogTitle>
@@ -1038,4 +1037,7 @@ export const Manager = () => {
         </CacheProvider>
     );
 };
+
+export default Manager;
+
 
