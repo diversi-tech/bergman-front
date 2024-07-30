@@ -1,26 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Chip, TextField, Autocomplete, FormControl, Paper } from '@mui/material';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import LocationOnIcon from '@mui/icons-material/LocationOn'; // אייקון לבחירה
+import OptionsAxios from '../axios/optionsAxios'; // יבוא הפונקציה
+
 const Locations = ({ iconColor = 'black' }) => {
   const [selectedLocations, setSelectedLocations] = useState([]);
+  const [locations, setLocations] = useState([]); // סטייט לנתונים מה-API
   const [locationsInputValue, setLocationsInputValue] = useState('');
   const [locationsOpen, setLocationsOpen] = useState(false);
-  const [locations, setLocations] = useState([]);
-  // useEffect to fetch locations where ENUM_ID is 5
+
   useEffect(() => {
-    axios.get('/api/options', {
-      params: { enumId: 5 }
-    })
-    .then(response => {
-      console.log('Fetched locations:', response.data);
-      setLocations(response.data);
-    })
-    .catch(error => {
-      console.error('Error fetching locations:', error);
-    });
+    const fetchOptions = async () => {
+      try {
+        const response = await OptionsAxios.getAllOptions(5); // שליחה עם enumId = 5
+        setLocations(response.data); // עדכון הסטייט עם הנתונים מה-API
+      } catch (error) {
+        console.error('Error fetching options:', error);
+      }
+    };
+
+    fetchOptions();
   }, []);
-  
+
   const handleLocationsChange = (event, newValue, reason) => {
     if ((reason === 'selectOption' || reason === 'blur') && newValue && newValue !== 'אין תוצאות' && !selectedLocations.includes(newValue)) {
       setSelectedLocations([...selectedLocations, newValue]);
@@ -28,9 +29,11 @@ const Locations = ({ iconColor = 'black' }) => {
       setLocationsOpen(false);
     }
   };
+
   const handleInputClick = () => {
     setLocationsOpen(true);
   };
+
   const filterOptions = (options, { inputValue }) => {
     if (inputValue === '') return options;
     const filtered = options.filter(option =>
@@ -38,40 +41,39 @@ const Locations = ({ iconColor = 'black' }) => {
     );
     return filtered.length > 0 ? filtered : ['אין תוצאות'];
   };
+
   return (
     <Box sx={{ padding: 2, textAlign: 'left', direction: 'rtl', marginTop: 4 }}>
       <Paper elevation={3} sx={{ padding: 2, marginBottom: 2, backgroundColor: 'white' }}>
         <Box display="flex" alignItems="center" mb={2}>
-          <LocationOnIcon color="primary" sx={{ marginRight: 1 }} />
+          <LocationOnIcon color={iconColor} sx={{ marginRight: 1 }} />
           <Typography variant="h6" gutterBottom>מיקום</Typography>
         </Box>
         <Typography variant="h7" gutterBottom>באיזה אזור תרצה לעבוד?</Typography>
         <FormControl fullWidth variant="outlined" focused={locationsOpen}>
-        <Autocomplete
-          id="locations"
-          value={null}
-          options={locations.filter(location => !selectedLocations.includes(location)).sort()}
-          onChange={handleLocationsChange}
-          filterOptions={filterOptions}
-          inputValue={locationsInputValue || ''}  // כאן אנו מבטיחים שהערך לא יהיה null
-          onInputChange={(event, newInputValue) => {
-            setLocationsInputValue(newInputValue);
-          }}
-          open={locationsOpen}
-          onOpen={() => setLocationsOpen(true)}
-          onClose={() => setLocationsOpen(false)}
-          onClick={handleInputClick}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="באיזה אזור אתה מעדיף לעבוד?"
-              variant="outlined"
-              sx={{ marginTop: 2 }}
-              value={locationsInputValue || ''}  // כאן אנו מבטיחים שהערך לא יהיה null
-            />
-          )}
-        />
-
+          <Autocomplete
+            id="locations"
+            value={null}
+            options={locations.filter(location => !selectedLocations.includes(location)).sort()}
+            onChange={handleLocationsChange}
+            filterOptions={filterOptions}
+            inputValue={locationsInputValue}
+            onInputChange={(event, newInputValue) => {
+              setLocationsInputValue(newInputValue);
+            }}
+            open={locationsOpen}
+            onOpen={() => setLocationsOpen(true)}
+            onClose={() => setLocationsOpen(false)}
+            onClick={handleInputClick}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="באיזה אזור אתה מעדיף לעבוד?"
+                variant="outlined"
+                sx={{ marginTop: 2 }}
+              />
+            )}
+          />
           <Box mt={2}>
             {selectedLocations.length > 0 ? (
               selectedLocations.map((location, index) => (
@@ -93,4 +95,5 @@ const Locations = ({ iconColor = 'black' }) => {
     </Box>
   );
 };
+
 export default Locations;
