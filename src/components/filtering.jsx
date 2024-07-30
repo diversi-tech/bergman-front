@@ -5,7 +5,7 @@ import {
 } from '@mui/material'
 import HistoryIcon from '@mui/icons-material/History';
 import { useDispatch, useSelector } from "react-redux";
-import CandidateProfilesAxios from '../axios/candidateProfileAxios';
+import CandidateAxios from '../axios/candidateAxios';
 import { FillCavdidateProfileData } from '../redux/action/candidate_profileAction';
 import UserAxios from "../axios/userAxios";
 import { FillUsersData } from "../redux/action/userAction";
@@ -87,7 +87,7 @@ export const Filter = ({ onClose, candidate }) => {
         if (candidateProfiles > 0) {
           setCandidatesFromServer(candidateProfiles);
         } else {
-          const response = await CandidateProfilesAxios.getAllCandidateProfiles();
+          const response = await CandidateAxios.getAllCandidate();
           setCandidatesFromServer(response);
           dispatch(FillCavdidateProfileData(response.data));
         }
@@ -191,9 +191,9 @@ export const Filter = ({ onClose, candidate }) => {
     try {
       // dispatch(FillCavdidateProfileData(response.data));
 
-      await CandidateProfilesAxios.updateCandidateProfile(currentCandidate.candidateId, currentCandidate);
+      await CandidateAxios.updateCandidate(currentCandidate.candidateId, currentCandidate);
       setOpenEdit(false)
-      const candidate1 = await CandidateProfilesAxios.getAllCandidateProfiles()
+      const candidate1 = await CandidateAxios.getAllCandidate()
       setCandidatesFromServer(candidate1);
       dispatch(FillCavdidateProfileData(candidate1.data))
       alert(`השינויים עבור ${currentCandidate.firstName} ${currentCandidate.lastName} נשמרו בהצלחה`); // הצגת הודעה שהשינויים נשמרו

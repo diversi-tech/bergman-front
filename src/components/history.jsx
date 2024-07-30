@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Table, TableBody, TableCell, TableHead, TableRow, Button, Typography, Paper, TextField, IconButton, Tooltip, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment, Grid } from '@mui/material';
 import ReferralsAxios from '../axios/referralsAxios';
-import CandidateProfilesAxios from '../axios/candidateProfileAxios';
+import CandidateAxios from '../axios/candidateAxios';
 import UserAxios from '../axios/userAxios';
 import { useParams } from 'react-router-dom';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -15,6 +15,10 @@ import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import FileAxios from '../axios/fileAxios';
+import AddIcon from '@mui/icons-material/Add';
+import { useDispatch } from 'react-redux';
+import { FillReferralsData } from '../redux/action/referralsAction';
+
 export const History = () => {
     const { userId } = useParams();
     const [candidateDetails, setCandidateDetails] = useState({});
@@ -25,16 +29,18 @@ export const History = () => {
     const [fileName, setFileName] = useState('');
     const [open, setOpen] = useState(false);
     const [fileUrl, setFileUrl] = useState('');
+    const myDispatch = useDispatch()
     const candidateId = userId;
     useEffect(() => {
-        const fetchCandidateProfile = async () => {
+        const fetchCandidate = async () => {
             try {
-                const data = await CandidateProfilesAxios.getCandidateProfileById(candidateId);
+                const data = await CandidateAxios.getCandidateById(candidateId);
                 console.log("candidate:" + data);
                 setCandidateDetails(prevDetails => ({
                     ...prevDetails,
                     name: data.firstName + " " + data.lastName,
                     phone: data.phoneNumber,
+                    email: data.email,
                     address: data.city + " " + data.address + " " + data.state,
                     experience: data.experienceYears,
                     summary: data.summary,
@@ -46,6 +52,7 @@ export const History = () => {
                     userId: data.userId,
                     cv: data.cvEnglishFile
                 }));
+
             } catch (error) {
                 console.error('Error fetching candidate profile:', error);
             }
@@ -54,7 +61,10 @@ export const History = () => {
             try {
                 const response = await ReferralsAxios.getAllReferrals();
                 console.log("referrals:", response);
-                const candidateReferrals = response.filter(referral => referral.candidateId === parseInt(candidateId));
+                console.log("candidateId:"+candidateId)
+                // console.log("response:", response.referralSource[candidateId].id);
+                const candidateReferrals = response.filter(referral => referral.referralSource.id === parseInt(candidateId));
+                console.log("candidateReferrals:",candidateReferrals)
                 setHistory(candidateReferrals);
             } catch (error) {
                 console.error('Error fetching referrals:', error);
@@ -63,43 +73,67 @@ export const History = () => {
         const fetchUser = async () => {
             try {
                 const response = await UserAxios.getAllUsers();
-                console.log(response);
+                // console.log(response);
                 const users = response;
                 setUser(users);
-                const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
-                if (filteredUser) {
-                    setCandidateDetails(prevDetails => ({
-                        ...prevDetails,
-                        email: filteredUser.email
-                    }));
-                }
+                // const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
+                // if (filteredUser) {
+                //     setCandidateDetails(prevDetails => ({
+                //         ...prevDetails,
+                //         email: filteredUser.email
+                //     }));
+                // }
             } catch (error) {
                 console.error('Error fetching users:', error);
             }
         };
-        fetchCandidateProfile();
+        fetchCandidate();
         fetchUser();
         fetchHistory();
     }, [candidateId, candidateDetails.userId]);
+    console.log("history",history)
+
     const handleDetails = () => {
         setShowDetails(prevShowDetails => !prevShowDetails);
     };
-    const [newHistory, setNewHistory] = useState({ name: '', date: '', comment: '' });
+    const [newHistory, setNewHistory] = useState({ name: '', date: '', comment: '', created: '', updated: '' });
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewHistory({ ...newHistory, [name]: value });
     };
     const addHistory = async () => {
+        debugger
+        // יצירת אובייקט חדש עבור ההיסטוריה
+        const newHistoryItem = {
+            candidateId: candidateId, // או מזהה מתאים
+            referralSource: newHistory.name,
+            referralDate: newHistory.date,
+            remarks: newHistory.comment,
+            created: new Date().toISOString(),
+            updated: newHistory.updated,
+        };
         try {
-            const addedHistory = await ReferralsAxios.addReferral(newHistory);
-            console.log("addedHistory:" + addedHistory);
-            setHistory([...history, addedHistory]);
-            setNewHistory({ name: '', date: '', comment: '' });
-            setOpenAddDialog(false);
+
+
+            // קריאה ל-API להוספת ההיסטוריה החדשה
+            const response = await ReferralsAxios.addReferral(newHistoryItem);
+            console.log("newHistoryItem" + newHistoryItem)
+            const allReferrals = await ReferralsAxios.getAllReferrals();
+            myDispatch(FillReferralsData(allReferrals))
+
+
+            // עדכון רשימת ההיסטוריה עם ההיסטוריה החדשה שנוספה
+            setHistory((prevHistory) => [...prevHistory, response]);
+
+            // סגירת הדיאלוג וניקוי השדות
+            toggleAddDialog();
+            setNewHistory({ name: '', date: '', comment: '', created: '', updated: '' });
+
         } catch (error) {
             console.error('Error adding history:', error);
         }
     };
+
     const toggleAddDialog = () => {
         setOpenAddDialog(!openAddDialog);
     };
@@ -184,7 +218,7 @@ export const History = () => {
                             <TableRow key={index}>
                                 <TableCell align="center" sx={{ p: 1 }}>
                                     <Typography variant="body1" component="div">
-                                        {historyItem.referralSource}
+                                        {historyItem.referralSource.companyName}
                                     </Typography>
                                 </TableCell>
                                 <TableCell align="center" sx={{ p: 1 }}>
@@ -202,6 +236,62 @@ export const History = () => {
                     </TableBody>
                 </Table>
             </Paper>
+            <Box mt={2} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <IconButton
+                    variant="contained"
+                    startIcon={<AddIcon />}
+                    onClick={toggleAddDialog}
+                    color="primary">
+                    <AddIcon />
+                </IconButton>
+            </Box>
+            <Dialog open={openAddDialog} onClose={toggleAddDialog}>
+                <DialogTitle>הוסף היסטוריה חדשה</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        name="name"
+                        label="שם החברה"
+                        type="text"
+                        fullWidth
+                        variant="outlined"
+                        value={newHistory.name}
+                        onChange={handleInputChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        name="date"
+                        label="תאריך"
+                        type="datetime-local"
+                        fullWidth
+                        variant="outlined"
+                        value={newHistory.date}
+                        onChange={handleInputChange}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                    <TextField
+                        margin="dense"
+                        name="comment"
+                        label="תגובה"
+                        type="text"
+                        fullWidth
+                        variant="outlined"
+                        value={newHistory.comment}
+                        onChange={handleInputChange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={toggleAddDialog} color="primary">
+                        ביטול
+                    </Button>
+                    <Button onClick={addHistory} color="primary">
+                        הוסף
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <Button variant="contained" onClick={handleDetails}>
                 {showDetails ? "פחות פרטים " : " פרטים נוספים"}
             </Button>
