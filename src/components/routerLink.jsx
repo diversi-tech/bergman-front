@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Filter } from './filtering';
 import { EditingFilters } from './editingFilters';
@@ -12,25 +12,39 @@ import { WorkersManagement } from './workersManagement';
 import { Profile } from './profile';
 import { Nav } from './nav';
 import { Box } from '@mui/material';
+import { HomeCandidate } from './homeCandidate';
+import { useSelector } from 'react-redux';
+import ChangeProfile from './changeProfile';
+
+
 export const RouterLink = () => {
+
+    const userType = useSelector(state => state.userReducer.currentUserType);
+  
     return (
         <BrowserRouter>
-            <Nav></Nav>
-            <Box sx={{pt:'30px'}}>
+            {(userType === 1) && (
+                <Nav />
+            )}
+            <Box sx={{ pt: '60px' }}>
                 <Routes>
-                    <Route path="/Filter" element={<Filter></Filter>}></Route>
-                    <Route path="/Home" element={<Home></Home>}></Route>
-                    <Route path="/Manager" element={<Manager></Manager>}></Route>
-                    <Route path="/Secretary" element={<Secretary></Secretary>}></Route>
-                    <Route path="/EditingFilters" element={<EditingFilters></EditingFilters>}></Route>
-                    <Route path="/WorkersManagement" element={<WorkersManagement></WorkersManagement>}></Route>
-                    <Route path="/History" element={<History></History>}></Route>
-                    <Route path="/Profile" element={<Profile></Profile>}></Route>
-                    <Route path="/Login" element={<LoginModal></LoginModal>}></Route>
-                    <Route path="/SignUp" element={<SignUpModal></SignUpModal>}></Route>
-                    <Route path="/" element={<Home></Home>}></Route>
+                    <Route path="/Filter" element={<Filter />} />
+                    <Route path="/Home" element={<Home />} />
+                    <Route path="/Manager" element={<Manager />} />
+                    <Route path="/Secretary" element={<Secretary />} />
+                    <Route path="/EditingFilters" element={<EditingFilters />} />
+                    <Route path="/WorkersManagement" element={<WorkersManagement />} />
+                    <Route path="/History/:userId" element={<History />} />
+                    <Route path="/Profile" element={<Profile />} />
+                    <Route path="/Login" element={<LoginModal />} />
+                    <Route path="/SignUp" element={<SignUpModal />} />
+                    <Route path='/HomeCandidate' element={<HomeCandidate />} />
+                    <Route path='/changeProfile' element={<ChangeProfile/>}/>
+                    <Route path="/" element={<Home />} />
                 </Routes>
             </Box>
         </BrowserRouter>
     );
-}
+};
+
+
