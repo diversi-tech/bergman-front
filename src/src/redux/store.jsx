@@ -14,7 +14,7 @@ export const reduser = combineReducers({
     ReferralsReducer: ReferralsReducer,
     userReducer: UserReducer,
     userTypeReducer: UserTypeReducer,
-    enumReducer: EnumReducer
+    enamReducer: EnumReducer
 })
 
 export const store = createStore(reduser, applyMiddleware(thunk))

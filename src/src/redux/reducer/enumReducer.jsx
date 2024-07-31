@@ -6,7 +6,7 @@ export const InitalState = {
 
 export const EnumReducer = produce((state, action) => {
     switch(action.type){
-        case 'FILL_ENUM_DATA':
+        case 'FILL_ENAM_DATA':
              state.listEnum = action.payload
              break;
         default:

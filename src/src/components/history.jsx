@@ -32,16 +32,18 @@ export const History = () => {
     const myDispatch = useDispatch()
     const candidateId = userId;
     useEffect(() => {
+        
         const fetchCandidate = async () => {
+            debugger
             try {
                 const data = await CandidateAxios.getCandidateById(candidateId);
-                console.log("candidate:" + data);
+                console.log("candidate:" , data);
                 setCandidateDetails(prevDetails => ({
                     ...prevDetails,
-                    name: data.firstName + " " + data.lastName,
+                    name: data.person.firstName + " " + data.person.lastName,
                     phone: data.phoneNumber,
                     email: data.email,
-                    address: data.city + " " + data.address + " " + data.state,
+                    address: data.city ,
                     experience: data.experienceYears,
                     summary: data.summary,
                     skills: data.skills,
@@ -52,6 +54,10 @@ export const History = () => {
                     userId: data.userId,
                     cv: data.cvEnglishFile
                 }));
+                console.log("city: ",data.person.firstName)
+                console.log("city1: ",data.user.person.lastName)
+
+                console.log("candidateDetails:",candidateDetails)
 
             } catch (error) {
                 console.error('Error fetching candidate profile:', error);
@@ -70,26 +76,44 @@ export const History = () => {
                 console.error('Error fetching referrals:', error);
             }
         };
-        const fetchUser = async () => {
-            try {
-                const response = await UserAxios.getAllUsers();
-                // console.log(response);
-                const users = response;
-                setUser(users);
-                // const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
-                // if (filteredUser) {
-                //     setCandidateDetails(prevDetails => ({
-                //         ...prevDetails,
-                //         email: filteredUser.email
-                //     }));
-                // }
-            } catch (error) {
-                console.error('Error fetching users:', error);
-            }
-        };
+        // const fetchUser = async () => {
+        //     try {
+        //         const response = await UserAxios.getAllUsers();
+        //         // console.log(response);
+        //         const users = response;
+        //         setUser(users);
+        //         // const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
+        //         // if (filteredUser) {
+        //         //     setCandidateDetails(prevDetails => ({
+        //         //         ...prevDetails,
+        //         //         email: filteredUser.email
+        //         //     }));
+        //         // }
+        //     } catch (error) {
+        //         console.error('Error fetching users:', error);
+        //     }
+        // };
+        // const fetchPerson = async () => {
+        //     try {
+        //         const response = await PersonAxios.getAllPersons();
+        //         console.log("persons",response);
+        //         const users = response;
+        //         setUser(users);
+        //         // const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
+        //         // if (filteredUser) {
+        //         //     setCandidateDetails(prevDetails => ({
+        //         //         ...prevDetails,
+        //         //         email: filteredUser.email
+        //         //     }));
+        //         // }
+        //     } catch (error) {
+        //         console.error('Error fetching users:', error);
+        //     }
+        // };
         fetchCandidate();
-        fetchUser();
+        // fetchUser();
         fetchHistory();
+        // fetchPerson();
     }, [candidateId, candidateDetails.userId]);
     console.log("history",history)
 
