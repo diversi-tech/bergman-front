@@ -1,8 +1,9 @@
 import axios from 'axios';
 
+const API_URL = 'http://localhost:8080/api/candidate'; 
 
-const API_URL = 'http://localhost:8080/api/candidate';
 const CandidateAxios = {
+
     getAllCandidate: async () => {
         try {
                 const response = await axios.get(`${API_URL}`);
@@ -18,7 +19,7 @@ const CandidateAxios = {
         try {
                 const response = await axios.get(`${API_URL}/${candidateId}`);
                 return response.data;
-            }
+            } 
         catch (error)
            {
                 console.error('Error fetching :', error);
@@ -29,8 +30,8 @@ const CandidateAxios = {
         try {
                 const response = await axios.post(`${API_URL}`, candidate);
                 return response.data;
-            }
-        catch (error)
+            } 
+        catch (error) 
            {
                 console.error('Error adding :', error);
                 throw error;
@@ -41,7 +42,7 @@ const CandidateAxios = {
         {
             const response = await axios.delete(`${API_URL}/${candidateId}`);
             return response.data;
-        }
+        } 
         catch (error)
         {
             console.error('Error deleting :', error);
@@ -53,7 +54,7 @@ const CandidateAxios = {
        {
             const response = await axios.put(`${API_URL}/${id}`, candidate);
             return response.data;
-        }
+        } 
         catch (error)
         {
             console.error('Error updating :', error);
@@ -62,6 +63,3 @@ const CandidateAxios = {
     }
 };
 export default CandidateAxios;
-
-
-

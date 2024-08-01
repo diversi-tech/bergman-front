@@ -749,8 +749,8 @@ import {
   Toolbar,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import CandidateProfilesAxios from "../axios/candidateProfileAxios";
-import { FillCavdidateProfileData } from "../redux/action/candidate_profileAction";
+import CandidateAxios from '../axios/candidateAxios';
+import { FillCavdidateProfileData } from '../redux/action/candidate_profileAction';
 import UserAxios from "../axios/userAxios";
 import { FillUsersData } from "../redux/action/userAction";
 import OptionsAxios from "../axios/optionsAxios";
@@ -1172,12 +1172,10 @@ export const Filter = ({ onClose, candidate }) => {
   const handleEditSubmit = async () => {
     try {
       // dispatch(FillCavdidateProfileData(response.data));
-      await CandidateAxios.updateCandidate(
-        currentCandidate.id,
-        currentCandidate
-      );
-      setOpenEdit(false);
-      const candidate1 = await CandidateAxios.getAllCandidate();
+
+      await CandidateAxios.updateCandidate(currentCandidate.candidateId, currentCandidate);
+      setOpenEdit(false)
+      const candidate1 = await CandidateAxios.getAllCandidate()
       setCandidatesFromServer(candidate1);
       dispatch(FillCavdidateProfileData(candidate1.data));
       alert(
