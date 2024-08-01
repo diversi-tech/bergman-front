@@ -800,7 +800,7 @@ import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
 import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
 import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
-import CandidateAxios from "../axios/candidateProfileAxios";
+// import CandidateAxios from "../axios/candidateAxios";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
