@@ -1103,9 +1103,7 @@ export const Filter = ({ onClose, candidate }) => {
     const candidate = filteredCandidates.find(
       (u) => u.id === candidateId
     );
-    const userId = candidate.id;
-    const candidateEmail =
-      users.find((user) => user.id === userId)?.person.email || "N/A";
+    const candidateEmail = candidate.person.email;
 
     if (greenCandidates.includes(candidateId)) {
       // אם הכפתור היה בצבע ירוק ואנחנו מעבירים אותו לכחול
@@ -1124,8 +1122,8 @@ export const Filter = ({ onClose, candidate }) => {
   const handleEditOpen = (candidate) => {
 
     
-    const candidateEmail =
-    filteredCandidates.find((u) => u.id === candidate.id)?.person.email || "";
+    const candidateEmail = candidate.person.email;
+    // filteredCandidates.find((u) => u.id === candidate.id)?.person.email || "";
     const referral =
       referrals.find((r) => r.id === candidate.id) || {};
     setCurrentCandidate({
@@ -1140,7 +1138,7 @@ export const Filter = ({ onClose, candidate }) => {
         : "",
       remarks: referral.remarks || "",
       country: candidate.country || "",
-      city: candidate.city || "",
+      city: candidate.cityName || "",
       experience: candidate.experience || "",
       summary: candidate.summary || "",
       education: candidate.education || "",
@@ -1426,6 +1424,7 @@ export const Filter = ({ onClose, candidate }) => {
                         )}
                         renderInput={(params) => (
                           <TextField
+                          
                             {...params}
                             label="נמענים"
                             inputProps={{
