@@ -16,7 +16,6 @@ const pulseAnimation = keyframes`
 `;
 
 export const Home = () => {
-
     const userType = useSelector(state => state.userReducer.currentUserType);
     const user = useSelector(state => state.userReducer.currentUser)
     const navigate = useNavigate();
@@ -61,7 +60,7 @@ export const Home = () => {
                             </Box>)}
                         {(userType !== 0 && userType !== 1) && (
                             <Box sx={{ paddingLeft: '10px' }}>
-                                <Typography variant='body5' >שלום {user.username}</Typography>
+                                <Typography variant='body5' >שלום {user.person.firstName}</Typography>
                             </Box>
                         )}
                     </Box>
