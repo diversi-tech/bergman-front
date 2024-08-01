@@ -35,15 +35,15 @@ export const History = () => {
         const fetchCandidate = async () => {
             try {
                 const data = await CandidateAxios.getCandidateById(candidateId);
-                console.log("candidate:" + data);
+                console.log("candidate:", data);
                 setCandidateDetails(prevDetails => ({
                     ...prevDetails,
-                    name: data.firstName + " " + data.lastName,
-                    phone: data.phoneNumber,
-                    email: data.email,
-                    address: data.city + " " + data.address + " " + data.state,
+                    name: data.person.firstName + " " + data.person.lastName,
+                    phone: data.person.phoneNumber,
+                    email: data.person.email,
+                    address: data.city.optionsValue,
                     experience: data.experienceYears,
-                    summary: data.summary,
+                    summary: data.coverLater,
                     skills: data.skills,
                     education: data.education,
                     certifications: data.certifications,
@@ -53,6 +53,8 @@ export const History = () => {
                     cv: data.cvEnglishFile
                 }));
 
+                console.log("candidateDetails:", candidateDetails)
+
             } catch (error) {
                 console.error('Error fetching candidate profile:', error);
             }
@@ -61,37 +63,22 @@ export const History = () => {
             try {
                 const response = await ReferralsAxios.getAllReferrals();
                 console.log("referrals:", response);
-                console.log("candidateId:"+candidateId)
+                console.log("candidateId:" + candidateId)
                 // console.log("response:", response.referralSource[candidateId].id);
                 const candidateReferrals = response.filter(referral => referral.referralSource.id === parseInt(candidateId));
-                console.log("candidateReferrals:",candidateReferrals)
+                console.log("candidateReferrals:", candidateReferrals)
                 setHistory(candidateReferrals);
             } catch (error) {
                 console.error('Error fetching referrals:', error);
             }
         };
-        const fetchUser = async () => {
-            try {
-                const response = await UserAxios.getAllUsers();
-                // console.log(response);
-                const users = response;
-                setUser(users);
-                // const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
-                // if (filteredUser) {
-                //     setCandidateDetails(prevDetails => ({
-                //         ...prevDetails,
-                //         email: filteredUser.email
-                //     }));
-                // }
-            } catch (error) {
-                console.error('Error fetching users:', error);
-            }
-        };
+        
         fetchCandidate();
-        fetchUser();
+        // fetchUser();
         fetchHistory();
+        // fetchPerson();
     }, [candidateId, candidateDetails.userId]);
-    console.log("history",history)
+    console.log("history", history)
 
     const handleDetails = () => {
         setShowDetails(prevShowDetails => !prevShowDetails);
@@ -319,11 +306,11 @@ export const History = () => {
                                 <Typography sx={{ fontWeight: 'bold' }}>השכלה:</Typography>
                                 <Typography variant="body1">{candidateDetails.education}</Typography>
                             </Box>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                 <BuildIcon color="primary" />
                                 <Typography sx={{ fontWeight: 'bold' }}>כישרונות:</Typography>
                                 <Typography variant="body1">{candidateDetails.skills}</Typography>
-                            </Box>
+                            </Box> */}
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                 <GitHubIcon color="primary" />
                                 <Typography sx={{ fontWeight: 'bold' }}>גיטהב:</Typography>
@@ -341,3 +328,39 @@ export const History = () => {
         </Box>
     );
 };
+
+
+// const fetchUser = async () => {
+        //     try {
+        //         const response = await UserAxios.getAllUsers();
+        //         // console.log(response);
+        //         const users = response;
+        //         setUser(users);
+        //         // const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
+        //         // if (filteredUser) {
+        //         //     setCandidateDetails(prevDetails => ({
+        //         //         ...prevDetails,
+        //         //         email: filteredUser.email
+        //         //     }));
+        //         // }
+        //     } catch (error) {
+        //         console.error('Error fetching users:', error);
+        //     }
+        // };
+        // const fetchPerson = async () => {
+        //     try {
+        //         const response = await PersonAxios.getAllPersons();
+        //         console.log("persons",response);
+        //         const users = response;
+        //         setUser(users);
+        //         // const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
+        //         // if (filteredUser) {
+        //         //     setCandidateDetails(prevDetails => ({
+        //         //         ...prevDetails,
+        //         //         email: filteredUser.email
+        //         //     }));
+        //         // }
+        //     } catch (error) {
+        //         console.error('Error fetching users:', error);
+        //     }
+        // };
