@@ -919,6 +919,7 @@ export const Filter = ({ onClose, candidate }) => {
           setUserOptions(referrals1);
         } else {
           const response = await ReferralsAxios.getAllReferrals();
+          console.log("refferal: ",response)
           setReferrals(response);
           dispatch(FillReferralsData(response.data));
         }
