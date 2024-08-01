@@ -939,16 +939,16 @@ export const Filter = ({ onClose, candidate }) => {
   ]);
 
   useEffect(() => {
-    setFilteredCandidates(users);
+    setFilteredCandidates(candidatesFromServer);
     if (emails.length > 0 && subject) {
       setIsSendDisabled(false);
     } else {
       setIsSendDisabled(true);
     }
-  }, [emails, subject]);
+  }, [candidatesFromServer,emails, subject]);
   useEffect(() => {
     if (open) {
-      setCurrentCandidate(users);
+      setCurrentCandidate(candidatesFromServer);
     }
   }, [open, candidate]);
 
@@ -1072,7 +1072,7 @@ export const Filter = ({ onClose, candidate }) => {
           <body>
             <div class="container">
                <h3>${body}</h3>
-               <a href="http://localhost:3000/" class="button"> לאתר..... </a>
+               <a href="https://bergman-front.onrender.com/" class="button"> לאתר..... </a>
               <div class="footer">
                 <h4>בברכה<br/>חנה ברגמן</h4>
               </div>
@@ -1099,7 +1099,7 @@ export const Filter = ({ onClose, candidate }) => {
     }
   };
   const toggleCandidateColor = (candidateId) => {
-    const candidate = users.find(
+    const candidate = filteredCandidates.find(
       (u) => u.id === candidateId
     );
     const userId = candidate.id;
@@ -1124,7 +1124,7 @@ export const Filter = ({ onClose, candidate }) => {
 
     
     const candidateEmail =
-      users.find((u) => u.id === candidate.id)?.person.email || "";
+    filteredCandidates.find((u) => u.id === candidate.id)?.person.email || "";
     const referral =
       referrals.find((r) => r.id === candidate.id) || {};
     setCurrentCandidate({
@@ -1629,7 +1629,7 @@ export const Filter = ({ onClose, candidate }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map((candidate, index) => (
+              {filteredCandidates.map((candidate, index) => (
                 <TableRow key={index}>
                   <TableCell align="center">
                     <IconButton

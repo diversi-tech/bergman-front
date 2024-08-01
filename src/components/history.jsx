@@ -41,7 +41,7 @@ export const History = () => {
                     name: data.person.firstName + " " + data.person.lastName,
                     phone: data.person.phoneNumber,
                     email: data.person.email,
-                    address: data.city.optionsValue,
+                    address: data.cityName,
                     experience: data.experienceYears,
                     summary: data.coverLater,
                     skills: data.skills,
