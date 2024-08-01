@@ -108,7 +108,6 @@ export const Login = () => {
     if (user) {
       myDispatch(setMyUser(user.userType.id))
       myDispatch(currentUser(user))
-      console.log(user)
       if (user.userType.id == 1) {
         myNavigate('/Manager')
       }

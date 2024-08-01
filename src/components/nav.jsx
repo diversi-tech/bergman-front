@@ -61,7 +61,7 @@ export const Nav = () => {
                     הרשמה
                 </Button>
                 <Box sx={{ flexGrow: 1 }}></Box>
-                <Typography>שלום {user.username}</Typography>
+                <Typography>שלום {user.person.firstName}</Typography>
             </Toolbar>
         </AppBar>
     );
