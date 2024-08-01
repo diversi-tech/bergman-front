@@ -1,10 +1,9 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/candidateProfiles'; 
 
-const CandidateProfilesAxios = {
-
-    getAllCandidateProfiles: async () => {
+const API_URL = 'http://localhost:8080/api/candidate';
+const CandidateAxios = {
+    getAllCandidate: async () => {
         try {
                 const response = await axios.get(`${API_URL}`);
                 return response.data;
@@ -15,46 +14,46 @@ const CandidateProfilesAxios = {
                 throw error;
             }
     },
-    getCandidateProfileById: async (candidateProfileId) => {
+    getCandidateById: async (candidateId) => {
         try {
-                const response = await axios.get(`${API_URL}/${candidateProfileId}`);
+                const response = await axios.get(`${API_URL}/${candidateId}`);
                 return response.data;
-            } 
+            }
         catch (error)
            {
                 console.error('Error fetching :', error);
                 throw error;
            }
     },
-    addCandidateProfile: async (candidateProfile) => {
+    addCandidate: async (candidate) => {
         try {
-                const response = await axios.post(`${API_URL}`, candidateProfile);
+                const response = await axios.post(`${API_URL}`, candidate);
                 return response.data;
-            } 
-        catch (error) 
+            }
+        catch (error)
            {
                 console.error('Error adding :', error);
                 throw error;
            }
     },
-    deleteCandidateProfileById: async (candidateProfileId) => {
+    deleteCandidateById: async (candidateId) => {
         try
         {
-            const response = await axios.delete(`${API_URL}/${candidateProfileId}`);
+            const response = await axios.delete(`${API_URL}/${candidateId}`);
             return response.data;
-        } 
+        }
         catch (error)
         {
             console.error('Error deleting :', error);
             throw error;
         }
     },
-    updateCandidateProfile: async (id, candidateProfile) => {
+    updateCandidate: async (id, candidate) => {
         try
        {
-            const response = await axios.put(`${API_URL}/${id}`, candidateProfile);
+            const response = await axios.put(`${API_URL}/${id}`, candidate);
             return response.data;
-        } 
+        }
         catch (error)
         {
             console.error('Error updating :', error);
@@ -62,4 +61,7 @@ const CandidateProfilesAxios = {
         }
     }
 };
-export default CandidateProfilesAxios;
+export default CandidateAxios;
+
+
+
