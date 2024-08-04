@@ -4,7 +4,7 @@ const API_URL = 'http://localhost:8080';
 
 export const requestPasswordReset = async (email) => {
   try {
-    debugger
+    
     const response = await axios.get(`${API_URL}/request-password-reset`, { params: { email } });
     return response.data;
   } catch (error) {
@@ -15,8 +15,12 @@ export const requestPasswordReset = async (email) => {
 
 export const resetPassword = async (token, newPassword) => {
   try {
-    debugger
-    const response = await axios.get(`${API_URL}/reset-password`, { params: { token, newPassword } });
+    const response = await axios.put(`${API_URL}/reset-password`, null, {
+      params: {
+        token,
+        newPassword
+      }
+    });
     return response.data;
   } catch (error) {
     console.error('Error resetting password:', error);
