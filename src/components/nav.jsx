@@ -8,6 +8,7 @@ import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import { useSelector } from 'react-redux';
+import BusinessIcon from '@mui/icons-material/Business';
 
 export const Nav = () => {
     const user = useSelector(state => state.userReducer.currentUser)
@@ -57,6 +58,13 @@ export const Nav = () => {
                         <LoginIcon />
                     </Button>
                 </Tooltip>
+
+                <Tooltip title="ניהול חברות" arrow>
+                     <Button color="inherit" component={Link} to ="/CompanyManagement">
+                        <BusinessIcon />
+                     </Button>
+                </Tooltip>
+
                 <Button color="inherit" component={Link} to="/SignUp">
                     הרשמה
                 </Button>

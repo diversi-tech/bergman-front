@@ -7,6 +7,7 @@ import { UserTypeReducer } from "./reducer/userTypeReducer";
 import { EnumReducer } from "./reducer/enumReducer";
 import {thunk} from 'redux-thunk';
 import { OptionsReducer } from "./reducer/optionsReducer";
+import { CompanyReducer } from "./reducer/companyReducer";
 
 
 export const reduser = combineReducers({
@@ -16,7 +17,8 @@ export const reduser = combineReducers({
     userReducer: UserReducer,
     userTypeReducer: UserTypeReducer,
     enamReducer: EnumReducer,
-    OptionsReducer:OptionsReducer
+    OptionsReducer:OptionsReducer,
+    companyReducer:CompanyReducer
 })
 
 export const store = createStore(reduser, applyMiddleware(thunk))
