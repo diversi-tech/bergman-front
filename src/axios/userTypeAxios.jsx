@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/userTypes'; 
+const API_URL = 'http://bergman-back-2.onrender.com/api/userTypes'; 
 
 const UserTypesAxios = {
 

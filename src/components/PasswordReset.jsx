@@ -25,7 +25,7 @@ export const PasswordReset = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const token = params.get("token");
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (password.length < 6) {
@@ -37,8 +37,11 @@ export const PasswordReset = () => {
       return;
     }
     try {
+      debugger
       const response = await resetPassword(token, password);
-      navigate('/Home')
+      if(response){
+      navigate("/Home");
+    }
     } catch (error) {
       setMessage("שגיאה באיפוס הסיסמא");
     }
