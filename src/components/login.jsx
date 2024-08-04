@@ -103,21 +103,17 @@ export const Login = () => {
       setError(true);
       return;
     }
-
     // הוספת הלוגיקה להתחברות כאן
-
-    const user = usersList.find(user => user.email === email && user.password === password);
+    const user = usersList.find((x) => x.person.email ==email && x.password ==password);
     if (user) {
-      myDispatch(setMyUser(user.userType))
+      myDispatch(setMyUser(user.userType.id))
       myDispatch(currentUser(user))
-      console.log(user)
-
-      if (user.userType === 1) {
+      if (user.userType.id == 1) {
         myNavigate('/Manager')
       }
-      else if (user.userType === 2)
+      else if (user.userType.id == 2)
         myNavigate('/Home')
-      else
+      else if(user.userType.id == 3)
         myNavigate('/Secretary')
     }
     else {
