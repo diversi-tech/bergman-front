@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/users'; // שים כאן את ה-URL שלך לקונטרולר
+const API_URL = 'http://localhost:8080/api/users';
 
 
 const UserAxios = {
@@ -67,8 +67,3 @@ const UserAxios = {
   }
 };
 export default UserAxios;
-
-
-
-
-

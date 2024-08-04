@@ -703,14 +703,7 @@ export const Filter = ({ onClose, candidate }) => {
             </Button>
           </Tooltip>
         </DialogActions>
-        {/* <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
-          <Alert onClose={handleSnackbarClose} severity="success">
-            {snackbarMessage}
-          </Alert>
-        </Snackbar> */}
-
       </Dialog>
-
     </div>
   );
 };
