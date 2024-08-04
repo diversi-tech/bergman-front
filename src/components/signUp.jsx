@@ -1,15 +1,6 @@
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
-import {
-  Backdrop,
-  Box,
-  Button,
-  Container,
-  Fade,
-  Modal,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Backdrop, Box, Button, Container, Fade, Modal, TextField, Typography,} from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
 import { Provider, useDispatch } from "react-redux";
@@ -137,8 +128,11 @@ const SignUp = () => {
 
     try {
       await UserAxios.addUser(newUser);
+      // הבאת כל המשתמשים לאחר ההוספה
       const allUsers = await UserAxios.getAllUsers();
       myDispatch(FillUsersData(allUsers));
+
+      // שליחת מייל למשתמש החדש
       try {
         const message = {
           to: [newUser.email],

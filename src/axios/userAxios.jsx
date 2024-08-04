@@ -32,7 +32,13 @@ const UserAxios = {
   addUser: async (user) => {
     try 
     {
-      const response = await axios.post(`${API_URL}`, user);
+      // הוספת הכותרת Content-Type
+      const response = await axios.post(`${API_URL}`, user, {
+        headers: {
+          'Content-Type': 'application/json', // קובע שהנתונים נשלחים כ-JSON
+        },
+      });
+      // const response = await axios.post(`${API_URL}`, user);
       return response.data;
     } 
     catch (error)
@@ -56,7 +62,12 @@ const UserAxios = {
   updateUser: async (id, updatedUser) => {
     try 
     {
-      const response = await axios.put(`${API_URL}/${id}`, updatedUser);
+      const response = await axios.put(`${API_URL}/${id}`, updatedUser, {
+        headers: {
+          'Content-Type': 'application/json', // קובע שהנתונים נשלחים כ-JSON
+        },
+      });
+      // const response = await axios.put(`${API_URL}/${id}`, updatedUser);
       return response.data;
     } 
     catch (error)
