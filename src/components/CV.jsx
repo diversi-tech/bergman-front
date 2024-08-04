@@ -336,15 +336,16 @@
 // };
 
 // export default CV;
-
+import React, { useEffect } from 'react';
 import { Box, Button, Container, Snackbar, Alert, CircularProgress, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Backdrop, IconButton, Tooltip } from '@mui/material';
 import { styled } from '@mui/system';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DescriptionIcon from '@mui/icons-material/Description';
 import Downloading from '@mui/icons-material/Downloading';
-import * as React from 'react';
-import { useSelector } from 'react-redux'; // assuming you are using redux
+import { useDispatch, useSelector } from 'react-redux'; // assuming you are using redux
 import FileAxios from '../axios/fileAxios'; // adjust the path to your axios instance
+import CandidateAxios from '../axios/candidateAxios';
+import { FillCavdidateProfileData } from '../redux/action/candidate_profileAction';
 
 const FileInput = styled('input')({
   display: 'none',
@@ -362,7 +363,33 @@ export const CV = () => {
   const [dialogSeverity, setDialogSeverity] = React.useState('success');
   const [viewFile, setViewFile] = React.useState(null);
   const [fileUrl, setFileUrl] = React.useState(null);
+  // const [candidatesFromServer, setCandidatesFromServer] = React.useState([]);
+  // const dispatch = useDispatch();
 
+  // const candidateProfiles = useSelector((state) => state.listCandidateProfile);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     debugger
+
+  //     try {
+  //       if (candidateProfiles > 0) {
+  //         setCandidatesFromServer(candidateProfiles);
+  //       } else {
+  //         const response = await CandidateAxios.getAllCandidate();
+  //         setCandidatesFromServer(response);
+  //         dispatch(FillCavdidateProfileData(response.data));
+  //       }
+  //     } catch (error) {
+  //       console.error("Error:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [
+  //   dispatch,
+  //   candidateProfiles,
+  // ]);
   const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
   const handleFileChange = (e, language) => {
@@ -384,7 +411,7 @@ export const CV = () => {
   const handleFileUpload = async (file, language) => {
     if (!file) return;
 
-    const newFileName = `${user.userId}_${language}_${file.name}`;
+    const newFileName = `${user.id}_${language}`;
     const renamedFile = new File([file], newFileName, { type: file.type });
 
     try {
@@ -408,7 +435,7 @@ export const CV = () => {
       return;
     }
 
-   
+
     setLoading(true);
     try {
       if (hebrewFile) {
@@ -419,12 +446,14 @@ export const CV = () => {
       }
 
       setDialogTitle('Success');
-      setDialogMessage('הקבצים הועלו בהצלחה: ' + 
-        (hebrewFile ? hebrewFile.name : '') + 
-        (hebrewFile && englishFile ? ', ' : '') + 
+      setDialogMessage('הקבצים הועלו בהצלחה: ' +
+        (hebrewFile ? hebrewFile.name : '') +
+        (hebrewFile && englishFile ? ', ' : '') +
         (englishFile ? englishFile.name : ''));
       setDialogSeverity('success');
       setDialogOpen(true);
+      user.cvHebrewFile=hebrewFile;
+      user.cvEnglishFile=englishFile;
       setHebrewFile(null);
       setEnglishFile(null);
     } catch (error) {

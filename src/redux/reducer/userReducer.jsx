@@ -17,6 +17,7 @@ export const UserReducer = produce((state, action) => {
                break
           case 'CURRENT_USER':
                state.currentUser = action.payload
+               break;
           default:
                return state;
      }
