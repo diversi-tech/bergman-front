@@ -35,8 +35,6 @@ export const Nav = () => {
                 <Button color="inherit" component={Link} to="/Sign_up">
                 הרשמה
                 </Button>
-                <Box sx={{ flexGrow: 1 }}></Box>
-                <Typography>שלום {user.person.firstName}</Typography>
             </Toolbar>
         </AppBar>
     );
