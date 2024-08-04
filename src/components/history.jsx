@@ -1,23 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Table, TableBody, TableCell, TableHead, TableRow, Button, Typography, Paper, TextField, IconButton, Tooltip, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment, Grid } from '@mui/material';
-import ReferralsAxios from '../axios/referralsAxios';
-import CandidateAxios from '../axios/candidateAxios';
-import UserAxios from '../axios/userAxios';
-import { useParams } from 'react-router-dom';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import WorkIcon from '@mui/icons-material/Work';
-import DescriptionIcon from '@mui/icons-material/Description';
-import SchoolIcon from '@mui/icons-material/School';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import BuildIcon from '@mui/icons-material/Build';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import PersonIcon from '@mui/icons-material/Person';
-import PhoneIcon from '@mui/icons-material/Phone';
-import EmailIcon from '@mui/icons-material/Email';
-import FileAxios from '../axios/fileAxios';
-import AddIcon from '@mui/icons-material/Add';
-import { useDispatch } from 'react-redux';
-import { FillReferralsData } from '../redux/action/referralsAction';
+import React from 'react'
 
 export const History = () => {
     const { userId } = useParams();
