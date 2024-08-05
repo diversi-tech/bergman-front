@@ -79,7 +79,7 @@ import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
 import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { FillCandidateOptionsData } from "../redux/action/candidateOptionsAction";
-import CandidateOptionsAxios from "../axios/userOptionsAxios";
+import CandidateOptionsAxios from "../axios/candidateOptionsAxios";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -159,13 +159,13 @@ export const Filter = ({ onClose, candidate }) => {
       debugger
 
       try {
-        // if (candidateProfiles > 0) {
-        //   setCandidatesFromServer(candidateProfiles);
-        // } else {
-        //   const response = await CandidateAxios.getAllCandidate();
-        //   setCandidatesFromServer(response);
-        //   dispatch(FillCavdidateProfileData(response.data));
-        // }
+        if (candidateProfiles > 0) {
+          setCandidatesFromServer(candidateProfiles);
+        } else {
+          const response = await CandidateAxios.getAllCandidate();
+          setCandidatesFromServer(response);
+          dispatch(FillCavdidateProfileData(response.data));
+        }
         if (users1 > 0) {
           setUsers(users1);
         } else {
