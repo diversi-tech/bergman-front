@@ -328,39 +328,3 @@ export const History = () => {
         </Box>
     );
 };
-
-
-// const fetchUser = async () => {
-        //     try {
-        //         const response = await UserAxios.getAllUsers();
-        //         // console.log(response);
-        //         const users = response;
-        //         setUser(users);
-        //         // const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
-        //         // if (filteredUser) {
-        //         //     setCandidateDetails(prevDetails => ({
-        //         //         ...prevDetails,
-        //         //         email: filteredUser.email
-        //         //     }));
-        //         // }
-        //     } catch (error) {
-        //         console.error('Error fetching users:', error);
-        //     }
-        // };
-        // const fetchPerson = async () => {
-        //     try {
-        //         const response = await PersonAxios.getAllPersons();
-        //         console.log("persons",response);
-        //         const users = response;
-        //         setUser(users);
-        //         // const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
-        //         // if (filteredUser) {
-        //         //     setCandidateDetails(prevDetails => ({
-        //         //         ...prevDetails,
-        //         //         email: filteredUser.email
-        //         //     }));
-        //         // }
-        //     } catch (error) {
-        //         console.error('Error fetching users:', error);
-        //     }
-        // };

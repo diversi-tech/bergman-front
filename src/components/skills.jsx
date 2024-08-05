@@ -33,11 +33,9 @@ const Skills = () => {
       setSkillsOpen(false);
     }
   };
-
   const handleInputClick = () => {
     setSkillsOpen(true);
   };
-
   const filterOptions = (options, { inputValue }) => {
     if (inputValue === '') return options;
     const filtered = options.filter(option =>
@@ -45,7 +43,6 @@ const Skills = () => {
     );
     return filtered.length > 0 ? filtered : ['אין תוצאות'];
   };
-
   const categorizedSelectedSkills = Object.keys(categorizedSkills).reduce((acc, category) => {
     const selected = selectedSkills.filter(skill => categorizedSkills[category].includes(skill));
     if (selected.length > 0) {
@@ -61,7 +58,6 @@ const Skills = () => {
           <BuildIcon sx={{ marginRight: 1 }} />
           <Typography variant="h7" gutterBottom>אילו מיומניות תרצה להוסיף לפרופיל שלך?</Typography>
         </Box>
-       
         <FormControl fullWidth variant="outlined" focused={skillsOpen}>
           <Autocomplete
             id="skills"
