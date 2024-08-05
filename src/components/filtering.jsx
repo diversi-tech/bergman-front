@@ -79,7 +79,7 @@ import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
 import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { FillCandidateOptionsData } from "../redux/action/candidateOptionsAction";
-import CandidateOptionsAxios from "../axios/userOptionsAxios";
+import CandidateOptionsAxios from "../axios/candidateOptionsAxios";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -510,12 +510,10 @@ export const Filter = ({ onClose, candidate }) => {
         })
         .map((c) => c.id);
     };
-  
     const languageCandidates = filterByType("שפות", selectedLanguages);
     const techCandidates = filterByType("טכנולוגיות", selectedTechnologies);
     const locationCandidates = filterByType("ערים", selectedLocations);
     const programmingLangCandidates = filterByType("שפות תכנות", selectedProgrammingLanguages);
-  
     // פילטר סופי של מועמדים לפי כל הקריטריונים הנבחרים
     const finalCandidates = candidatesFromServer.filter(
       (candidate) =>
@@ -524,10 +522,8 @@ export const Filter = ({ onClose, candidate }) => {
         locationCandidates.includes(candidate.id) &&
         programmingLangCandidates.includes(candidate.id)
     );
-  
     setFilteredCandidates(finalCandidates);
   };
-  
   const handleView = async (fileName) => {
     debugger;
     if (!fileName) {

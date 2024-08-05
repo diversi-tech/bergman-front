@@ -1,3 +1,4 @@
+
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -29,12 +30,10 @@ const theme =
             mode: 'light',
         },
     });
-
 const cacheRtl = createCache({
     key: 'muirtl',
     stylisPlugins: [prefixer, rtlPlugin],
 });
-
 export const Manager = () => {
     const dispatch = useDispatch();
     const users1 = useSelector(state => state.listUsers);
@@ -56,7 +55,6 @@ export const Manager = () => {
     const [showTable, setShowTable] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -80,43 +78,34 @@ export const Manager = () => {
                 console.error('Error fetching data:', error);
             }
         };
-
         fetchData();
     }, [dispatch]);
-
     const handleEditOpen = (manager) => {
         debugger
         setCurrentManager(manager);
         setOpenEdit(true);
     };
-
     const handleEditClose = () => {
         setOpenEdit(false);
         setEmailError('');
     };
-
     const handleAddOpen = () => {
         setNewManager({ username: '', email: '', password: '', createdAt: new Date() });
         setOpenAdd(true);
     };
-
     const handleAddClose = () => {
         setNewManager({ username: '', email: '', password: '', createdAt: new Date() });
         setEmailError('');
         setOpenAdd(false);
     };
-
     const handleDeleteWarningOpen = (manager) => {
         setManagerToDelete(manager);
         setOpenDeleteWarning(true);
     };
-
-
     const handleDeleteWarningClose = () => {
         setOpenDeleteWarning(false);
         setManagerToDelete(null);
     };
-
     const handleDeleteConfirm = async () => {
         try {
             await userAxios.deleteUser(managerToDelete.userId);
@@ -130,15 +119,12 @@ export const Manager = () => {
             console.error('Error deleting user:', error);
         }
     };
-
     const validateEmail = (email) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
     };
-
     const handleEditChange = (e) => {
         const { name, value } = e.target;
-
         // Update the person object within currentManager
         setCurrentManager(prevManager => ({
             ...prevManager,
@@ -147,7 +133,6 @@ export const Manager = () => {
                 [name]: value
             }
         }));
-
         if (name === 'email') {
             if (!validateEmail(value)) {
                 setEmailError('כתובת מייל לא תקינה');
@@ -156,8 +141,6 @@ export const Manager = () => {
             }
         }
     };
-
-
     const handleAddChange = (e) => {
         const { name, value } = e.target;
         setNewManager({ ...newManager, [name]: value });
@@ -169,12 +152,10 @@ export const Manager = () => {
             }
         }
     };
-
     const handleUserTypeChange = (e) => {
         const userType = e.target.value;
         setNewManager({ ...newManager, userType });
     };
-
     const handleUserTypeEditChange = (e) => {
         const selectedUserTypeId = e.target.value;
         // למצוא את סוג המשתמש המתאים מתוך הרשימה
@@ -185,7 +166,6 @@ export const Manager = () => {
             userType: selectedUserType || { id: '', userTypeName: '' }
         }));
     };
-
     const handleEditSubmit = async () => {
         debugger
         if (emailError) return;
@@ -201,7 +181,6 @@ export const Manager = () => {
             console.error('Error updating manager:', error);
         }
     };
-
     const handleAddSubmit = async () => {
         if (emailError) return;
         try {
@@ -216,26 +195,22 @@ export const Manager = () => {
             console.error('Error adding manager:', error);
         }
     };
-
     const handleEmailDialogOpen = (email) => {
         setEmailRecipient(email);
         setOpenEmailDialog(true);
     };
-
     const handleEmailDialogClose = () => {
         setOpenEmailDialog(false);
         setEmailRecipient('');
         setEmailSubject('');
         setEmailBody('');
     };
-
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
         setSnackbarOpen(false);
     };
-
     const renderTable = () => (
         <>
             <Typography variant="h4" color={'black'} sx={{ mb: 2, fontWeight: 'bold' }} style={{ marginTop: '50px' }}>רשימת המשתמשים</Typography>
@@ -293,282 +268,273 @@ export const Manager = () => {
                                     </TableCell>
                                 </TableRow>
                             ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <br></br>
-                <Tooltip title='הוסף משתמש'>
-                    <IconButton color="primary" onClick={handleAddOpen}>
-                        <AddIcon fontSize="large" />
-                    </IconButton>
-                </Tooltip>
-            </div>
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <br></br>
+            <Tooltip title='הוסף משתמש'>
+                <IconButton color="primary" onClick={handleAddOpen}>
+                    <AddIcon fontSize="large" />
+                </IconButton>
+            </Tooltip>
+        </div>
         </>
     );
-
-    return (
-        <>
-            {renderTable()}
-
-            <Dialog open={openEdit} onClose={handleEditClose} dir="rtl" //style={{ textAlign: 'center' }}
-                fullWidth
-                maxWidth="sm"
-                PaperProps={{
-                    style: {
-                        minHeight: '50vh', // גובה מינימלי
-                        maxHeight: '90vh', // גובה מקסימלי
-                    },
-                }}>
-                <DialogTitle>ערוך מנהל</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>ערוך את פרטי המנהל</DialogContentText>
-                    <CacheProvider value={cacheRtl}>
-                        <ThemeProvider theme={theme}>
-                            <div dir="rtl">
-                                <TextField
-                                    margin="dense"
-                                    name="firstName"
-                                    label="שם פרטי"
-                                    type="text"
-                                    fullWidth
-                                    value={currentManager?.person?.firstName || ''}
-                                    onChange={handleEditChange}
-                                />
-                                <TextField
-                                    margin="dense"
-                                    name="lastName"
-                                    label="שם משפחה"
-                                    type="text"
-                                    fullWidth
-                                    value={currentManager?.person?.lastName}
-                                    onChange={handleEditChange}
-                                />
-                                <TextField
-                                    margin="dense"
-                                    name="email"
-                                    label="אימייל"
-                                    type="text"
-                                    fullWidth
-                                    value={currentManager?.person?.email}
-                                    onChange={handleEditChange}
-                                    error={!!emailError}
-                                    helperText={emailError}
-                                />
-                                <FormControl fullWidth margin="dense">
-                                    <InputLabel>סוג משתמש</InputLabel>
-                                    <Select
-                                        value={currentManager?.userType?.id}
-                                        onChange={handleUserTypeEditChange}
-                                        name="userType"
-                                        label="סוג משתמש"
-                                        MenuProps={{ PaperProps: { style: { direction: 'rtl' } } }}
-                                    >
-                                        {userTypes.filter((type) => type.id !== 2).map((type) => (
-                                            <MenuItem key={type.id} value={type.id}>
+return (
+    <>
+        {renderTable()}
+        <Dialog open={openEdit} onClose={handleEditClose} dir="rtl" //style={{ textAlign: 'center' }}
+            fullWidth
+            maxWidth="sm"
+            PaperProps={{
+                style: {
+                    minHeight: '50vh', // גובה מינימלי
+                    maxHeight: '90vh', // גובה מקסימלי
+                },
+            }}>
+            <DialogTitle>ערוך מנהל</DialogTitle>
+            <DialogContent>
+                <DialogContentText>ערוך את פרטי המנהל</DialogContentText>
+                <CacheProvider value={cacheRtl}>
+                    <ThemeProvider theme={theme}>
+                        <div dir="rtl">
+                            <TextField
+                                margin="dense"
+                                name="firstName"
+                                label="שם פרטי"
+                                type="text"
+                                fullWidth
+                                value={currentManager?.person?.firstName || ''}
+                                onChange={handleEditChange}
+                            />
+                            <TextField
+                                margin="dense"
+                                name="lastName"
+                                label="שם משפחה"
+                                type="text"
+                                fullWidth
+                                value={currentManager?.person?.lastName}
+                                onChange={handleEditChange}
+                            />
+                            <TextField
+                                margin="dense"
+                                name="email"
+                                label="אימייל"
+                                type="text"
+                                fullWidth
+                                value={currentManager?.person?.email}
+                                onChange={handleEditChange}
+                                error={!!emailError}
+                                helperText={emailError}
+                            />
+                            <FormControl fullWidth margin="dense">
+                                <InputLabel>סוג משתמש</InputLabel>
+                                <Select
+                                    value={currentManager?.userType?.id}
+                                    onChange={handleUserTypeEditChange}
+                                    name="userType"
+                                    label="סוג משתמש"
+                                    MenuProps={{ PaperProps: { style: { direction: 'rtl' } } }}
+                                >
+                                    {userTypes.filter((type) => type.id !== 2).map((type) => (
+                                        <MenuItem key={type.id} value={type.id}>
+                                            {type.userTypeName}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </div>
+                    </ThemeProvider>
+                </CacheProvider>
+            </DialogContent>
+            <DialogActions>
+                <Tooltip title='ביטול' style={{ top: '100%' }}>
+                    <Button variant="contained" color="primary" style={{ margin: '15px' }} onClick={handleEditClose}>
+                        <CancelIcon />
+                    </Button>
+                </Tooltip>
+                <Tooltip title='שמור' style={{ bottom: '100%' }}>
+                    <Button variant="contained" color="primary" style={{ marginLeft: '15px' }} onClick={handleEditSubmit} disabled={!!emailError}>
+                        <SaveIcon />
+                    </Button>
+                </Tooltip>
+            </DialogActions>
+        </Dialog>
+        <Dialog open={openAdd} onClose={handleAddClose} style={{ textAlign: 'center' }} dir="rtl"
+            fullWidth
+            maxWidth="sm"
+            PaperProps={{
+                style: {
+                    minHeight: '50vh', // גובה מינימלי
+                    maxHeight: '90vh', // גובה מקסימלי
+                },
+            }}>
+            <DialogTitle>הוסף משתמש</DialogTitle>
+            <DialogContent>
+                <DialogContentText>מלא את פרטי המשתמש החדש</DialogContentText>
+                <CacheProvider value={cacheRtl}>
+                    <ThemeProvider theme={theme}>
+                        <div dir="rtl">
+                            <TextField
+                                margin="dense"
+                                name="username"
+                                label="שם משתמש"
+                                type="text"
+                                fullWidth
+                                value={newManager.username}
+                                onChange={handleAddChange}
+                                autoComplete="new-password" // הוסף את התכונה הזו
+                            />
+                        </div>
+                    </ThemeProvider>
+                </CacheProvider>
+                <Autocomplete
+                    freeSolo
+                    options={emailDomains.map((domain) => `${newManager.email.split('@')[0]}@${domain}`)}
+                    renderInput={(params) => (
+                        <CacheProvider value={cacheRtl}>
+                            <ThemeProvider theme={theme}>
+                                <div dir="rtl">
+                                    <TextField
+                                        {...params}
+                                        margin="dense"
+                                        name="email"
+                                        label="אימייל"
+                                        type="email"
+                                        fullWidth
+                                        value={newManager.email}
+                                        onChange={handleAddChange}
+                                        error={!!emailError}
+                                        helperText={emailError}
+                                        autoComplete="new-password" // הוסף את התכונה הזו
+                                    />
+                                </div>
+                            </ThemeProvider>
+                        </CacheProvider>
+                    )}
+                />
+                <CacheProvider value={cacheRtl}>
+                    <ThemeProvider theme={theme}>
+                        <div dir="rtl">
+                            <TextField
+                                margin="dense"
+                                name="password"
+                                label="סיסמה"
+                                type="password"
+                                fullWidth
+                                value={newManager.password}
+                                onChange={handleAddChange}
+                                autoComplete="new-password" // הוסף את התכונה הזו
+                            />
+                        </div>
+                    </ThemeProvider>
+                </CacheProvider>
+                <CacheProvider value={cacheRtl}>
+                    <ThemeProvider theme={theme}>
+                        <div dir="rtl">
+                            <FormControl fullWidth margin="dense">
+                                <InputLabel>סוג משתמש</InputLabel>
+                                <Select
+                                    value={newManager.userType}
+                                    onChange={handleUserTypeChange}
+                                    name="userType"
+                                    label="סוג משתמש"
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                direction: 'rtl',
+                                            },
+                                        },
+                                    }}
+                                >
+                                    {userTypes
+                                        .filter((type) => type.userTypeId !== 2) // סינון אופציה מספר 2
+                                        .map((type) => (
+                                            <MenuItem
+                                                key={type.userTypeId}
+                                                value={type.userTypeId}>
                                                 {type.userTypeName}
                                             </MenuItem>
                                         ))}
-
-                                    </Select>
-                                </FormControl>
-                            </div>
-                        </ThemeProvider>
-                    </CacheProvider>
-                </DialogContent>
-                <DialogActions>
-                    <Tooltip title='ביטול' style={{ top: '100%' }}>
-                        <Button variant="contained" color="primary" style={{ margin: '15px' }} onClick={handleEditClose}>
-                            <CancelIcon />
-                        </Button>
-                    </Tooltip>
-                    <Tooltip title='שמור' style={{ bottom: '100%' }}>
-                        <Button variant="contained" color="primary" style={{ marginLeft: '15px' }} onClick={handleEditSubmit} disabled={!!emailError}>
-                            <SaveIcon />
-                        </Button>
-                    </Tooltip>
-                </DialogActions>
-            </Dialog>
-            <Dialog open={openAdd} onClose={handleAddClose} style={{ textAlign: 'center' }} dir="rtl"
-                fullWidth
-                maxWidth="sm"
-                PaperProps={{
-                    style: {
-                        minHeight: '50vh', // גובה מינימלי
-                        maxHeight: '90vh', // גובה מקסימלי
-                    },
-                }}>
-                <DialogTitle>הוסף משתמש</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>מלא את פרטי המשתמש החדש</DialogContentText>
-                    <CacheProvider value={cacheRtl}>
-                        <ThemeProvider theme={theme}>
-                            <div dir="rtl">
-                                <TextField
-                                    margin="dense"
-                                    name="username"
-                                    label="שם משתמש"
-                                    type="text"
-                                    fullWidth
-                                    value={newManager.username}
-                                    onChange={handleAddChange}
-                                    autoComplete="new-password" // הוסף את התכונה הזו
-                                />
-                            </div>
-                        </ThemeProvider>
-                    </CacheProvider>
-
-                    <Autocomplete
-                        freeSolo
-                        options={emailDomains.map((domain) => `${newManager.email.split('@')[0]}@${domain}`)}
-                        renderInput={(params) => (
-                            <CacheProvider value={cacheRtl}>
-                                <ThemeProvider theme={theme}>
-                                    <div dir="rtl">
-                                        <TextField
-                                            {...params}
-                                            margin="dense"
-                                            name="email"
-                                            label="אימייל"
-                                            type="email"
-                                            fullWidth
-                                            value={newManager.email}
-                                            onChange={handleAddChange}
-                                            error={!!emailError}
-                                            helperText={emailError}
-                                            autoComplete="new-password" // הוסף את התכונה הזו
-                                        />
-                                    </div>
-                                </ThemeProvider>
-                            </CacheProvider>
-                        )}
-                    />
-                    <CacheProvider value={cacheRtl}>
-                        <ThemeProvider theme={theme}>
-                            <div dir="rtl">
-                                <TextField
-                                    margin="dense"
-                                    name="password"
-                                    label="סיסמה"
-                                    type="password"
-                                    fullWidth
-                                    value={newManager.password}
-                                    onChange={handleAddChange}
-                                    autoComplete="new-password" // הוסף את התכונה הזו
-                                />
-                            </div>
-                        </ThemeProvider>
-                    </CacheProvider>
-                    <CacheProvider value={cacheRtl}>
-                        <ThemeProvider theme={theme}>
-                            <div dir="rtl">
-                                <FormControl fullWidth margin="dense">
-                                    <InputLabel>סוג משתמש</InputLabel>
-                                    <Select
-                                        value={newManager.userType}
-                                        onChange={handleUserTypeChange}
-                                        name="userType"
-                                        label="סוג משתמש"
-                                        MenuProps={{
-                                            PaperProps: {
-                                                style: {
-                                                    direction: 'rtl',
-                                                },
-                                            },
-                                        }}
-                                    >
-                                        {userTypes
-                                            .filter((type) => type.userTypeId !== 2) // סינון אופציה מספר 2
-                                            .map((type) => (
-                                                <MenuItem
-                                                    key={type.userTypeId}
-                                                    value={type.userTypeId}>
-                                                    {type.userTypeName}
-                                                </MenuItem>
-                                            ))}
-                                    </Select>
-                                </FormControl>
-                            </div>
-                        </ThemeProvider>
-                    </CacheProvider>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleAddClose}>ביטול</Button>
-                    <Button variant="contained" color="primary" onClick={handleAddSubmit} disabled={!!emailError}>הוסף</Button>
-                </DialogActions>
-            </Dialog>
-
-
-            <Dialog open={openDeleteWarning} onClose={handleDeleteWarningClose} dir="rtl">
-                <DialogTitle>אזהרה</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>האם אתה בטוח שאתה רוצה למחוק את המנהל הזה?</DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="contained" color="primary" onClick={handleDeleteWarningClose}>ביטול</Button>
-                    <Button variant="contained" style={{ margin: '16px' }} onClick={handleDeleteConfirm} color="error">מחק</Button>
-                </DialogActions>
-            </Dialog>
-
-            <Dialog open={openEmailDialog} onClose={handleEmailDialogClose} dir="rtl">
-                <DialogTitle>שלח מייל</DialogTitle>
-                <DialogContent>
-                    <CacheProvider value={cacheRtl}>
-                        <ThemeProvider theme={theme}>
-                            <div dir="rtl">
-                                <TextField
-                                    margin="dense"
-                                    label="נמען"
-                                    type="email"
-                                    fullWidth
-                                    value={emailRecipient}
-                                    disabled
-                                />
-                            </div>
-                        </ThemeProvider>
-                    </CacheProvider>
-                    <CacheProvider value={cacheRtl}>
-                        <ThemeProvider theme={theme}>
-                            <div dir="rtl">
-                                <TextField
-                                    margin="dense"
-                                    label="נושא"
-                                    type="text"
-                                    fullWidth
-                                    value={emailSubject}
-                                    onChange={(e) => setEmailSubject(e.target.value)}
-                                />
-                            </div>
-                        </ThemeProvider>
-                    </CacheProvider>
-                    <CacheProvider value={cacheRtl}>
-                        <ThemeProvider theme={theme}>
-                            <div dir="rtl">
-                                <TextField
-                                    margin="dense"
-                                    label="תוכן"
-                                    type="text"
-                                    fullWidth
-                                    multiline
-                                    rows={4}
-                                    value={emailBody}
-                                    onChange={(e) => setEmailBody(e.target.value)}
-                                />
-                            </div>
-                        </ThemeProvider>
-                    </CacheProvider>
-
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="contained" color="primary" onClick={handleEmailDialogClose}>ביטול</Button>
-                    {/* <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleEmailSend}>שלח</Button> */}
-                </DialogActions>
-            </Dialog>
-
-            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
-                <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
-                    {snackbarMessage}
-                </Alert>
-            </Snackbar>
-        </>
-    );
+                                </Select>
+                            </FormControl>
+                        </div>
+                    </ThemeProvider>
+                </CacheProvider>
+            </DialogContent>
+            <DialogActions>
+                <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleAddClose}>ביטול</Button>
+                <Button variant="contained" color="primary" onClick={handleAddSubmit} disabled={!!emailError}>הוסף</Button>
+            </DialogActions>
+        </Dialog>
+        <Dialog open={openDeleteWarning} onClose={handleDeleteWarningClose} dir="rtl">
+            <DialogTitle>אזהרה</DialogTitle>
+            <DialogContent>
+                <DialogContentText>האם אתה בטוח שאתה רוצה למחוק את המנהל הזה?</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button variant="contained" color="primary" onClick={handleDeleteWarningClose}>ביטול</Button>
+                <Button variant="contained" style={{ margin: '16px' }} onClick={handleDeleteConfirm} color="error">מחק</Button>
+            </DialogActions>
+        </Dialog>
+        <Dialog open={openEmailDialog} onClose={handleEmailDialogClose} dir="rtl">
+            <DialogTitle>שלח מייל</DialogTitle>
+            <DialogContent>
+                <CacheProvider value={cacheRtl}>
+                    <ThemeProvider theme={theme}>
+                        <div dir="rtl">
+                            <TextField
+                                margin="dense"
+                                label="נמען"
+                                type="email"
+                                fullWidth
+                                value={emailRecipient}
+                                disabled
+                            />
+                        </div>
+                    </ThemeProvider>
+                </CacheProvider>
+                <CacheProvider value={cacheRtl}>
+                    <ThemeProvider theme={theme}>
+                        <div dir="rtl">
+                            <TextField
+                                margin="dense"
+                                label="נושא"
+                                type="text"
+                                fullWidth
+                                value={emailSubject}
+                                onChange={(e) => setEmailSubject(e.target.value)}
+                            />
+                        </div>
+                    </ThemeProvider>
+                </CacheProvider>
+                <CacheProvider value={cacheRtl}>
+                    <ThemeProvider theme={theme}>
+                        <div dir="rtl">
+                            <TextField
+                                margin="dense"
+                                label="תוכן"
+                                type="text"
+                                fullWidth
+                                multiline
+                                rows={4}
+                                value={emailBody}
+                                onChange={(e) => setEmailBody(e.target.value)}
+                            />
+                        </div>
+                    </ThemeProvider>
+                </CacheProvider>
+            </DialogContent>
+            <DialogActions>
+                <Button variant="contained" color="primary" onClick={handleEmailDialogClose}>ביטול</Button>
+                {/* <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleEmailSend}>שלח</Button> */}
+            </DialogActions>
+        </Dialog>
+        <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+            <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+                {snackbarMessage}
+            </Alert>
+        </Snackbar>
+    </>
+);
 };
