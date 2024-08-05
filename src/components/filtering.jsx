@@ -159,13 +159,13 @@ export const Filter = ({ onClose, candidate }) => {
       debugger
 
       try {
-        if (candidateProfiles > 0) {
-          setCandidatesFromServer(candidateProfiles);
-        } else {
-          const response = await CandidateAxios.getAllCandidate();
-          setCandidatesFromServer(response);
-          dispatch(FillCavdidateProfileData(response.data));
-        }
+        // if (candidateProfiles > 0) {
+        //   setCandidatesFromServer(candidateProfiles);
+        // } else {
+        //   const response = await CandidateAxios.getAllCandidate();
+        //   setCandidatesFromServer(response);
+        //   dispatch(FillCavdidateProfileData(response.data));
+        // }
         if (users1 > 0) {
           setUsers(users1);
         } else {
@@ -510,12 +510,10 @@ export const Filter = ({ onClose, candidate }) => {
         })
         .map((c) => c.id);
     };
-  
     const languageCandidates = filterByType("שפות", selectedLanguages);
     const techCandidates = filterByType("טכנולוגיות", selectedTechnologies);
     const locationCandidates = filterByType("ערים", selectedLocations);
     const programmingLangCandidates = filterByType("שפות תכנות", selectedProgrammingLanguages);
-  
     // פילטר סופי של מועמדים לפי כל הקריטריונים הנבחרים
     const finalCandidates = candidatesFromServer.filter(
       (candidate) =>
@@ -524,10 +522,8 @@ export const Filter = ({ onClose, candidate }) => {
         locationCandidates.includes(candidate.id) &&
         programmingLangCandidates.includes(candidate.id)
     );
-  
     setFilteredCandidates(finalCandidates);
   };
-  
   const handleView = async (fileName) => {
     debugger;
     if (!fileName) {
