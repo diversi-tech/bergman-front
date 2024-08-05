@@ -16,6 +16,7 @@ import { HomeCandidate } from './homeCandidate';
 import { useSelector } from 'react-redux';
 import ChangeProfile from './changeProfile';
 import { PasswordReset } from './PasswordReset';
+import { CompanyManagement } from './CompanyManagement';
 
 
 export const RouterLink = () => {
@@ -43,6 +44,7 @@ export const RouterLink = () => {
                     <Route path='/changeProfile' element={<ChangeProfile/>}/>
                     <Route path="/request-password-reset" element={<PasswordReset></PasswordReset>} />
                     <Route path="/" element={<Home />} />
+                    <Route path='/CompanyManagement' element={<CompanyManagement/>}/>
                 </Routes>
             </Box>
         </BrowserRouter>
