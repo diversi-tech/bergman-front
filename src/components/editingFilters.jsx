@@ -943,13 +943,17 @@ export const EditingFilters = () => {
             <ThemeProvider theme={theme}>
                 <Box dir="rtl">
                     {renderList()}
+
                     <Dialog open={openEdit} onClose={handleEditClose} fullWidth maxWidth="sm">
                         <DialogTitle style={{ textAlign: 'right' }}>ערוך קטגוריה</DialogTitle>
                         <DialogContent>
+                            {/* <DialogContentText style={{ textAlign: 'right' }}>
+                                תוכלי לערוך פריטים נוספים לאותה קטגוריה לפי הצורך
+                            </DialogContentText> */}
                             <TextField
                                 margin="dense"
                                 name="name"
-                                label="נתון"
+                                label="שם פריט"
                                 type="text"
                                 fullWidth
                                 value={currentItem.name || ''}
@@ -968,6 +972,7 @@ export const EditingFilters = () => {
                             </Button>
                         </DialogActions>
                     </Dialog>
+
                     <Dialog
                         open={deleteDialogOpen}
                         onClose={handleDeleteDialogClose}
@@ -994,5 +999,3 @@ export const EditingFilters = () => {
         </CacheProvider>
     );
 };
-
-

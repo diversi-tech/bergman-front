@@ -30,7 +30,6 @@
     "redux-thunk": "^3.1.0",
     "styled-components": "^6.1.11",
     "web-vitals": "^2.1.4",
-    "webpack": "^5.93.0",
     "yup": "^1.4.0"
   },
   "scripts": {
@@ -59,6 +58,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "stylis-plugin-rtl": "^2.1.1"
+    "stylis-plugin-rtl": "^2.1.1",
+    "webpack": "^5.93.0"
   }
 }
