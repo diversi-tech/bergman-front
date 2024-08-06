@@ -480,7 +480,7 @@ export const Filter = ({ onClose, candidate }) => {
     const milliseconds = String(date.getMilliseconds()).padStart(3, "0");
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
   };
-  
+
   const handleView = async (fileName) => {
     debugger;
     if (!fileName) {
@@ -660,102 +660,102 @@ export const Filter = ({ onClose, candidate }) => {
             ></Button>
           </Grid>
         </Grid>
-      </Box> 
-        <br />
-        <br />
-        <br />
-        <Box>
-          <div>
-            {/* מיילים */}
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleClickOpen}
-              sx={{ width: "200px", margin: "0 auto" }}
+      </Box>
+      <br />
+      <br />
+      <br />
+      <Box>
+        <div>
+          {/* מיילים */}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleClickOpen}
+            sx={{ width: "200px", margin: "0 auto" }}
+          >
+            שליחת מייל
+          </Button>
+          <Dialog open={openMail} onClose={handleCloses}>
+            <DialogTitle
+              sx={{ width: "500px", margin: "0 auto", direction: "rtl" }}
             >
               שליחת מייל
-            </Button>
-            <Dialog open={openMail} onClose={handleCloses}>
-              <DialogTitle
-                sx={{ width: "500px", margin: "0 auto", direction: "rtl" }}
-              >
-                שליחת מייל
-              </DialogTitle>
-              <DialogContent>
-                <CacheProvider value={cacheRtl}>
-                  <ThemeProvider theme={theme}>
-                    <div dir="rtl">
-                      <FormControl fullWidth margin="normal">
-                        <Autocomplete
-                          multiple
-                          id="email-autocomplete"
-                          options={filteredCandidates.map((candidate) => {
-                            const email = candidate.person.email;
-                            return (
-                              <option key={candidate.id} value={email}>
-                                {email}
-                              </option>
-                            );
-                          })}
-                          disableCloseOnSelect
-                          getOptionLabel={(option) => option}
-                          value={emails}
-                          open={openOptions}
-                          onOpen={() => {
-                            setOpenOptions(true);
-                          }}
-                          onClose={() => {
-                            setOpenOptions(false);
-                          }}
-                          onChange={(event, newValue) => {
-                            const uniqueEmails = newValue.filter(
-                              (email, index) => newValue.indexOf(email) === index
-                            );
-                            setEmails(uniqueEmails);
-                          }}
-                          renderOption={(props, option, { selected }) => (
-                            <li {...props} key={option}>
-                              {option}
-                            </li>
-                          )}
-                          renderInput={(params) => (
-                            <TextField
+            </DialogTitle>
+            <DialogContent>
+              <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                  <div dir="rtl">
+                    <FormControl fullWidth margin="normal">
+                      <Autocomplete
+                        multiple
+                        id="email-autocomplete"
+                        options={filteredCandidates.map((candidate) => {
+                          const email = candidate.person.email;
+                          return (
+                            <option key={candidate.id} value={email}>
+                              {email}
+                            </option>
+                          );
+                        })}
+                        disableCloseOnSelect
+                        getOptionLabel={(option) => option}
+                        value={emails}
+                        open={openOptions}
+                        onOpen={() => {
+                          setOpenOptions(true);
+                        }}
+                        onClose={() => {
+                          setOpenOptions(false);
+                        }}
+                        onChange={(event, newValue) => {
+                          const uniqueEmails = newValue.filter(
+                            (email, index) => newValue.indexOf(email) === index
+                          );
+                          setEmails(uniqueEmails);
+                        }}
+                        renderOption={(props, option, { selected }) => (
+                          <li {...props} key={option}>
+                            {option}
+                          </li>
+                        )}
+                        renderInput={(params) => (
+                          <TextField
 
-                              {...params}
-                              label="נמענים"
-                              inputProps={{
-                                ...params.inputProps,
-                                readOnly: true,
-                              }}
-                              style={{ margin: "0px 0px", width: "100%" }} // הוספת רווח והתאמת רוחב
-                            />
-                          )}
-                          fullWidth
-                          margin="normal"
-                          rows={8}
-                        />
-                      </FormControl>
-                    </div>
-                  </ThemeProvider>
-                </CacheProvider>
-                <CacheProvider value={cacheRtl}>
-                  <ThemeProvider theme={theme}>
-                    <div dir="rtl">
-                      <TextField
-                        label="נושא"
-                        value={subject}
-                        onChange={(e) => setSubject(e.target.value)}
+                            {...params}
+                            label="נמענים"
+                            inputProps={{
+                              ...params.inputProps,
+                              readOnly: true,
+                            }}
+                            style={{ margin: "0px 0px", width: "100%" }} // הוספת רווח והתאמת רוחב
+                          />
+                        )}
                         fullWidth
                         margin="normal"
                         rows={8}
                       />
-                    </div>
-                  </ThemeProvider>
-                </CacheProvider>
-                <CacheProvider value={cacheRtl}>
-                  <ThemeProvider theme={theme}>
-                    <div dir="rtl">
-                      {/* <TextField
+                    </FormControl>
+                  </div>
+                </ThemeProvider>
+              </CacheProvider>
+              <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                  <div dir="rtl">
+                    <TextField
+                      label="נושא"
+                      value={subject}
+                      onChange={(e) => setSubject(e.target.value)}
+                      fullWidth
+                      margin="normal"
+                      rows={8}
+                    />
+                  </div>
+                </ThemeProvider>
+              </CacheProvider>
+              <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                  <div dir="rtl">
+                    {/* <TextField
                       label=""
                       value={body}
                       onChange={handleBodyChange}
@@ -764,222 +764,222 @@ export const Filter = ({ onClose, candidate }) => {
                       multiline
                       rows={8}
                     /> */}
-                      <Box>
-                        <Box
-                          sx={{
-                            border: "1px solid #ccc",
-                            padding: "16px",
-                            minHeight: "200px",
+                    <Box>
+                      <Box
+                        sx={{
+                          border: "1px solid #ccc",
+                          padding: "16px",
+                          minHeight: "200px",
 
-                            //  onChange={handleBodyChange}
-                          }}
-                        >
-                          <Editor
-                            value={body}
-                            editorState={editorState}
-                            handleKeyCommand={handleKeyCommand}
-                            onChange={setEditorState}
-                            customStyleMap={styleMap}
-                          />
-                        </Box>
-                        <Toolbar>
-                          <Toolbar>
-                            <IconButton onClick={() => toggleInlineStyle("BOLD")}>
-                              <FormatBoldIcon />
-                            </IconButton>
-                            <IconButton
-                              onClick={() => toggleInlineStyle("ITALIC")}
-                            >
-                              <FormatItalicIcon />
-                            </IconButton>
-                            <IconButton
-                              onClick={() => toggleInlineStyle("UNDERLINE")}
-                            >
-                              <FormatUnderlinedIcon />
-                            </IconButton>
-                            <IconButton
-                              onClick={() =>
-                                toggleBlockType("unordered-list-item")
-                              }
-                            >
-                              <FormatListBulletedIcon />
-                            </IconButton>
-                            <IconButton
-                              onClick={() => toggleBlockType("ordered-list-item")}
-                            >
-                              <FormatListNumberedIcon />
-                            </IconButton>
-                            <IconButton onClick={() => toggleAlignment("LEFT")}>
-                              <FormatAlignLeftIcon />
-                            </IconButton>
-                            <IconButton onClick={() => toggleAlignment("CENTER")}>
-                              <FormatAlignCenterIcon />
-                            </IconButton>
-                            <IconButton onClick={() => toggleAlignment("RIGHT")}>
-                              <FormatAlignRightIcon />
-                            </IconButton>
-                            <IconButton component="label">
-                              <input
-                                type="file"
-                                hidden
-                                onChange={handleFileUpload}
-                              />
-                              <AttachFileIcon />
-                            </IconButton>
-                          </Toolbar>
-                        </Toolbar>
-                      </Box>
-                    </div>
-                  </ThemeProvider>
-                </CacheProvider>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloses} color="secondary">
-                  ביטול
-                </Button>
-                <Button
-                  onClick={handleSend}
-                  color="primary"
-                  disabled={isSendDisabled}
-                >
-                  שליחה
-                </Button>
-                <Backdrop
-                  open={loading}
-                  style={{
-                    zIndex: 1000,
-                    color: "#fff",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <CircularProgress
-                    color="inherit"
-                    sx={{ width: "80px !important", height: "80px !important" }}
-                  />
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleCloses}
-                    sx={{
-                      marginTop: "20px",
-                      backgroundColor: "blue",
-                      "&:hover": { backgroundColor: "darkblue" },
-                    }}
-                  >
-                    ביטול
-                  </Button>
-                </Backdrop>
-              </DialogActions>
-            </Dialog>
-            <Snackbar
-              open={snackbarOpen}
-              autoHideDuration={1000} // 10 שניות
-              onClose={() => setSnackbarOpen(false)}
-            >
-              <SnackbarContent
-                message="המייל נשלח"
-                sx={{
-                  justifyContent: "flex-end",
-                  minWidth: "auto", // מקטין את הריבוע לגודל הכיתוב
-                }}
-              />
-            </Snackbar>
-            <Snackbar
-              open={notSend}
-              autoHideDuration={1000} // 10 שניות
-              onClose={() => setnotSend(false)}
-            >
-              <SnackbarContent
-                message="המייל לא נשלח"
-                sx={{
-                  justifyContent: "flex-end",
-                  minWidth: "auto", // מקטין את הריבוע לגודל הכיתוב
-                }}
-              />
-            </Snackbar>
-          </div>
-        </Box>
-        <br></br>
-        <br></br>
-        <Box display="flex" justifyContent="center">
-          <TableContainer component={Paper} style={{ width: "80%" }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell align="center">
-                    <b>בחר</b>
-                  </TableCell>
-                  <TableCell align="center">
-                    <b>שם</b>
-                  </TableCell>
-                  <TableCell align="center">
-                    <b>מייל</b>
-                  </TableCell>
-                  <TableCell align="center">
-                    <b>פלאפון</b>
-                  </TableCell>
-                  <TableCell align="center">
-                    <b>פעולות</b>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredCandidates.map((candidate, index) => (
-                  <TableRow key={index}>
-                    <TableCell align="center">
-                      <IconButton
-                        onClick={() =>
-                          toggleCandidateColor(candidate.id)
-                        }
+                          //  onChange={handleBodyChange}
+                        }}
                       >
-                        <EmailIcon
-                          style={{
-                            width: "20px",
-                            height: "20px",
-                            color: greenCandidates.includes(candidate.person.id)
-                              ? "green"
-                              : "blue",
-                          }}
+                        <Editor
+                          value={body}
+                          editorState={editorState}
+                          handleKeyCommand={handleKeyCommand}
+                          onChange={setEditorState}
+                          customStyleMap={styleMap}
                         />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="center">{candidate.person.firstName}</TableCell>
-                    <TableCell align="center">{candidate.person.email}</TableCell>
-                    <TableCell align="center">{candidate.person.phoneNumber}</TableCell>
-                    <TableCell align="center">
-                      <Box display="flex" justifyContent="center" gap={2}>
-                        <Tooltip title="היסטוריית הפניות">
+                      </Box>
+                      <Toolbar>
+                        <Toolbar>
+                          <IconButton onClick={() => toggleInlineStyle("BOLD")}>
+                            <FormatBoldIcon />
+                          </IconButton>
                           <IconButton
-                            color="primary"
-                            sx={{ borderRadius: "50%" }}
+                            onClick={() => toggleInlineStyle("ITALIC")}
+                          >
+                            <FormatItalicIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => toggleInlineStyle("UNDERLINE")}
+                          >
+                            <FormatUnderlinedIcon />
+                          </IconButton>
+                          <IconButton
                             onClick={() =>
-                              navigate(`/History/${candidate.id}`)
+                              toggleBlockType("unordered-list-item")
                             }
                           >
-                            <HistoryIcon />
+                            <FormatListBulletedIcon />
                           </IconButton>
-                        </Tooltip>
-                        <Tooltip title="עריכת הפניות">
                           <IconButton
-                            color="primary"
-                            sx={{ borderRadius: "50%" }}
-                            onClick={() => handleEditOpen(candidate)}
+                            onClick={() => toggleBlockType("ordered-list-item")}
                           >
-                            <EditIcon />
+                            <FormatListNumberedIcon />
                           </IconButton>
-                        </Tooltip>
-                        <Tooltip title="צפייה בקורות חיים">
-                          <IconButton
-                            variant="contained"
-                            onClick={() => handleView(candidate.cvEnglishFile)}
-                            color="primary"
-                            sx={{ borderRadius: "50%" }}
-                          >
-                            <DescriptionIcon />
+                          <IconButton onClick={() => toggleAlignment("LEFT")}>
+                            <FormatAlignLeftIcon />
                           </IconButton>
-                        </Tooltip>
-                        <Dialog
+                          <IconButton onClick={() => toggleAlignment("CENTER")}>
+                            <FormatAlignCenterIcon />
+                          </IconButton>
+                          <IconButton onClick={() => toggleAlignment("RIGHT")}>
+                            <FormatAlignRightIcon />
+                          </IconButton>
+                          <IconButton component="label">
+                            <input
+                              type="file"
+                              hidden
+                              onChange={handleFileUpload}
+                            />
+                            <AttachFileIcon />
+                          </IconButton>
+                        </Toolbar>
+                      </Toolbar>
+                    </Box>
+                  </div>
+                </ThemeProvider>
+              </CacheProvider>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloses} color="secondary">
+                ביטול
+              </Button>
+              <Button
+                onClick={handleSend}
+                color="primary"
+                disabled={isSendDisabled}
+              >
+                שליחה
+              </Button>
+              <Backdrop
+                open={loading}
+                style={{
+                  zIndex: 1000,
+                  color: "#fff",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <CircularProgress
+                  color="inherit"
+                  sx={{ width: "80px !important", height: "80px !important" }}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleCloses}
+                  sx={{
+                    marginTop: "20px",
+                    backgroundColor: "blue",
+                    "&:hover": { backgroundColor: "darkblue" },
+                  }}
+                >
+                  ביטול
+                </Button>
+              </Backdrop>
+            </DialogActions>
+          </Dialog>
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={1000} // 10 שניות
+            onClose={() => setSnackbarOpen(false)}
+          >
+            <SnackbarContent
+              message="המייל נשלח"
+              sx={{
+                justifyContent: "flex-end",
+                minWidth: "auto", // מקטין את הריבוע לגודל הכיתוב
+              }}
+            />
+          </Snackbar>
+          <Snackbar
+            open={notSend}
+            autoHideDuration={1000} // 10 שניות
+            onClose={() => setnotSend(false)}
+          >
+            <SnackbarContent
+              message="המייל לא נשלח"
+              sx={{
+                justifyContent: "flex-end",
+                minWidth: "auto", // מקטין את הריבוע לגודל הכיתוב
+              }}
+            />
+          </Snackbar>
+        </div>
+      </Box>
+      <br></br>
+      <br></br>
+      <Box display="flex" justifyContent="center">
+        <TableContainer component={Paper} style={{ width: "80%" }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">
+                  <b>בחר</b>
+                </TableCell>
+                <TableCell align="center">
+                  <b>שם</b>
+                </TableCell>
+                <TableCell align="center">
+                  <b>מייל</b>
+                </TableCell>
+                <TableCell align="center">
+                  <b>פלאפון</b>
+                </TableCell>
+                <TableCell align="center">
+                  <b>פעולות</b>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredCandidates.map((candidate, index) => (
+                <TableRow key={index}>
+                  <TableCell align="center">
+                    <IconButton
+                      onClick={() =>
+                        toggleCandidateColor(candidate.id)
+                      }
+                    >
+                      <EmailIcon
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                          color: greenCandidates.includes(candidate.person.id)
+                            ? "green"
+                            : "blue",
+                        }}
+                      />
+                    </IconButton>
+                  </TableCell>
+                  <TableCell align="center">{candidate.person.firstName}</TableCell>
+                  <TableCell align="center">{candidate.person.email}</TableCell>
+                  <TableCell align="center">{candidate.person.phoneNumber}</TableCell>
+                  <TableCell align="center">
+                    <Box display="flex" justifyContent="center" gap={2}>
+                      <Tooltip title="היסטוריית הפניות">
+                        <IconButton
+                          color="primary"
+                          sx={{ borderRadius: "50%" }}
+                          onClick={() =>
+                            navigate(`/History/${candidate.id}`)
+                          }
+                        >
+                          <HistoryIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="עריכת הפניות">
+                        <IconButton
+                          color="primary"
+                          sx={{ borderRadius: "50%" }}
+                          onClick={() => handleEditOpen(candidate)}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="צפייה בקורות חיים">
+                        <IconButton
+                          variant="contained"
+                          onClick={() => handleView(candidate.cvEnglishFile)}
+                          color="primary"
+                          sx={{ borderRadius: "50%" }}
+                        >
+                          <DescriptionIcon />
+                        </IconButton>
+                      </Tooltip>
+                      {/* <Dialog
                           open={open}
                           onClose={handleClose}
                           maxWidth="lg"
@@ -1019,8 +1019,8 @@ export const Filter = ({ onClose, candidate }) => {
                               סגור
                             </Button>
                           </DialogActions>
-                        </Dialog>
-                        {/* <Dialog open={open} onClose={handleClose}>
+                        </Dialog> */}
+                      {/* <Dialog open={open} onClose={handleClose}>
                         <DialogContent>
                           {fileUrl && (
                             <Box position="relative">
@@ -1040,223 +1040,270 @@ export const Filter = ({ onClose, candidate }) => {
                         </DialogContent>
                         <DialogActions>
                           <Button onClick={handleClose}>Close</Button>
+                        </DialogActions> */}
+
+                      {/* </Dialog> */}
+                      <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
+                        <DialogContent>
+                          {fileUrl && (
+                            <Box position="relative">
+                              {fileUrl.endsWith('.pdf') ? (
+                                <iframe
+                                  src={fileUrl}
+                                  type="application/pdf"
+                                  width="100%"
+                                  height="600px"
+                                />
+                              ) : fileUrl.endsWith('.doc') || fileUrl.endsWith('.docx') ? (
+                                <iframe
+                                  src={`https://view.officeapps.live.com/op/embed.aspx?src=${fileUrl}`}
+                                  width="100%"
+                                  height="600px"
+                                  frameBorder="0"
+                                />
+                              ) : (
+                                <img
+                                  src={fileUrl}
+                                  alt="File Preview"
+                                  style={{ width: '100%', height: 'auto' }}
+                                />
+                              )}
+                              <IconButton
+                                variant="contained"
+                                onClick={handleDownload}
+                                style={{
+                                  position: 'absolute',
+                                  top: '10px',
+                                  left: '10px',
+                                  color: 'white',
+                                  backgroundColor: 'rgba(0,0,0,0.5)',
+                                }}
+                              >
+                                <Downloading />
+                              </IconButton>
+                            </Box>
+                          )}
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleClose}>Close</Button>
                         </DialogActions>
-                      </Dialog> */}
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-        <Dialog
-          open={openEdit}
-          onClose={handleEditClose}
-          dir="rtl"
-          fullWidth
-          maxWidth="sm"
-          PaperProps={{
-            style: {
-              minHeight: "50vh",
-              maxHeight: "90vh",
-            },
-          }}
-        >
-          <DialogTitle align="center">ערוך פרטי מועמד</DialogTitle>
-          <DialogContent>
-            <CacheProvider value={cacheRtl}>
-              <ThemeProvider theme={theme}>
-                <div dir="rtl">
-                  <TextField
-                    margin="dense"
-                    name="firstName"
-                    label="שם פרטי"
-                    type="text"
-                    fullWidth
-                    value={currentCandidate.firstName || ""}
-                    onChange={handleEditChange}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="lastName"
-                    label="שם משפחה"
-                    type="text"
-                    fullWidth
-                    value={currentCandidate.lastName || ""}
-                    onChange={handleEditChange}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="email"
-                    label="אימייל"
-                    type="email"
-                    fullWidth
-                    value={currentCandidate.email || ""}
-                    onChange={handleEditChange}
-                    error={!!emailError}
-                    helperText={emailError}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="phoneNumber"
-                    label="טלפון"
-                    type="text"
-                    fullWidth
-                    value={currentCandidate.phoneNumber}
-                    onChange={handleEditChange}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="referralSource"
-                    label="שם החברה"
-                    type="text"
-                    fullWidth
-                    value={currentCandidate.referralSource}
-                    onChange={handleEditChange}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="referralDate"
-                    label="תאריך"
-                    type="datetime-local"
-                    fullWidth
-                    value={currentCandidate.referralDate}
-                    onChange={handleEditChange}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="remarks"
-                    label="תגובה"
-                    type="text"
-                    fullWidth
-                    multiline
-                    rows={4}
-                    value={currentCandidate.remarks}
-                    onChange={handleEditChange}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="state"
-                    label="מדינה"
-                    type="text"
-                    fullWidth
-                    value={currentCandidate.state}
-                    onChange={handleEditChange}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="city"
-                    label="עיר"
-                    type="text"
-                    fullWidth
-                    value={currentCandidate.city}
-                    onChange={handleEditChange}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="experienceYears"
-                    label="וותק"
-                    type="text"
-                    fullWidth
-                    value={currentCandidate.experienceYears}
-                    onChange={handleEditChange}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="summary"
-                    label="תקציר"
-                    type="text"
-                    fullWidth
-                    multiline
-                    rows={4}
-                    value={currentCandidate.summary}
-                    onChange={handleEditChange}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="education"
-                    label="השכלה"
-                    type="text"
-                    fullWidth
-                    value={currentCandidate.education}
-                    onChange={handleEditChange}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="certifications"
-                    label="תעודות"
-                    type="text"
-                    fullWidth
-                    value={currentCandidate.certifications}
-                    onChange={handleEditChange}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="skills"
-                    label="כישורים"
-                    type="text"
-                    fullWidth
-                    multiline
-                    rows={4}
-                    value={currentCandidate.skills}
-                    onChange={handleEditChange}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="portfolioWebsite"
-                    label="אתר המועמד"
-                    type="url"
-                    fullWidth
-                    value={currentCandidate.portfolioWebsite}
-                    onChange={handleEditChange}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="linkedinProfile"
-                    label="פרופיל LinkedIn"
-                    type="url"
-                    fullWidth
-                    value={currentCandidate.linkedinProfile}
-                    onChange={handleEditChange}
-                  />
-                </div>
-              </ThemeProvider>
-            </CacheProvider>
-          </DialogContent>
-          <DialogActions>
-            <Tooltip title="ביטול" style={{ top: "100%" }}>
-              <Button
-                variant="contained"
-                color="primary"
-                style={{ margin: "15px" }}
-                onClick={handleEditClose}
-              >
-                <CancelIcon />
-              </Button>
-            </Tooltip>
-            <Tooltip title="שמור" style={{ bottom: "100%" }}>
-              <Button
-                variant="contained"
-                color="primary"
-                style={{ marginLeft: "50px" }}
-                onClick={handleEditSubmit}
-              >
-                <SaveIcon />
-              </Button>
-            </Tooltip>
-          </DialogActions>
-          {/* <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+                      </Dialog>
+
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+      <Dialog
+        open={openEdit}
+        onClose={handleEditClose}
+        dir="rtl"
+        fullWidth
+        maxWidth="sm"
+        PaperProps={{
+          style: {
+            minHeight: "50vh",
+            maxHeight: "90vh",
+          },
+        }}
+      >
+        <DialogTitle align="center">ערוך פרטי מועמד</DialogTitle>
+        <DialogContent>
+          <CacheProvider value={cacheRtl}>
+            <ThemeProvider theme={theme}>
+              <div dir="rtl">
+                <TextField
+                  margin="dense"
+                  name="firstName"
+                  label="שם פרטי"
+                  type="text"
+                  fullWidth
+                  value={currentCandidate.firstName || ""}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="lastName"
+                  label="שם משפחה"
+                  type="text"
+                  fullWidth
+                  value={currentCandidate.lastName || ""}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="email"
+                  label="אימייל"
+                  type="email"
+                  fullWidth
+                  value={currentCandidate.email || ""}
+                  onChange={handleEditChange}
+                  error={!!emailError}
+                  helperText={emailError}
+                />
+                <TextField
+                  margin="dense"
+                  name="phoneNumber"
+                  label="טלפון"
+                  type="text"
+                  fullWidth
+                  value={currentCandidate.phoneNumber}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="referralSource"
+                  label="שם החברה"
+                  type="text"
+                  fullWidth
+                  value={currentCandidate.referralSource}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="referralDate"
+                  label="תאריך"
+                  type="datetime-local"
+                  fullWidth
+                  value={currentCandidate.referralDate}
+                  onChange={handleEditChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <TextField
+                  margin="dense"
+                  name="remarks"
+                  label="תגובה"
+                  type="text"
+                  fullWidth
+                  multiline
+                  rows={4}
+                  value={currentCandidate.remarks}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="state"
+                  label="מדינה"
+                  type="text"
+                  fullWidth
+                  value={currentCandidate.state}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="city"
+                  label="עיר"
+                  type="text"
+                  fullWidth
+                  value={currentCandidate.city}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="experienceYears"
+                  label="וותק"
+                  type="text"
+                  fullWidth
+                  value={currentCandidate.experienceYears}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="summary"
+                  label="תקציר"
+                  type="text"
+                  fullWidth
+                  multiline
+                  rows={4}
+                  value={currentCandidate.summary}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="education"
+                  label="השכלה"
+                  type="text"
+                  fullWidth
+                  value={currentCandidate.education}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="certifications"
+                  label="תעודות"
+                  type="text"
+                  fullWidth
+                  value={currentCandidate.certifications}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="skills"
+                  label="כישורים"
+                  type="text"
+                  fullWidth
+                  multiline
+                  rows={4}
+                  value={currentCandidate.skills}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="portfolioWebsite"
+                  label="אתר המועמד"
+                  type="url"
+                  fullWidth
+                  value={currentCandidate.portfolioWebsite}
+                  onChange={handleEditChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="linkedinProfile"
+                  label="פרופיל LinkedIn"
+                  type="url"
+                  fullWidth
+                  value={currentCandidate.linkedinProfile}
+                  onChange={handleEditChange}
+                />
+              </div>
+            </ThemeProvider>
+          </CacheProvider>
+        </DialogContent>
+        <DialogActions>
+          <Tooltip title="ביטול" style={{ top: "100%" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ margin: "15px" }}
+              onClick={handleEditClose}
+            >
+              <CancelIcon />
+            </Button>
+          </Tooltip>
+          <Tooltip title="שמור" style={{ bottom: "100%" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ marginLeft: "50px" }}
+              onClick={handleEditSubmit}
+            >
+              <SaveIcon />
+            </Button>
+          </Tooltip>
+        </DialogActions>
+        {/* <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
           <Alert onClose={handleSnackbarClose} severity="success">
             {snackbarMessage}
           </Alert>
         </Snackbar> */}
-        </Dialog>
-      </div >
-    );
-  };
+      </Dialog>
+    </div >
+  );
+};
 
 
