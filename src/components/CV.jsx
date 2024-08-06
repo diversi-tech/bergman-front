@@ -411,7 +411,7 @@ export const CV = () => {
   const handleFileUpload = async (file, language) => {
     if (!file) return;
 
-    const newFileName = `${user.id}_${language}`;
+    const newFileName = `${user.id}_${language}_${file.name}`;
     const renamedFile = new File([file], newFileName, { type: file.type });
 
     try {
