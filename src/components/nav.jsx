@@ -11,17 +11,9 @@ import { useSelector } from 'react-redux';
 
 export const Nav = () => {
     const user = useSelector(state => state.userReducer.currentUser)
-
-
     return (
         <AppBar position="fixed">
             <Toolbar>
-                <Tooltip title="דף הבית" arrow>
-                    <Button color="inherit" component={Link} to="/Home">
-                        <HomeIcon />
-                    </Button>
-                </Tooltip>
-
                 <Button color="inherit" component={Link} to="/Manager" >
                     מנהלת
                 </Button>
@@ -30,7 +22,6 @@ export const Nav = () => {
                         <PersonSearchIcon />
                     </Button>
                 </Tooltip>
-
                 <Button color="inherit" component={Link} to="/Secretary">
                     מזכירה
                 </Button>
@@ -39,27 +30,11 @@ export const Nav = () => {
                         <ManageSearchIcon />
                     </Button>
                 </Tooltip>
-
                 <Tooltip title="ניהול עובדים" arrow>
                     <Button color="inherit" component={Link} to="/WorkersManagement">
                         <ManageAccountsIcon />
                     </Button>
                 </Tooltip>
-
-                {/* <Tooltip title="פרופיל" arrow>
-                    <Button color="inherit" component={Link} to="/Profile">
-                        <PersonIcon />
-                    </Button>
-                </Tooltip> */}
-
-                <Tooltip title="התחברות" arrow>
-                    <Button color="inherit" component={Link} to="/Login" >
-                        <LoginIcon />
-                    </Button>
-                </Tooltip>
-                <Button color="inherit" component={Link} to="/SignUp">
-                    הרשמה
-                </Button>
                 <Box sx={{ flexGrow: 1 }}></Box>
                 <Typography>שלום {user.person.firstName}</Typography>
             </Toolbar>

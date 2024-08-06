@@ -877,7 +877,6 @@ export const Filter = ({ onClose, candidate }) => {
   
   useEffect(() => {
     const fetchData = async () => {
-      debugger
 
       try {
         if (candidateProfiles > 0) {

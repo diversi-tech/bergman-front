@@ -9,13 +9,13 @@ import WorkIcon from '@mui/icons-material/Work';
 import DescriptionIcon from '@mui/icons-material/Description';
 import SchoolIcon from '@mui/icons-material/School';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import BuildIcon from '@mui/icons-material/Build';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import FileAxios from '../axios/fileAxios';
 import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch } from 'react-redux';
 import { FillReferralsData } from '../redux/action/referralsAction';
 
@@ -25,6 +25,8 @@ export const History = () => {
     const [showDetails, setShowDetails] = useState(false);
     const [openAddDialog, setOpenAddDialog] = useState(false);
     const [history, setHistory] = useState([]);
+    const [editIndex, setEditIndex] = useState(null);
+    const [editComment, setEditComment] = useState('');
     const [user, setUser] = useState([]);
     const [fileName, setFileName] = useState('');
     const [open, setOpen] = useState(false);
@@ -35,7 +37,6 @@ export const History = () => {
         const fetchCandidate = async () => {
             try {
                 const data = await CandidateAxios.getCandidateById(candidateId);
-                console.log("candidate:", data);
                 setCandidateDetails(prevDetails => ({
                     ...prevDetails,
                     name: data.person.firstName + " " + data.person.lastName,
@@ -44,18 +45,14 @@ export const History = () => {
                     address: data.cityName,
                     experience: data.experienceYears,
                     summary: data.coverLater,
-                    skills: data.skills,
                     education: data.education,
-                    certifications: data.certifications,
                     githubProfile: data.githubProfile,
                     linkedinProfile: data.linkedinProfile,
                     userId: data.userId,
                     cv: data.cvEnglishFile
                 }));
-
-                console.log("candidateDetails:", candidateDetails)
-
-            } catch (error) {
+            }
+            catch (error) {
                 console.error('Error fetching candidate profile:', error);
             }
         };
@@ -64,7 +61,6 @@ export const History = () => {
                 const response = await ReferralsAxios.getAllReferrals();
                 console.log("referrals:", response);
                 console.log("candidateId:" + candidateId)
-                // console.log("response:", response.referralSource[candidateId].id);
                 const candidateReferrals = response.filter(referral => referral.referralSource.id === parseInt(candidateId));
                 console.log("candidateReferrals:", candidateReferrals)
                 setHistory(candidateReferrals);
@@ -72,17 +68,31 @@ export const History = () => {
                 console.error('Error fetching referrals:', error);
             }
         };
-        
         fetchCandidate();
-        // fetchUser();
         fetchHistory();
-        // fetchPerson();
     }, [candidateId, candidateDetails.userId]);
-    console.log("history", history)
+
+    const handleEditClick = (index) => {
+        setEditIndex(index);
+        setEditComment(history[index].remarks || '');
+    };
+
+    const handleCommentChange = (e) => {
+        setEditComment(e.target.value);
+    };
+
+    const handleSave = (index) => {
+        const updatedHistory = [...history];
+        updatedHistory[index].remarks = editComment;
+        setHistory(updatedHistory);
+        setEditIndex(null);
+    };
 
     const handleDetails = () => {
         setShowDetails(prevShowDetails => !prevShowDetails);
     };
+
+    //הוספת היסטוריה
     const [newHistory, setNewHistory] = useState({ name: '', date: '', comment: '', created: '', updated: '' });
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -198,6 +208,11 @@ export const History = () => {
                                     תגובה
                                 </Typography>
                             </TableCell>
+                            <TableCell align="center" sx={{ p: 1 }}>
+                                <Typography variant="subtitle1" component="div">
+                                    עריכה
+                                </Typography>
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -214,9 +229,25 @@ export const History = () => {
                                     </Typography>
                                 </TableCell>
                                 <TableCell align="center" sx={{ p: 1 }}>
-                                    <Typography variant="body1" component="div">
-                                        {historyItem.remarks}
-                                    </Typography>
+                                    {editIndex === index ? (
+                                        <TextField
+                                            value={editComment}
+                                            onChange={handleCommentChange}
+                                            onBlur={() => handleSave(index)}
+                                            autoFocus
+                                        />
+                                    ) : (
+                                        <Typography variant="body1" component="div">
+                                            {historyItem.remarks}
+                                        </Typography>
+                                    )}
+                                </TableCell>
+                                <TableCell align="center" sx={{ p: 1 }}>
+                                    <Tooltip title="ערוך תגובה">
+                                        <IconButton onClick={() => handleEditClick(index)}>
+                                            <EditIcon />
+                                        </IconButton>
+                                    </Tooltip>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -306,11 +337,6 @@ export const History = () => {
                                 <Typography sx={{ fontWeight: 'bold' }}>השכלה:</Typography>
                                 <Typography variant="body1">{candidateDetails.education}</Typography>
                             </Box>
-                            {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                <BuildIcon color="primary" />
-                                <Typography sx={{ fontWeight: 'bold' }}>כישרונות:</Typography>
-                                <Typography variant="body1">{candidateDetails.skills}</Typography>
-                            </Box> */}
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                 <GitHubIcon color="primary" />
                                 <Typography sx={{ fontWeight: 'bold' }}>גיטהב:</Typography>
@@ -331,36 +357,36 @@ export const History = () => {
 
 
 // const fetchUser = async () => {
-        //     try {
-        //         const response = await UserAxios.getAllUsers();
-        //         // console.log(response);
-        //         const users = response;
-        //         setUser(users);
-        //         // const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
-        //         // if (filteredUser) {
-        //         //     setCandidateDetails(prevDetails => ({
-        //         //         ...prevDetails,
-        //         //         email: filteredUser.email
-        //         //     }));
-        //         // }
-        //     } catch (error) {
-        //         console.error('Error fetching users:', error);
-        //     }
-        // };
-        // const fetchPerson = async () => {
-        //     try {
-        //         const response = await PersonAxios.getAllPersons();
-        //         console.log("persons",response);
-        //         const users = response;
-        //         setUser(users);
-        //         // const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
-        //         // if (filteredUser) {
-        //         //     setCandidateDetails(prevDetails => ({
-        //         //         ...prevDetails,
-        //         //         email: filteredUser.email
-        //         //     }));
-        //         // }
-        //     } catch (error) {
-        //         console.error('Error fetching users:', error);
-        //     }
-        // };
+//     try {
+//         const response = await UserAxios.getAllUsers();
+//         // console.log(response);
+//         const users = response;
+//         setUser(users);
+//         // const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
+//         // if (filteredUser) {
+//         //     setCandidateDetails(prevDetails => ({
+//         //         ...prevDetails,
+//         //         email: filteredUser.email
+//         //     }));
+//         // }
+//     } catch (error) {
+//         console.error('Error fetching users:', error);
+//     }
+// };
+// const fetchPerson = async () => {
+//     try {
+//         const response = await PersonAxios.getAllPersons();
+//         console.log("persons",response);
+//         const users = response;
+//         setUser(users);
+//         // const filteredUser = users.find(user1 => user1.userId === candidateDetails.userId);
+//         // if (filteredUser) {
+//         //     setCandidateDetails(prevDetails => ({
+//         //         ...prevDetails,
+//         //         email: filteredUser.email
+//         //     }));
+//         // }
+//     } catch (error) {
+//         console.error('Error fetching users:', error);
+//     }
+// };
