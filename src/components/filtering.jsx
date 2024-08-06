@@ -153,7 +153,7 @@ export const Filter = ({ onClose, candidate }) => {
 
 
 
-  
+
   useEffect(() => {
     const fetchData = async () => {
       debugger
@@ -224,7 +224,7 @@ export const Filter = ({ onClose, candidate }) => {
     } else {
       setIsSendDisabled(true);
     }
-  }, [candidatesFromServer,emails, subject]);
+  }, [candidatesFromServer, emails, subject]);
   useEffect(() => {
     if (open) {
       setCurrentCandidate(candidatesFromServer);
@@ -396,10 +396,10 @@ export const Filter = ({ onClose, candidate }) => {
   //
 
 
-  
+
   const handleEditOpen = (candidate) => {
 
-    
+
     const candidateEmail = candidate.person.email;
     // filteredCandidates.find((u) => u.id === candidate.id)?.person.email || "";
     const referral =
@@ -448,8 +448,6 @@ export const Filter = ({ onClose, candidate }) => {
 
   const handleEditSubmit = async () => {
     try {
-      // dispatch(FillCavdidateProfileData(response.data));
-
       await CandidateAxios.updateCandidate(currentCandidate.candidateId, currentCandidate);
       setOpenEdit(false)
       const candidate1 = await CandidateAxios.getAllCandidate()
@@ -457,12 +455,13 @@ export const Filter = ({ onClose, candidate }) => {
       dispatch(FillCavdidateProfileData(candidate1.data));
       alert(
         `השינויים עבור ${currentCandidate.person.firstName} ${currentCandidate.person.lastName} נשמרו בהצלחה`
-      ); // הצגת הודעה שהשינויים נשמרו
+      );
       setSnackbarOpen(true);
     } catch (error) {
       console.error("Error updating candidate:", error);
     }
   };
+
   // const handleSnackbarClose = () => {
   //   setSnackbarOpen(false);
 
@@ -481,14 +480,14 @@ export const Filter = ({ onClose, candidate }) => {
   const handleFilterCandidates = () => {
     const filterByType = (type, selectedValues) => {
       if (selectedValues.length === 0) return candidatesFromServer.map((c) => c.id);
-  
+
       // חיפוש ה-enum הרלוונטי
       const enumItem = enums.find((e) => e.enumType === type);
       if (!enumItem) return [];
-  
+
       // חיפוש כל האפשרויות מהטבלה options עבור ה-enum הנבחר
       const optionsByType = options.filter((o) => o.enumType === enumItem.enumType);
-  
+
       // חיפוש ה-optionsId עבור הערכים הנבחרים
       const optionsIds = selectedValues
         .map((value) => {
@@ -496,7 +495,7 @@ export const Filter = ({ onClose, candidate }) => {
           return option ? option.id : null;
         })
         .filter((id) => id !== null);
-  
+
       // חיפוש מועמדים שיש להם את כל האופציות הנבחרות
       return candidatesFromServer
         .filter((candidate) => {
@@ -707,7 +706,7 @@ export const Filter = ({ onClose, candidate }) => {
                         )}
                         renderInput={(params) => (
                           <TextField
-                          
+
                             {...params}
                             label="נמענים"
                             inputProps={{
@@ -1061,7 +1060,7 @@ export const Filter = ({ onClose, candidate }) => {
                   label="שם פרטי"
                   type="text"
                   fullWidth
-                  value={currentCandidate.firstName|| ""}
+                  value={currentCandidate.firstName || ""}
                   onChange={handleEditChange}
                 />
                 <TextField
@@ -1070,7 +1069,7 @@ export const Filter = ({ onClose, candidate }) => {
                   label="שם משפחה"
                   type="text"
                   fullWidth
-                  value={currentCandidate.lastName|| ""}
+                  value={currentCandidate.lastName || ""}
                   onChange={handleEditChange}
                 />
                 <TextField

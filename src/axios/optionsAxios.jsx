@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const API_URL = `https://bergman-back-2.onrender.com/api/options`;
+const API_URL = `http://localhost:8080/api/options`;
 
 const OptionsAxios = {
     getAllOptions: async () => {
