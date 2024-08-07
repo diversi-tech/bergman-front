@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useCallback } from "react";
 import {
   Button,
@@ -1305,5 +1306,3 @@ export const Filter = ({ onClose, candidate }) => {
     </div >
   );
 };
-
-
