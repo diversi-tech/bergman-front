@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useCallback } from "react";
 import {
   Button,
@@ -1049,7 +1050,7 @@ export const Filter = ({ onClose, candidate }) => {
                               {fileUrl.endsWith('.pdf') ? (
                                 <iframe
                                   src={fileUrl}
-                                  type="application/pdf"
+                                  // type="application/pdf"
                                   width="100%"
                                   height="600px"
                                 />
@@ -1299,5 +1300,3 @@ export const Filter = ({ onClose, candidate }) => {
     </div >
   );
 };
-
-
