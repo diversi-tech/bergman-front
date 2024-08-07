@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { prefixer } from 'stylis';
+import emailAxios from '../axios/emailAxios'
 import rtlPlugin from 'stylis-plugin-rtl';
 import userAxios from '../axios/userAxios';
 import userTypeAxios from '../axios/userTypeAxios';
@@ -217,6 +218,28 @@ export const Manager = () => {
         setEmailSubject('');
         setEmailBody('');
     };
+    const handleEmailSend = async () => {
+        debugger
+        let emailData = {
+            to: [emailRecipient],
+            subject: emailSubject,
+            body: emailBody
+        };
+
+        console.log('Email Data:', emailData);
+
+        try {
+            await emailAxios.addEmail(emailData);
+            setSnackbarMessage('הדוא"ל נשלח בהצלחה');
+            setSnackbarOpen(true);
+            handleEmailDialogClose();
+        } catch (error) {
+            console.error('שגיאה בשליחת דוא"ל:', error.response ? error.response.data : error.message);
+            setSnackbarMessage('שגיאה בשליחת דוא"ל');
+            setSnackbarOpen(true);
+        }
+        handleEmailDialogClose()
+    };
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -257,7 +280,7 @@ export const Manager = () => {
                                     <TableCell style={{ direction: 'rtl', textAlign: 'center' }}>
                                         {manager.person.email}
                                     </TableCell>
-                                    <TableCell padding="none"><Tooltip title="לשליחת אימייל"><IconButton color="primary" onClick={() => handleEmailDialogOpen(manager.email || '')}>
+                                    <TableCell padding="none"><Tooltip title="לשליחת אימייל"><IconButton color="primary" onClick={() => handleEmailDialogOpen(manager.person.email || '')}>
                                         <MailIcon />
                                     </IconButton></Tooltip>
                                     </TableCell>
@@ -543,7 +566,7 @@ export const Manager = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button variant="contained" color="primary" onClick={handleEmailDialogClose}>ביטול</Button>
-                    {/* <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleEmailSend}>שלח</Button> */}
+                    <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleEmailSend}>שלח</Button>
                 </DialogActions>
             </Dialog>
             <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
