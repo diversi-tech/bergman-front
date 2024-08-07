@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://bergman-back-2.onrender.com/api/files';
+const API_URL = 'http://localhost:8080/api/files';
 
 const FileAxios = {
   uploadFile: async (file) => {

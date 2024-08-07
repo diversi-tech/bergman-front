@@ -337,7 +337,10 @@
 
 // export default CV;
 import React, { useEffect } from 'react';
-import { Box, Button, Container, Snackbar, Alert, CircularProgress, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Backdrop, IconButton, Tooltip } from '@mui/material';
+import {
+  Box, Button, Container, Snackbar, Alert, CircularProgress, Typography, Dialog, DialogTitle, DialogContent, DialogActions,
+  Backdrop, IconButton, Tooltip
+} from '@mui/material';
 import { styled } from '@mui/system';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -452,8 +455,8 @@ export const CV = () => {
         (englishFile ? englishFile.name : ''));
       setDialogSeverity('success');
       setDialogOpen(true);
-      user.cvHebrewFile=hebrewFile;
-      user.cvEnglishFile=englishFile;
+      user.cvHebrewFile = hebrewFile;
+      user.cvEnglishFile = englishFile;
       setHebrewFile(null);
       setEnglishFile(null);
     } catch (error) {

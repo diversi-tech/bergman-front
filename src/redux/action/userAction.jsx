@@ -1,8 +1,9 @@
 
-export const FillUsersData=(value)=>{
-    return {type:'FILL_USERS_DATA',payload:value}
+export const FillUsersData = (value) => {
+    return {
+        type: 'FILL_USERS_DATA', payload: value
+    }
 }
-
 
 export const setMyUser = (user) => {
     return {
@@ -14,5 +15,4 @@ export const setMyUser = (user) => {
 export const currentUser = (user) => ({
     type: 'CURRENT_USER',
     payload: user,
-  });
-
+});

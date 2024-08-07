@@ -450,8 +450,6 @@ export const Filter = ({ onClose, candidate }) => {
 
   const handleEditSubmit = async () => {
     try {
-      // dispatch(FillCavdidateProfileData(response.data));
-
       await CandidateAxios.updateCandidate(currentCandidate.candidateId, currentCandidate);
       setOpenEdit(false)
       const candidate1 = await CandidateAxios.getAllCandidate()
@@ -459,12 +457,13 @@ export const Filter = ({ onClose, candidate }) => {
       dispatch(FillCavdidateProfileData(candidate1.data));
       alert(
         `השינויים עבור ${currentCandidate.person.firstName} ${currentCandidate.person.lastName} נשמרו בהצלחה`
-      ); // הצגת הודעה שהשינויים נשמרו
+      );
       setSnackbarOpen(true);
     } catch (error) {
       console.error("Error updating candidate:", error);
     }
   };
+
   // const handleSnackbarClose = () => {
   //   setSnackbarOpen(false);
 
@@ -1296,11 +1295,6 @@ export const Filter = ({ onClose, candidate }) => {
             </Button>
           </Tooltip>
         </DialogActions>
-        {/* <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
-          <Alert onClose={handleSnackbarClose} severity="success">
-            {snackbarMessage}
-          </Alert>
-        </Snackbar> */}
       </Dialog>
     </div >
   );
