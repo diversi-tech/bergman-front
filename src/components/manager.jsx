@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import MailIcon from '@mui/icons-material/Mail';
 import {
-    Alert, Autocomplete, Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+    Alert, Autocomplete, Avatar, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
     FormControl, IconButton, InputLabel, MenuItem, Paper, Select, Snackbar, Table, TableBody, TableCell,
     TableContainer, TableHead, TableRow, TextField, Tooltip, Typography
 } from '@mui/material';
@@ -55,6 +55,7 @@ export const Manager = () => {
     const [emailSubject, setEmailSubject] = useState('');
     const [emailBody, setEmailBody] = useState('');
     const [showTable, setShowTable] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     useEffect(() => {
@@ -219,11 +220,11 @@ export const Manager = () => {
         setEmailBody('');
     };
     const handleEmailSend = async () => {
-        debugger
+        setLoading(true);
         let emailData = {
             to: [emailRecipient],
             subject: emailSubject,
-            body: emailBody
+            body: `<div dir="rtl">${emailBody}</div>`
         };
 
         console.log('Email Data:', emailData);
@@ -238,7 +239,10 @@ export const Manager = () => {
             setSnackbarMessage('שגיאה בשליחת דוא"ל');
             setSnackbarOpen(true);
         }
-        handleEmailDialogClose()
+        finally {
+            setLoading(false);
+            handleEmailDialogClose();
+        }
     };
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -566,7 +570,7 @@ export const Manager = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button variant="contained" color="primary" onClick={handleEmailDialogClose}>ביטול</Button>
-                    <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleEmailSend}>שלח</Button>
+                    <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleEmailSend}>{loading ? <CircularProgress size={24} style={{color: 'white'}}/> : 'שלח'}</Button>
                 </DialogActions>
             </Dialog>
             <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
