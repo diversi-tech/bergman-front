@@ -3,11 +3,12 @@ import Cookies from "js-cookie";
 import {jwtDecode} from 'jwt-decode';
 import apiClient from "./apiClient";
 
-const API_URL = "http://localhost:8080/api/users"; // שים כאן את ה-URL שלך לקונטרולר
+const API_URL = 'https://bergman-back-2.onrender.com/api/users'; // שים כאן את ה-URL שלך לקונטרולר
+
 
 const UserAxios = {
   login: async (email, pass) => {
-    debugger
+    
     try {
       const response = await axios.get(`${API_URL}/emailAndPass/${email}/${pass}`);
       if (response.data) {

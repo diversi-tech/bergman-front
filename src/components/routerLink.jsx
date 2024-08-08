@@ -22,6 +22,7 @@ import { jwtDecode } from 'jwt-decode';
 import Cookies from "js-cookie";
 import PrivateRouteUser from './PrivateRouteUser';
 import RouteWrapper from './RouteWrapper';
+import CompanyManagement from './CompanyManagement';
 
 export const RouterLink = () => {
     
@@ -67,6 +68,7 @@ export const RouterLink = () => {
                     <Route path='/changeProfile' element={<RouteWrapper element={ChangeProfile} usePrivateRoute={userType} />}/>
                     <Route path='/request-password-reset' element={<PasswordReset/>}/>
                     <Route path="/" element={<Home />} />
+                    <Route path='/CompanyManagement' element={<RouteWrapper element={CompanyManagement} usePrivateRoute={userType} />}/>
                 </Routes>
             </Box>
         </BrowserRouter>

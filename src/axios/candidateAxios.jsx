@@ -1,6 +1,6 @@
 import apiClient from './apiClient'; // או הנתיב הנכון
 
-const API_URL = 'candidate';
+const API_URL = 'candidate'; 
 
 const CandidateAxios = {
   getAllCandidates: async () => {

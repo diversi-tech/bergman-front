@@ -62,5 +62,6 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "stylis-plugin-rtl": "^2.1.1"
-  }
+  },
+  "proxy": "https://bergman-back-2.onrender.com"
 }

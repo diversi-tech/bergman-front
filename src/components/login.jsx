@@ -11,6 +11,8 @@ import {
   DialogContentText,
   DialogTitle,
   Fade,
+  IconButton,
+  InputAdornment,
   Modal,
   TextField,
   Typography,
@@ -31,6 +33,7 @@ import { store } from "../redux/store";
 import { requestPasswordReset } from "../axios/passwordResetAxios";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -48,6 +51,8 @@ export const Login = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+   // מצב להצגת הסיסמה
+  const [showPassword, setShowPassword] = useState(false);
   const myDispatch = useDispatch();
   const myNavigate = useNavigate();
   const users = useSelector((state) => state.listUsers);
@@ -167,16 +172,17 @@ export const Login = () => {
   };
 
   const handleSignUp = () => {
-    // ולידציה על השדות לפני הרשמה
-    const emailValidationError = validateEmail(email);
-    const passwordValidationError = validatePassword(password);
-    setEmailError(emailValidationError);
-    setPasswordError(passwordValidationError);
 
-    if (emailValidationError || passwordValidationError) {
-      setError(true);
-      return;
-    }
+    // // ולידציה על השדות לפני הרשמה
+    // const emailValidationError = validateEmail(email);
+    // const passwordValidationError = validatePassword(password);
+    // setEmailError(emailValidationError);
+    // setPasswordError(passwordValidationError);
+
+    // if (emailValidationError || passwordValidationError) {
+    //   setError(true);
+    //   return;
+    // }
 
     // לוגיקה להרשמה
     // alert("ניווט לעמוד הרשמה");
@@ -271,8 +277,8 @@ export const Login = () => {
                         setEmail(e.target.value);
                         setEmailError(validateEmail(e.target.value));
                       }}
-                      onBlur={() => handleBlur("email", email)}
-                      // fullWidth
+                      onBlur={() => handleBlur('email', email)}
+                      fullWidth
                       margin="normal"
                       variant="outlined"
                       error={Boolean(emailError)}
@@ -280,35 +286,48 @@ export const Login = () => {
                     />
                     <TextField
                       label="סיסמא"
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       value={password}
                       // onChange={(e) => setPassword(e.target.value)}
                       onChange={(e) => {
                         setPassword(e.target.value);
                         setPasswordError(validatePassword(e.target.value));
                       }}
-                      onBlur={() => handleBlur("password", password)}
-                      // fullWidth
+                      onBlur={() => handleBlur('password', password)}
+                      //fullWidth
                       margin="normal"
                       variant="outlined"
                       error={Boolean(passwordError)}
                       helperText={passwordError}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={() => setShowPassword(!showPassword)}
+                              edge="end"
+                            >
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
                     />
                   </Box>
                 </div>
               </ThemeProvider>
             </CacheProvider>
+            {!isNewUser && (
             <Button
               variant="contained"
               color="primary"
               onClick={handleLogin}
-              // fullWidth
-              style={{ marginTop: "16px" }}
-              disabled={Boolean(emailError || passwordError)}
+              fullWidth
+              style={{ marginTop: '16px',  maxWidth: '258px' }}
+              disabled={Boolean(emailError || passwordError || !email || !password)}
             >
               התחבר
-            </Button>
-
+            </Button>)}
             <Button
               variant="text"
               onClick={handleOpenResetDialog}
@@ -319,27 +338,21 @@ export const Login = () => {
               ?שכחת סיסמא
             </Button>
             {error && (
-              <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                marginTop="16px"
-              >
-                <Typography color="error" style={{ fontSize: "13px" }}>
-                  אתה משתמש חדש
-                </Typography>
+              <Box display="flex" flexDirection="column" alignItems="center" marginTop="16px">
+                <Typography color="error" style={{ fontSize: '13px' }}>משתמש חדש, לא קיים במערכת</Typography>
+                </Box>
+            )}
                 <Button
                   variant="outlined"
                   // color="secondary"
                   // color="primary"
                   onClick={handleSignUp}
-                  style={{ marginTop: "16px" }}
-                  disabled={Boolean(emailError || passwordError)}
+                  style={{ marginTop: '16px' }}
+                  //disabled={Boolean(emailError || passwordError)}
                 >
                   להרשמה
                 </Button>
-              </Box>
-            )}
+             
           </>
         )}
 
@@ -435,195 +448,4 @@ const LoginModal = () => {
 
 export default LoginModal;
 
-// import { Box, Button, Container, TextField, Typography, Modal, Backdrop, Fade } from '@mui/material';
-// import React, { useState, useEffect } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { FillUsersData, setMyUser} from '../redux/action/userAction';
-// import { store } from '../redux/store'
-// import { Provider } from 'react-redux';
-// import UserAxios from '../axios/userAxios';
-// import { useNavigate } from 'react-router-dom';
-// import { createTheme, ThemeProvider, Theme } from '@mui/material/styles';
-// import rtlPlugin from 'stylis-plugin-rtl';
-// import { prefixer } from 'stylis';
-// import { CacheProvider } from '@emotion/react';
-// import createCache from '@emotion/cache';
 
-// export const Login = () => {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [usersList, setUsersList] = useState([]);
-//   const [error, setError] = useState(false);
-
-//   const myDispatch = useDispatch();
-//   const myNavigate = useNavigate();
-//   const users = useSelector(state => state.listUsers);
-
-//   useEffect(() => {
-//     const fetchUsers = async () => {
-//       if (users.length > 0) {
-//         setUsersList(users);
-//       } else {
-//         try {
-//           const response = await UserAxios.getAllUsers();
-//           setUsersList(response.data);
-//           myDispatch(FillUsersData(response.data));
-//         } catch (error) {
-//           console.error("Error fetching users:", error);
-//         }
-//       }
-//     };
-//     fetchUsers();
-//   }, [myDispatch, users]);
-
-//   const handleLogin = () => {
-//     const user = usersList.find(user => user.email === email && user.password === password);
-//     if (user) {
-//       myDispatch(setMyUser(user));
-//       if (user.userType === 1) {
-//         myNavigate('/Manager');
-//       } else if (user.userType === 2) {
-//         myNavigate('/Home');
-//       } else {
-//         myNavigate('/Secretary');
-//       }
-//     } else {
-//       setError(true);
-//     }
-//   };
-
-//   const handleSignUp = () => {
-//     myNavigate('/SignUp', { state: { email, password } });
-//   };
-
-//   const theme = createTheme({
-//     direction: 'rtl',
-//     palette: {
-//       mode: "light"
-//     },
-//   });
-
-//   const cacheRtl = createCache({
-//     key: 'muirtl',
-//     stylisPlugins: [prefixer, rtlPlugin],
-//   });
-
-//   return (
-//     <Container maxWidth="sm">
-//       <Box
-//         display="flex"
-//         flexDirection="column"
-//         alignItems="center"
-//         justifyContent="center"
-//         minHeight="10vh"
-//       >
-//         <Typography variant="h5" component="h1" gutterBottom>
-//           התחברות
-//         </Typography>
-//         <CacheProvider value={cacheRtl}>
-//           <ThemeProvider theme={theme}>
-//             <div dir="rtl">
-//               <Box
-//                 display="flex"
-//                 flexDirection="column"
-//                 alignItems="center"
-//                 justifyContent="center"
-//                 width="100%"
-//               >
-//                 <TextField
-//                   label="אימייל"
-//                   type="email"
-//                   value={email}
-//                   onChange={(e) => setEmail(e.target.value)}
-//                   margin="normal"
-//                   variant="outlined"
-//                 />
-//                 <TextField
-//                   label="סיסמא"
-//                   type="password"
-//                   value={password}
-//                   onChange={(e) => setPassword(e.target.value)}
-//                   margin="normal"
-//                   variant="outlined"
-//                 />
-//               </Box>
-//             </div>
-//           </ThemeProvider>
-//         </CacheProvider>
-//         <Button
-//           variant="contained"
-//           color="primary"
-//           onClick={handleLogin}
-//           style={{ marginTop: '16px' }}
-//         >
-//           התחבר
-//         </Button>
-//         {error && (
-//           <Box display="flex" flexDirection="column" alignItems="center" marginTop="16px">
-//             <Typography color="error" style={{ fontSize: '15px' }}>אתה משתמש חדש</Typography>
-//             <Button
-//               variant="outlined"
-//               color="primary"
-//               onClick={handleSignUp}
-//               style={{ marginTop: '16px' }}
-//             >
-//               להרשמה
-//             </Button>
-//           </Box>
-//         )}
-//       </Box>
-//     </Container>
-//   );
-// };
-
-// const LoginModal = () => {
-//   const [open, setOpen] = useState(false);
-//   const handleOpen = () => setOpen(true);
-//   const handleClose = () => setOpen(false);
-
-//   useEffect(() => {
-//     handleOpen();
-//   }, []);
-
-//   return (
-//     <Provider store={store}>
-//       <div>
-//         <Modal
-//           aria-labelledby="transition-modal-title"
-//           aria-describedby="transition-modal-description"
-//           open={open}
-//           onClose={handleClose}
-//           closeAfterTransition
-//           BackdropComponent={Backdrop}
-//           BackdropProps={{
-//             timeout: 500,
-//           }}
-//         >
-//           <Fade in={open}>
-//             <Box
-//               display="flex"
-//               flexDirection="column"
-//               alignItems="center"
-//               justifyContent="center"
-//               style={{
-//                 position: 'absolute',
-//                 top: '60%',
-//                 left: '50%',
-//                 transform: 'translate(-50%, -50%)',
-//                 width: 370,
-//                 backgroundColor: 'white',
-//                 borderRadius: '15px',
-//                 boxShadow: 24,
-//                 padding: 16,
-//               }}
-//             >
-//               <Login />
-//             </Box>
-//           </Fade>
-//         </Modal>
-//       </div>
-//     </Provider>
-//   );
-// };
-
-// export default LoginModal;
