@@ -111,11 +111,11 @@ export const Manager = () => {
     };
     const handleDeleteConfirm = async () => {
         try {
-            await userAxios.deleteUser(managerToDelete.userId);
+            await userAxios.deleteUser(managerToDelete.id);
             const managers1 = await userAxios.getAllManagers();
             setManagers(managers1);
             dispatch(FillUsersData(managers1));
-            setSnackbarMessage(`המשתמש ${managerToDelete.username} נמחק בהצלחה`);
+            setSnackbarMessage(`המשתמש ${managerToDelete.person.firstName} ${managerToDelete.person.lastName} נמחק בהצלחה`);
             setSnackbarOpen(true);
             handleDeleteWarningClose();
         } catch (error) {
