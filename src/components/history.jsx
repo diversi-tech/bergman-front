@@ -18,6 +18,7 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch } from 'react-redux';
 import { FillReferralsData } from '../redux/action/referralsAction';
+import CandidateReferralsAxios from '../axios/candidateReferralsAxios';
 
 export const History = () => {
     const { userId } = useParams();
@@ -33,6 +34,7 @@ export const History = () => {
     const [fileUrl, setFileUrl] = useState('');
     const myDispatch = useDispatch()
     const candidateId = userId;
+
     useEffect(() => {
         const fetchCandidate = async () => {
             try {
@@ -51,21 +53,43 @@ export const History = () => {
                     userId: data.userId,
                     cv: data.cvEnglishFile
                 }));
+                console.log(data)
             }
             catch (error) {
                 console.error('Error fetching candidate profile:', error);
             }
         };
+        // const fetchHistory = async () => {
+        //     try {
+        //         const response = await ReferralsAxios.getAllReferrals();
+        //         console.log("referrals:", response);
+        //         console.log("candidateId:" + candidateId)
+        //         console.log("candidateReferrals666666:",response.candidateReferrals.id)
+        //         const candidateReferrals = response.filter( referral => referral.candidateReferrals.id === parseInt(candidateId));
+        //         console.log("candidateReferrals:", candidateReferrals)
+        //         setHistory(candidateReferrals || []);
+        //     } catch (error) {
+        //         console.error('Error fetching referrals:', error);
+        //     }
+        // };
+        // const fetchHistory = async () => {
+        //     try {
+        //         const candidateReferrals = await CandidateReferralsAxios.getReferralsByCandidateId(candidateId);
+        //         setHistory(candidateReferrals || []);
+        //     } catch (error) {
+        //         console.error('Error fetching candidate referrals:', error);
+        //     }
+        // };
+
         const fetchHistory = async () => {
             try {
-                const response = await ReferralsAxios.getAllReferrals();
-                console.log("referrals:", response);
-                console.log("candidateId:" + candidateId)
-                const candidateReferrals = response.filter(referral => referral.referralSource.id === parseInt(candidateId));
-                console.log("candidateReferrals:", candidateReferrals)
-                setHistory(candidateReferrals);
+                const candidateReferrals = await CandidateReferralsAxios.getReferralsByCandidateId(candidateId);
+                const referralIds = candidateReferrals.map(referral => referral.referralId);
+                // Fetch detailed referral data for each referralId
+                const referrals = await Promise.all(referralIds.map(id => ReferralsAxios.getReferralById(id)));
+                setHistory(referrals || []);
             } catch (error) {
-                console.error('Error fetching referrals:', error);
+                console.error('Error fetching candidate referrals:', error);
             }
         };
         fetchCandidate();
@@ -225,7 +249,7 @@ export const History = () => {
                                 </TableCell>
                                 <TableCell align="center" sx={{ p: 1 }}>
                                     <Typography variant="body1" component="div">
-                                        {historyItem.referralDate}
+                                        {new Date(historyItem.referralDate).toLocaleDateString()}
                                     </Typography>
                                 </TableCell>
                                 <TableCell align="center" sx={{ p: 1 }}>

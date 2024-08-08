@@ -3,7 +3,7 @@ import { Button, Box, Container, Typography, Toolbar, CssBaseline, Tooltip, keyf
 import { useNavigate } from 'react-router-dom';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import logo from '../images/logo1.png'
+import logo from '../images/חנה ברגמן.png'
 import { useSelector } from 'react-redux';
 
 const pulseAnimation = keyframes`
