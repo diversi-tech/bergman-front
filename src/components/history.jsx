@@ -53,34 +53,12 @@ export const History = () => {
                     userId: data.userId,
                     cv: data.cvEnglishFile
                 }));
-                console.log(data)
             }
             catch (error) {
                 console.error('Error fetching candidate profile:', error);
             }
         };
-        // const fetchHistory = async () => {
-        //     try {
-        //         const response = await ReferralsAxios.getAllReferrals();
-        //         console.log("referrals:", response);
-        //         console.log("candidateId:" + candidateId)
-        //         console.log("candidateReferrals666666:",response.candidateReferrals.id)
-        //         const candidateReferrals = response.filter( referral => referral.candidateReferrals.id === parseInt(candidateId));
-        //         console.log("candidateReferrals:", candidateReferrals)
-        //         setHistory(candidateReferrals || []);
-        //     } catch (error) {
-        //         console.error('Error fetching referrals:', error);
-        //     }
-        // };
-        // const fetchHistory = async () => {
-        //     try {
-        //         const candidateReferrals = await CandidateReferralsAxios.getReferralsByCandidateId(candidateId);
-        //         setHistory(candidateReferrals || []);
-        //     } catch (error) {
-        //         console.error('Error fetching candidate referrals:', error);
-        //     }
-        // };
-
+        
         const fetchHistory = async () => {
             try {
                 const candidateReferrals = await CandidateReferralsAxios.getReferralsByCandidateId(candidateId);

@@ -16,9 +16,11 @@ export const Nav = () => {
     return (
         <AppBar position="fixed">
             <Toolbar>
-                <Button color="inherit" component={Link} to="/Manager" >
-                    <AdminPanelSettingsIcon/>
-                </Button>
+                <Tooltip title=" ניהול" arrow>
+                    <Button color="inherit" component={Link} to="/Manager" >
+                        <AdminPanelSettingsIcon />
+                    </Button>
+                </Tooltip>
                 <Tooltip title="חיפוש מועמדים" arrow>
                     <Button color="inherit" component={Link} to="/Filter">
                         <PersonSearchIcon />
@@ -29,15 +31,15 @@ export const Nav = () => {
                         <ManageSearchIcon />
                     </Button>
                 </Tooltip>
-                <Tooltip title="ניהול עובדים" arrow>
+                {/* <Tooltip title="ניהול עובדים" arrow>
                     <Button color="inherit" component={Link} to="/WorkersManagement">
                         <ManageAccountsIcon />
                     </Button>
-                </Tooltip>
+                </Tooltip> */}
                 <Tooltip title="ניהול חברות" arrow>
-                     <Button color="inherit" component={Link} to ="/CompanyManagement">
+                    <Button color="inherit" component={Link} to="/CompanyManagement">
                         <BusinessIcon />
-                     </Button>
+                    </Button>
                 </Tooltip>
                 <Box sx={{ flexGrow: 1 }}></Box>
                 <Typography>שלום {user.person.firstName}</Typography>
