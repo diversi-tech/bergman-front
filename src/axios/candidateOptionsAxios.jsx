@@ -1,7 +1,7 @@
 import axios from 'axios';
+import apiClient from './apiClient'; // או הנתיב הנכון
 
-const API_URL = 'https://bergman-back-2.onrender.com/api/candidateOptions'; 
-
+const API_URL = 'candidateOptions'; 
 const CandidateOptionsAxios = {
     
     getAllCandidateOptions: async () => {
