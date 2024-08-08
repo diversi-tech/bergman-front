@@ -193,7 +193,6 @@ export const Filter = ({ onClose, candidate }) => {
         if (candidateOptions1 > 0) {
           setCandidateOptions(candidateOptions1);
         } else {
-          debugger
           const response = await CandidateOptionsAxios.getAllCandidateOptions();
           setCandidateOptions(response);
           dispatch(FillCandidateOptionsData(response.data));

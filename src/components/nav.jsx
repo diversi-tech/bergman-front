@@ -31,11 +31,6 @@ export const Nav = () => {
                         <ManageSearchIcon />
                     </Button>
                 </Tooltip>
-                {/* <Tooltip title="ניהול עובדים" arrow>
-                    <Button color="inherit" component={Link} to="/WorkersManagement">
-                        <ManageAccountsIcon />
-                    </Button>
-                </Tooltip> */}
                 <Tooltip title="ניהול חברות" arrow>
                     <Button color="inherit" component={Link} to="/CompanyManagement">
                         <BusinessIcon />
