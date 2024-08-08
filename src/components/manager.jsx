@@ -171,9 +171,7 @@ export const Manager = () => {
     };
     const handleUserTypeEditChange = (e) => {
         const selectedUserTypeId = e.target.value;
-        // למצוא את סוג המשתמש המתאים מתוך הרשימה
         const selectedUserType = userTypes.find(type => type.id === selectedUserTypeId);
-        // עדכון המצב עם סוג המשתמש הנבחר
         setCurrentManager(prevManager => ({
             ...prevManager,
             userType: selectedUserType || { id: '', userTypeName: '' }
@@ -195,18 +193,23 @@ export const Manager = () => {
         }
     };
     const handleAddSubmit = async () => {
+        const selectedUserType = userTypes.find(type => type.id === newManager.userType);
+        alert(`${newManager.firstName},${newManager.lastName},${newManager.email},${newManager.password},${selectedUserType?.userTypeName}`)
         if (emailError) return;
         try {
             await userAxios.addUser(newManager);
-            setOpenAdd(false);
+            handleAddClose()
+            // setOpenAdd(false);
             const managers1 = await userAxios.getAllManagers();
             setManagers(managers1);
             dispatch(FillUsersData(managers1));
-            setSnackbarMessage(`המשתמש ${newManager.username} נוסף בהצלחה`);
+            setSnackbarMessage(`המשתמש ${newManager.firstName} נוסף בהצלחה`);
             setSnackbarOpen(true);
         } catch (error) {
             console.error('Error adding manager:', error);
         }
+        handleAddClose()
+
     };
     const handleEmailDialogOpen = (email) => {
         setEmailRecipient(email);
@@ -286,7 +289,7 @@ export const Manager = () => {
                                     </TableCell>
                                     <TableCell padding="none">
                                         <div style={{ padding: "0px 20px" }}>
-                                            <Tooltip title="עריכת מנהל">
+                                            <Tooltip title="עריכת משתמש">
                                                 <IconButton color="primary" onClick={() => handleEditOpen(manager)}>
                                                     <EditIcon />
                                                 </IconButton>
@@ -295,7 +298,7 @@ export const Manager = () => {
                                     </TableCell>
 
                                     <TableCell padding="0px 20px">
-                                        <Tooltip title="מחיקת מנהל">
+                                        <Tooltip title="מחיקת משתמש">
                                             <IconButton color="primary" onClick={() => handleDeleteWarningOpen(manager)}>
                                                 <DeleteIcon />
                                             </IconButton>
@@ -327,9 +330,9 @@ export const Manager = () => {
                         maxHeight: '90vh', // גובה מקסימלי
                     },
                 }}>
-                <DialogTitle>ערוך מנהל</DialogTitle>
+                <DialogTitle sx={{ textAlign: 'center' }}>ערוך משתמש</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>ערוך את פרטי המנהל</DialogContentText>
+                    <DialogContentText sx={{ textAlign: 'center' }}>ערוך את פרטי המשתמש</DialogContentText>
                     <CacheProvider value={cacheRtl}>
                         <ThemeProvider theme={theme}>
                             <div dir="rtl">
@@ -416,43 +419,46 @@ export const Manager = () => {
                             <div dir="rtl">
                                 <TextField
                                     margin="dense"
-                                    name="username"
-                                    label="שם משתמש"
+                                    name="firstName"
+                                    label="שם פרטי"
                                     type="text"
                                     fullWidth
-                                    value={newManager.username}
+                                    value={newManager.firstName}
                                     onChange={handleAddChange}
                                     autoComplete="new-password" // הוסף את התכונה הזו
                                 />
                             </div>
                         </ThemeProvider>
-                    </CacheProvider>
-                    <Autocomplete
-                        freeSolo
-                        options={emailDomains.map((domain) => `${newManager.email.split('@')[0]}@${domain}`)}
-                        renderInput={(params) => (
-                            <CacheProvider value={cacheRtl}>
-                                <ThemeProvider theme={theme}>
-                                    <div dir="rtl">
-                                        <TextField
-                                            {...params}
-                                            margin="dense"
-                                            name="email"
-                                            label="אימייל"
-                                            type="email"
-                                            fullWidth
-                                            value={newManager.email}
-                                            onChange={handleAddChange}
-                                            error={!!emailError}
-                                            helperText={emailError}
-                                            autoComplete="new-password" // הוסף את התכונה הזו
-                                        />
-                                    </div>
-                                </ThemeProvider>
-                            </CacheProvider>
-                        )}
-                    />
-                    <CacheProvider value={cacheRtl}>
+                        <ThemeProvider theme={theme}>
+                            <div dir="rtl">
+                                <TextField
+                                    margin="dense"
+                                    name="lastName"
+                                    label="שם משפחה"
+                                    type="text"
+                                    fullWidth
+                                    value={newManager.lastName}
+                                    onChange={handleAddChange}
+                                    autoComplete="new-password" // הוסף את התכונה הזו
+                                />
+                            </div>
+                        </ThemeProvider>
+                        <ThemeProvider theme={theme}>
+                            <div dir='rtl'>
+                                <TextField
+                                    margin='dense'
+                                    name='email'
+                                    label="אימייל"
+                                    type="email"
+                                    fullWidth
+                                    value={newManager.email}
+                                    onChange={handleAddChange}
+                                    error={!!emailError}
+                                    helperText={emailError}
+                                    autoComplete="new-password"
+                                />
+                            </div>
+                        </ThemeProvider>
                         <ThemeProvider theme={theme}>
                             <div dir="rtl">
                                 <TextField
@@ -463,7 +469,7 @@ export const Manager = () => {
                                     fullWidth
                                     value={newManager.password}
                                     onChange={handleAddChange}
-                                    autoComplete="new-password" // הוסף את התכונה הזו
+                                    autoComplete="new-password"
                                 />
                             </div>
                         </ThemeProvider>
@@ -485,13 +491,14 @@ export const Manager = () => {
                                                 },
                                             },
                                         }}
+                                        sx={{ textAlign: 'left' }}
                                     >
                                         {userTypes
-                                            .filter((type) => type.userTypeId !== 2) // סינון אופציה מספר 2
+                                            .filter((type) => type.id !== 2) // סינון אופציה מספר 2
                                             .map((type) => (
                                                 <MenuItem
-                                                    key={type.userTypeId}
-                                                    value={type.userTypeId}>
+                                                    key={type.id}
+                                                    value={type.id}>
                                                     {type.userTypeName}
                                                 </MenuItem>
                                             ))}
@@ -509,7 +516,7 @@ export const Manager = () => {
             <Dialog open={openDeleteWarning} onClose={handleDeleteWarningClose} dir="rtl">
                 <DialogTitle>אזהרה</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>האם אתה בטוח שאתה רוצה למחוק את המנהל הזה?</DialogContentText>
+                    <DialogContentText>האם אתה בטוח שאתה רוצה למחוק את המשתמש הזה?</DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button variant="contained" color="primary" onClick={handleDeleteWarningClose}>ביטול</Button>
@@ -517,7 +524,7 @@ export const Manager = () => {
                 </DialogActions>
             </Dialog>
             <Dialog open={openEmailDialog} onClose={handleEmailDialogClose} dir="rtl">
-                <DialogTitle>שלח מייל</DialogTitle>
+                <DialogTitle sx={{ textAlign: 'center' }}>שלח מייל</DialogTitle>
                 <DialogContent>
                     <CacheProvider value={cacheRtl}>
                         <ThemeProvider theme={theme}>
