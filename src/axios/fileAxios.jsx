@@ -1,15 +1,14 @@
-import axios from 'axios';
+import apiClient from "./apiClient";
 
-const API_URL = 'http://localhost:8080/api/files';
+const API_URL = 'files'; // סיומת ה-API
 
 const FileAxios = {
   uploadFile: async (file) => {
-    debugger
     const formData = new FormData();
     formData.append('file', file);
-    // formData.append('userID', userID);
+    
     try {
-      const response = await axios.post(`${API_URL}/upload`, formData, {
+      const response = await apiClient.post(`${API_URL}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -20,10 +19,10 @@ const FileAxios = {
       throw error;
     }
   },
-  downloadFile: async ( fileName) => {
-    debugger
+  
+  downloadFile: async (fileName) => {
     try {
-      const response = await axios.get(`${API_URL}/download/${fileName}`, {
+      const response = await apiClient.get(`${API_URL}/download/${fileName}`, {
         responseType: 'blob',
       });
       return response.data;
@@ -32,29 +31,20 @@ const FileAxios = {
       throw error;
     }
   },
-  // viewFile: async (fileName) => {
-  //   try {
-  //     const response = await axios.get(`${API_URL}/view/${fileName}`, {
-  //       responseType: 'blob',
-  //     });
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error('Error viewing file:', error);
-  //     throw error;
-  //   }
-  // },
+  
   deleteFile: async (userID, fileName) => {
     try {
-      const response = await axios.delete(`${API_URL}/delete/${userID}/${fileName}`);
+      const response = await apiClient.delete(`${API_URL}/delete/${userID}/${fileName}`);
       return response.data;
     } catch (error) {
       console.error('Error deleting file:', error);
       throw error;
     }
   },
+  
   getFileUrl: async (fileName) => {
     try {
-      const response = await axios.get(`${API_URL}/url/${fileName}`);
+      const response = await apiClient.get(`${API_URL}/url/${fileName}`);
       return response.data;
     } catch (error) {
       console.error('Error getting file URL:', error);

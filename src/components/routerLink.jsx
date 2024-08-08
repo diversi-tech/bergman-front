@@ -15,38 +15,60 @@ import { Box } from '@mui/material';
 import { HomeCandidate } from './homeCandidate';
 import { useSelector } from 'react-redux';
 import ChangeProfile from './changeProfile';
-import { PasswordReset } from './PasswordReset';
-
+import PrivateRoute from './PrivateRoute';
+import {PasswordReset} from './PasswordReset'
+import useToken from './useToken';
+import { jwtDecode } from 'jwt-decode';
+import Cookies from "js-cookie";
+import PrivateRouteUser from './PrivateRouteUser';
+import RouteWrapper from './RouteWrapper';
 
 export const RouterLink = () => {
-
-    const userType = useSelector(state => state.userReducer.currentUserType);
-  
+    
+    const [userType,setUserType] = useState(useToken()?.userTypeId || 0);
+    useEffect(() => {
+        const token = Cookies.get("jwtToken");
+        if(token){
+        try {
+          const decodedToken = jwtDecode(token);
+          // עדכן את hasAccess לפי סוג המשתמש בתוקן
+          setUserType(decodedToken.userTypeId);
+        } catch (error) {
+          console.error("Failed to decode token:", error);
+        }}
+      }, []);
+      if(userType===0){
+        try {
+        const token = Cookies.get("jwtToken");
+        const decodedToken = jwtDecode(token);
+        setUserType(decodedToken.userTypeId);}
+        catch(err){
+            console.error("Failed to decode token:", err);
+        }
+      }
     return (
         <BrowserRouter>
             {(userType === 1) && (
-                <Nav />
+                <Nav/>
             )}
             <Box sx={{ pt: '60px' }}>
                 <Routes>
-                    <Route path="/Filter" element={<Filter />} />
+                    <Route path="/Filter" element={<PrivateRoute element={Filter} />} />
                     <Route path="/Home" element={<Home />} />
-                    <Route path="/Manager" element={<Manager />} />
-                    <Route path="/Secretary" element={<Secretary />} />
-                    <Route path="/EditingFilters" element={<EditingFilters />} />
+                    <Route path="/Manager" element={<PrivateRoute element={Manager} />} />
+                    <Route path="/Secretary" element={<PrivateRoute element={Secretary} />} />
+                    <Route path="/EditingFilters" element={<PrivateRoute element={EditingFilters} />} />
                     <Route path="/WorkersManagement" element={<WorkersManagement />} />
-                    <Route path="/History/:userId" element={<History />} />
-                    <Route path="/Profile" element={<Profile />} />
+                    <Route path="/History/:userId" element={<PrivateRoute element={History} />} />
+                    <Route path="/Profile" element={<RouteWrapper element={Profile} usePrivateRoute={userType} />} />
                     <Route path="/Login" element={<LoginModal />} />
                     <Route path="/SignUp" element={<SignUpModal />} />
                     <Route path='/HomeCandidate' element={<HomeCandidate />} />
-                    <Route path='/changeProfile' element={<ChangeProfile/>}/>
-                    <Route path="/request-password-reset" element={<PasswordReset></PasswordReset>} />
+                    <Route path='/changeProfile' element={<RouteWrapper element={ChangeProfile} usePrivateRoute={userType} />}/>
+                    <Route path='/request-password-reset' element={<PasswordReset/>}/>
                     <Route path="/" element={<Home />} />
                 </Routes>
             </Box>
         </BrowserRouter>
     );
 };
-
-

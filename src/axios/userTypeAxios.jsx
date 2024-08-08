@@ -1,68 +1,58 @@
-import axios from 'axios';
+import apiClient from './apiClient';
 
-const API_URL = 'http://localhost:8080/api/userTypes'; 
+const API_URL = 'userTypes'; // סיומת ה-API
 
 const UserTypesAxios = {
 
     getAllUserTypes: async () => {
-        try 
-        {
-            const response = await axios.get(`${API_URL}`);
+        try {
+            const response = await apiClient.get(API_URL);
             return response.data;
-        } 
-        catch (error)
-        {
-            console.error('Error fetching :', error);
+        } catch (error) {
+            console.error('Error fetching user types:', error);
             throw error;
         }
     },
-    getUserTypeById: async (userTypesId) => {
-        try 
-        {
-            const response = await axios.get(`${API_URL}/${userTypesId}`);
+
+    getUserTypeById: async (userTypeId) => {
+        try {
+            const response = await apiClient.get(`${API_URL}/${userTypeId}`);
             return response.data;
-        }
-         catch (error) 
-        {
-            console.error('Error fetching :', error);
+        } catch (error) {
+            console.error('Error fetching user type:', error);
             throw error;
         }
     },
+
     addUserType: async (userType) => {
-        try
-        {
-            const response = await axios.post(`${API_URL}`, userType);
+        try {
+            const response = await apiClient.post(API_URL, userType);
             return response.data;
-        } 
-        catch (error) 
-        {
-            console.error('Error adding :', error);
+        } catch (error) {
+            console.error('Error adding user type:', error);
             throw error;
         }
     },
-    deleteUserTypeId: async (userTypeId) => {
-        try
-        {
-            const response = await axios.delete(`${API_URL}/${userTypeId}`);
+
+    deleteUserTypeById: async (userTypeId) => {
+        try {
+            const response = await apiClient.delete(`${API_URL}/${userTypeId}`);
             return response.data;
-        }
-        catch (error)
-        {
-            console.error('Error deleting :', error);
+        } catch (error) {
+            console.error('Error deleting user type:', error);
             throw error;
         }
     },
-    updateUserTypes: async (id, userType) => {
-        try 
-        {
-            const response = await axios.put(`${API_URL}/${id}`, userType);
+
+    updateUserType: async (id, userType) => {
+        try {
+            const response = await apiClient.put(`${API_URL}/${id}`, userType);
             return response.data;
-        } 
-        catch (error) 
-        {
-            console.error('Error updating :', error);
+        } catch (error) {
+            console.error('Error updating user type:', error);
             throw error;
         }
     }
 };
+
 export default UserTypesAxios;

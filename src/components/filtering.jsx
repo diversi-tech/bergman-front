@@ -877,8 +877,6 @@ export const Filter = ({ onClose, candidate }) => {
   
   useEffect(() => {
     const fetchData = async () => {
-      debugger
-
       try {
         if (candidateProfiles > 0) {
           setCandidatesFromServer(candidateProfiles);
@@ -1153,7 +1151,6 @@ export const Filter = ({ onClose, candidate }) => {
     setOpenEdit(false);
   };
   const handleEditChange = (event) => {
-    debugger
     const { name, value } = event.target;
     if (name === "referralDate") {
       setCurrentCandidate((prevCandidate) => ({
@@ -1241,7 +1238,6 @@ export const Filter = ({ onClose, candidate }) => {
     setFilteredCandidates(finalCandidates);
   };
   const handleView = async (fileName) => {
-    debugger;
     if (!fileName) {
       alert("Please enter a file name.");
       return;
@@ -1260,7 +1256,6 @@ export const Filter = ({ onClose, candidate }) => {
     setFileUrl("");
   };
   const handleDownload = async () => {
-    debugger;
     if (!fileName) {
       alert("Please enter a file name to download.");
       return;

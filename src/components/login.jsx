@@ -29,6 +29,8 @@ import {
 } from "../redux/action/userAction";
 import { store } from "../redux/store";
 import { requestPasswordReset } from "../axios/passwordResetAxios";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -52,22 +54,37 @@ export const Login = () => {
   // const userType = useSelector(state=>state.currentUserType);
   // const [type,setType]=useState()
   const loggedInUser = useSelector((state) => state.myUser); // הוספת סלקטור למשתמש המחובר
+  const [userInfo, setUserInfo] = useState(null);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      if (users > 0) setUsersList(users);
-      else {
-        try {
-          const response = await UserAxios.getAllUsers();
-          setUsersList(response);
-          myDispatch(FillUsersData(response.data));
-        } catch (error) {
-          console.error("Error fetching users:", error);
-        }
-      }
-    };
-    fetchUsers();
-  }, [myDispatch, users]);
+  // useEffect(() => {
+  //   const token = Cookies.get("jwtToken");
+  //   if (token) {
+  //     const decodedToken = jwtDecode(token);
+  //     setUserInfo({
+  //       userTypeId: decodedToken.userTypeId,
+  //       phoneNumber: decodedToken.phoneNumber,
+  //       lastName: decodedToken.lastName,
+  //       firstName: decodedToken.firstName,
+  //       email: decodedToken.sub,
+  //     });
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     if (users > 0) setUsersList(users);
+  //     else {
+  //       try {
+  //         const response = await UserAxios.getAllUsers();
+  //         setUsersList(response);
+  //         myDispatch(FillUsersData(response.data));
+  //       } catch (error) {
+  //         console.error("Error fetching users:", error);
+  //       }
+  //     }
+  //   };
+  //   fetchUsers();
+  // }, [myDispatch, users]);
 
   // הוספת פונקציות ולידציה
   const validateEmail = (email) => {
@@ -104,7 +121,8 @@ export const Login = () => {
     }
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    debugger
     // ולידציה על השדות לפני התחברות
     const emailValidationError = validateEmail(email);
     const passwordValidationError = validatePassword(password);
@@ -115,21 +133,37 @@ export const Login = () => {
       setError(true);
       return;
     }
-    // הוספת הלוגיקה להתחברות כאן
-    const user = usersList.find(
-      (x) => x.person.email == email && x.password == password
-    );
-    if (user) {
-      myDispatch(setMyUser(user.userType.id));
-      myDispatch(currentUser(user));
-      if (user.userType.id == 1) {
-        myNavigate("/Manager");
-      } else if (user.userType.id == 2) myNavigate("/Home");
-      else if (user.userType.id == 3) myNavigate("/Secretary");
-    } else {
+    const s=await UserAxios.login(email, password);
+    if(!s){
       setError(true);
-      setIsNewUser(true); // אם המשתמש לא נמצא, נחשב אותו כמשתמש חדש
+      return;
     }
+    const token = Cookies.get("jwtToken");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+    myDispatch(setMyUser(decodedToken.userTypeId));
+    myDispatch(currentUser(decodedToken))
+      if (decodedToken.userTypeId == 1) {
+        myNavigate("/Filter");
+      } else if (decodedToken.userTypeId == 2) myNavigate("/Home");
+      else if (decodedToken.userTypeId == 3) myNavigate("/Secretary");
+      else {
+        setError(true);
+        setIsNewUser(true); // אם המשתמש לא נמצא, נחשב אותו כמשתמש חדש
+      }
+
+      //   setUserInfo({
+      //     userTypeId: decodedToken.userTypeId,
+      //     phoneNumber: decodedToken.phoneNumber,
+      //     lastName: decodedToken.lastName,
+      //     firstName: decodedToken.firstName,
+      //     personId:decodedToken.personId,
+      //     email: decodedToken.sub,
+      //   });
+    }
+  
+    // myDispatch(setMyUser(userInfo.userTypeId));
+    // myDispatch(currentUser(userInfo))
   };
 
   const handleSignUp = () => {
@@ -162,6 +196,7 @@ export const Login = () => {
 
   const handleResetPassword = async () => {
     try {
+      debugger
       await requestPasswordReset(resetEmail);
     } catch (error) {}
     const emailValidationError = validateEmail(resetEmail);
