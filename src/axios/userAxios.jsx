@@ -13,8 +13,11 @@ const UserAxios = {
       const response = await axios.get(`${API_URL}/emailAndPass/${email}/${pass}`);
       if (response.data) {
         const token = await response.data;
-        Cookies.set("jwtToken", token, { expires: 1 }); // שומר את התוקן בקוקי עם תוקף של יום
-
+        Cookies.set("jwtToken", token, { 
+          sameSite: "None", 
+          secure: true ,
+          expires: 7 
+      });
         // פענוח התוקן ושליפת המידע
         const decodedToken = jwtDecode(token);
         console.log("User Info from Token:", {
