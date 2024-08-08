@@ -16,7 +16,7 @@ const UserAxios = {
         Cookies.set("jwtToken", token, { 
           sameSite: "None", 
           secure: true ,
-          expires: 1 
+          expires: 7 
       });
         // פענוח התוקן ושליפת המידע
         const decodedToken = jwtDecode(token);
