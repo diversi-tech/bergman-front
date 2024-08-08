@@ -8,6 +8,8 @@ import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import { useSelector } from 'react-redux';
+import BusinessIcon from '@mui/icons-material/Business';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 export const Nav = () => {
     const user = useSelector(state => state.userReducer.currentUser)
@@ -15,16 +17,13 @@ export const Nav = () => {
         <AppBar position="fixed">
             <Toolbar>
                 <Button color="inherit" component={Link} to="/Manager" >
-                    מנהלת
+                    <AdminPanelSettingsIcon/>
                 </Button>
                 <Tooltip title="חיפוש מועמדים" arrow>
                     <Button color="inherit" component={Link} to="/Filter">
                         <PersonSearchIcon />
                     </Button>
                 </Tooltip>
-                {/* <Button color="inherit" component={Link} to="/Secretary">
-                    מזכירה
-                </Button> */}
                 <Tooltip title="עריכת מסננים" arrow>
                     <Button color="inherit" component={Link} to="/EditingFilters">
                         <ManageSearchIcon />
@@ -34,6 +33,11 @@ export const Nav = () => {
                     <Button color="inherit" component={Link} to="/WorkersManagement">
                         <ManageAccountsIcon />
                     </Button>
+                </Tooltip>
+                <Tooltip title="ניהול חברות" arrow>
+                     <Button color="inherit" component={Link} to ="/CompanyManagement">
+                        <BusinessIcon />
+                     </Button>
                 </Tooltip>
                 <Box sx={{ flexGrow: 1 }}></Box>
                 <Typography>שלום {user.person.firstName}</Typography>

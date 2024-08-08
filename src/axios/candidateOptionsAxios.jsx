@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/userOptions'; 
+const API_URL = 'https://bergman-back-2.onrender.com/api/CandidateOptions'; 
 
-const UserOptionsAxios = {
+const CandidateOptionsAxios = {
     
-    getAllUserOptions: async () => {
+    getAllCandidateOptions: async () => {
         try 
         {
             const response = await axios.get(`${API_URL}`);
@@ -16,10 +16,10 @@ const UserOptionsAxios = {
             throw error;
         }
     },
-    getUserOptionById: async (User_optionId) => {
+    getCandidateOptionsById: async (CandidateOptionsId) => {
         try
         {
-            const response = await axios.get(`${API_URL}/${User_optionId}`);
+            const response = await axios.get(`${API_URL}/${CandidateOptionsId}`);
             return response.data;
         }
          catch (error) 
@@ -28,10 +28,10 @@ const UserOptionsAxios = {
             throw error;
         }
     },
-    addUserOption: async (User_option) => {
+    addCandidateOptions: async (CandidateOptions) => {
         try
         {
-            const response = await axios.post(`${API_URL}`, User_option);
+            const response = await axios.post(`${API_URL}`, CandidateOptions);
             return response.data;
         } 
         catch (error) 
@@ -40,10 +40,10 @@ const UserOptionsAxios = {
             throw error;
         }
     },
-    deleteUserOptionById: async (UserOptionsId) => {
+    deleteCandidateOptionsById: async (CandidateOptionsId) => {
         try
         {
-            const response = await axios.delete(`${API_URL}/${UserOptionsId}`);
+            const response = await axios.delete(`${API_URL}/${CandidateOptionsId}`);
             return response.data;
         } 
         catch (error) 
@@ -52,10 +52,10 @@ const UserOptionsAxios = {
             throw error;
         }
     },
-    updateUser: async (id, userOption) => {
+    updateCandidateOptions: async (id, CandidateOptions) => {
         try
         {
-            const response = await axios.put(`${API_URL}/${id}`, userOption);
+            const response = await axios.put(`${API_URL}/${id}`, CandidateOptions);
             return response.data;
         }
          catch (error)
@@ -65,4 +65,4 @@ const UserOptionsAxios = {
         }
     }
 };
-export default UserOptionsAxios;
+export default CandidateOptionsAxios;
