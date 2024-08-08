@@ -89,7 +89,6 @@ export const History = () => {
         setNewHistory({ ...newHistory, [name]: value });
     };
     const addHistory = async () => {
-        debugger
         // יצירת אובייקט חדש עבור ההיסטוריה
         const newHistoryItem = {
             candidateId: candidateId, // או מזהה מתאים
