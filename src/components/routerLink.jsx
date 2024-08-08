@@ -26,7 +26,7 @@ export const RouterLink = () => {
     return (
         <BrowserRouter>
             {(userType === 1) && (
-                <Nav />
+                <Nav/>
             )}
             <Box sx={{ pt: '60px' }}>
                 <Routes>

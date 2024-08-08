@@ -9,65 +9,38 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import { useSelector } from 'react-redux';
 import BusinessIcon from '@mui/icons-material/Business';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 export const Nav = () => {
     const user = useSelector(state => state.userReducer.currentUser)
-
-
     return (
         <AppBar position="fixed">
             <Toolbar>
-                <Tooltip title="דף הבית" arrow>
-                    <Button color="inherit" component={Link} to="/Home">
-                        <HomeIcon />
+                <Tooltip title=" ניהול" arrow>
+                    <Button color="inherit" component={Link} to="/Manager" >
+                        <AdminPanelSettingsIcon />
                     </Button>
                 </Tooltip>
-
-                <Button color="inherit" component={Link} to="/Manager" >
-                    מנהלת
-                </Button>
                 <Tooltip title="חיפוש מועמדים" arrow>
                     <Button color="inherit" component={Link} to="/Filter">
                         <PersonSearchIcon />
                     </Button>
                 </Tooltip>
-
-                <Button color="inherit" component={Link} to="/Secretary">
-                    מזכירה
-                </Button>
                 <Tooltip title="עריכת מסננים" arrow>
                     <Button color="inherit" component={Link} to="/EditingFilters">
                         <ManageSearchIcon />
                     </Button>
                 </Tooltip>
-
-                <Tooltip title="ניהול עובדים" arrow>
+                {/* <Tooltip title="ניהול עובדים" arrow>
                     <Button color="inherit" component={Link} to="/WorkersManagement">
                         <ManageAccountsIcon />
                     </Button>
-                </Tooltip>
-
-                {/* <Tooltip title="פרופיל" arrow>
-                    <Button color="inherit" component={Link} to="/Profile">
-                        <PersonIcon />
-                    </Button>
                 </Tooltip> */}
-
-                <Tooltip title="התחברות" arrow>
-                    <Button color="inherit" component={Link} to="/Login" >
-                        <LoginIcon />
+                <Tooltip title="ניהול חברות" arrow>
+                    <Button color="inherit" component={Link} to="/CompanyManagement">
+                        <BusinessIcon />
                     </Button>
                 </Tooltip>
-
-                <Tooltip title="ניהול חברות" arrow>
-                     <Button color="inherit" component={Link} to ="/CompanyManagement">
-                        <BusinessIcon />
-                     </Button>
-                </Tooltip>
-
-                <Button color="inherit" component={Link} to="/SignUp">
-                    הרשמה
-                </Button>
                 <Box sx={{ flexGrow: 1 }}></Box>
                 <Typography>שלום {user.person.firstName}</Typography>
             </Toolbar>

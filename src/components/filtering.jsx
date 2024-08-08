@@ -160,6 +160,7 @@ export const Filter = ({ onClose, candidate }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+
       try {
         if (candidateProfiles > 0) {
           setCandidatesFromServer(candidateProfiles);

@@ -3,7 +3,7 @@ import { Button, Box, Container, Typography, Toolbar, CssBaseline, Tooltip, keyf
 import { useNavigate } from 'react-router-dom';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import logo from '../images/logo1.png'
+import logo from '../images/חנה ברגמן.png'
 import { useSelector } from 'react-redux';
 
 const pulseAnimation = keyframes`
@@ -19,17 +19,9 @@ export const Home = () => {
     const userType = useSelector(state => state.userReducer.currentUserType);
     const user = useSelector(state => state.userReducer.currentUser)
     const navigate = useNavigate();
-    const [open, setOpen] = useState(false);
     const handleNavigation = (path) => {
         navigate(path);
     };
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
-
-    // const handleUploadClick = () => {
-    //     navigate('/Login');
-    // };
     const upload = () => {
         if (userType !== 0)
             handleNavigation('/Profile')
@@ -39,13 +31,15 @@ export const Home = () => {
         }
     }
 
-
     return (
         <React.Fragment>
             <CssBaseline />
             <AppBar position='fixed'>
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
-                    <Box sx={{ border: '1px solid white', borderRadius: '30px', display: 'flex', direction: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box sx={{
+                        border: '1px solid white', borderRadius: '30px', display: 'flex',
+                        direction: 'column', alignItems: 'center', justifyContent: 'center'
+                    }}>
                         {(userType !== 0 && userType !== 1) && (
                             <Box >
                                 <Button
@@ -57,7 +51,8 @@ export const Home = () => {
                                         <AccountCircleIcon fontSize='large' sx={{ color: 'white' }} />
                                     </Tooltip>
                                 </Button>
-                            </Box>)}
+                            </Box>
+                        )}
                         {(userType !== 0 && userType !== 1) && (
                             <Box sx={{ paddingLeft: '10px' }}>
                                 <Typography variant='body5' >שלום {user.person.firstName}</Typography>
@@ -65,12 +60,12 @@ export const Home = () => {
                         )}
                     </Box>
 
-
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    {(userType === 0) && (<Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <Button variant='contained' id="register" onClick={() => handleNavigation('/login')}>
                             התחברות
                         </Button>
-                    </Box>
+                    </Box>)}
+
                 </Toolbar>
             </AppBar>
 
