@@ -7,7 +7,7 @@ const CandidateOptionsAxios = {
     getAllCandidateOptions: async () => {
         try 
         {
-            const response = await axios.get(`${API_URL}`);
+            const response = await apiClient.get(`${API_URL}`);
             return response.data;
         }
         catch (error)
@@ -19,7 +19,7 @@ const CandidateOptionsAxios = {
     getCandidateOptionsById: async (CandidateOptionsId) => {
         try
         {
-            const response = await axios.get(`${API_URL}/${CandidateOptionsId}`);
+            const response = await apiClient.get(`${API_URL}/${CandidateOptionsId}`);
             return response.data;
         }
          catch (error) 
@@ -31,7 +31,7 @@ const CandidateOptionsAxios = {
     addCandidateOptions: async (CandidateOptions) => {
         try
         {
-            const response = await axios.post(`${API_URL}`, CandidateOptions);
+            const response = await apiClient.post(`${API_URL}`, CandidateOptions);
             return response.data;
         } 
         catch (error) 
@@ -43,7 +43,7 @@ const CandidateOptionsAxios = {
     deleteCandidateOptionsById: async (CandidateOptionsId) => {
         try
         {
-            const response = await axios.delete(`${API_URL}/${CandidateOptionsId}`);
+            const response = await apiClient.delete(`${API_URL}/${CandidateOptionsId}`);
             return response.data;
         } 
         catch (error) 
@@ -55,7 +55,7 @@ const CandidateOptionsAxios = {
     updateCandidateOptions: async (id, CandidateOptions) => {
         try
         {
-            const response = await axios.put(`${API_URL}/${id}`, CandidateOptions);
+            const response = await apiClient.put(`${API_URL}/${id}`, CandidateOptions);
             return response.data;
         }
          catch (error)
