@@ -212,7 +212,7 @@ export const Manager = () => {
     };
     const renderTable = () => (
         <>
-            <Typography variant="h4" color={'black'} sx={{ mb: 2, fontWeight: 'bold' }} style={{ marginTop: '50px' }}>רשימת המשתמשים</Typography>
+            <Typography variant="h4" color={'black'} sx={{ mb: 2, fontWeight: 'bold' }} style={{ marginTop: '50px' }}>רשימת המנהלים</Typography>
             <div style={{ padding: '20px', textAlign: 'center', direction: 'rtl', marginTop: '30px' }}>
                 <TableContainer component={Paper} style={{ margin: '0 auto', maxWidth: '80%' }}>
                     <Table>

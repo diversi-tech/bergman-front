@@ -382,7 +382,7 @@ export const Filter = ({ onClose, candidate }) => {
   };
   const toggleCandidateColor = (candidateId) => {
     const candidate = filteredCandidates.find(
-      (u) => u.id === candidateId
+      (u) => u.person.id === candidateId
     );
     const candidateEmail = candidate.person.email;
 
