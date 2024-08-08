@@ -12,7 +12,7 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 
 const SignUp = () => {
-  debugger
+  
   const location = useLocation();
   const initialEmail = location.state?.email || '';
   const initialPassword = location.state?.password || '';
@@ -215,7 +215,6 @@ const SignUp = () => {
 };
 
 const SignUpModal = () => {
-  debugger
   const [open, setOpen] = useState(false);
 
   useEffect(() => {

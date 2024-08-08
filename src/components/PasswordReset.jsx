@@ -26,7 +26,9 @@ export const PasswordReset = () => {
   const params = new URLSearchParams(location.search);
   const token = params.get("token");
   const navigate = useNavigate();
+
   const handleSubmit = async (event) => {
+
     event.preventDefault();
     if (password.length < 6) {
       setMessage("הסיסמא חייבת להיות באורך של לפחות 6 תווים");
@@ -37,7 +39,6 @@ export const PasswordReset = () => {
       return;
     }
     try {
-      debugger
       const response = await resetPassword(token, password);
       if(response){
       navigate("/Home");

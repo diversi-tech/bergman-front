@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useCallback } from "react";
 import {
   Button,
@@ -27,6 +28,7 @@ import {
   IconButton,
   SnackbarContent,
   Toolbar,
+  MenuItem,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import CandidateAxios from '../axios/candidateAxios';
@@ -80,6 +82,7 @@ import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { FillCandidateOptionsData } from "../redux/action/candidateOptionsAction";
 import CandidateOptionsAxios from "../axios/candidateOptionsAxios";
+import axios from "axios";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -97,6 +100,7 @@ export const Filter = ({ onClose, candidate }) => {
   const navigate = useNavigate();
   const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
+  const [selectedErea, setSelectedErea] = useState([]);
   const [selectedProgrammingLanguages, setSelectedProgrammingLanguages] =
     useState([]);
   const [selectedTechnologies, setSelectedTechnologies] = useState([]);
@@ -153,11 +157,9 @@ export const Filter = ({ onClose, candidate }) => {
 
 
 
-  
+
   useEffect(() => {
     const fetchData = async () => {
-      debugger
-
       try {
         if (candidateProfiles > 0) {
           setCandidatesFromServer(candidateProfiles);
@@ -190,6 +192,7 @@ export const Filter = ({ onClose, candidate }) => {
         if (candidateOptions1 > 0) {
           setCandidateOptions(candidateOptions1);
         } else {
+          debugger
           const response = await CandidateOptionsAxios.getAllCandidateOptions();
           setCandidateOptions(response);
           dispatch(FillCandidateOptionsData(response.data));
@@ -224,7 +227,7 @@ export const Filter = ({ onClose, candidate }) => {
     } else {
       setIsSendDisabled(true);
     }
-  }, [candidatesFromServer,emails, subject]);
+  }, [candidatesFromServer, emails, subject]);
   useEffect(() => {
     if (open) {
       setCurrentCandidate(candidatesFromServer);
@@ -396,10 +399,10 @@ export const Filter = ({ onClose, candidate }) => {
   //
 
 
-  
+
   const handleEditOpen = (candidate) => {
 
-    
+
     const candidateEmail = candidate.person.email;
     // filteredCandidates.find((u) => u.id === candidate.id)?.person.email || "";
     const referral =
@@ -431,7 +434,6 @@ export const Filter = ({ onClose, candidate }) => {
     setOpenEdit(false);
   };
   const handleEditChange = (event) => {
-    debugger
     const { name, value } = event.target;
     if (name === "referralDate") {
       setCurrentCandidate((prevCandidate) => ({
@@ -478,54 +480,8 @@ export const Filter = ({ onClose, candidate }) => {
     const milliseconds = String(date.getMilliseconds()).padStart(3, "0");
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
   };
-  const handleFilterCandidates = () => {
-    const filterByType = (type, selectedValues) => {
-      if (selectedValues.length === 0) return candidatesFromServer.map((c) => c.id);
-  
-      // חיפוש ה-enum הרלוונטי
-      const enumItem = enums.find((e) => e.enumType === type);
-      if (!enumItem) return [];
-  
-      // חיפוש כל האפשרויות מהטבלה options עבור ה-enum הנבחר
-      const optionsByType = options.filter((o) => o.enumType === enumItem.enumType);
-  
-      // חיפוש ה-optionsId עבור הערכים הנבחרים
-      const optionsIds = selectedValues
-        .map((value) => {
-          const option = optionsByType.find((o) => o.optionsValue === value);
-          return option ? option.id : null;
-        })
-        .filter((id) => id !== null);
-  
-      // חיפוש מועמדים שיש להם את כל האופציות הנבחרות
-      return candidatesFromServer
-        .filter((candidate) => {
-          return optionsIds.every((optionsId) =>
-            candidateOptions.some(
-              (candidateOption) =>
-                candidateOption.id === candidate.id &&
-                candidateOption.optionsId === optionsId
-            )
-          );
-        })
-        .map((c) => c.id);
-    };
-    const languageCandidates = filterByType("שפות", selectedLanguages);
-    const techCandidates = filterByType("טכנולוגיות", selectedTechnologies);
-    const locationCandidates = filterByType("ערים", selectedLocations);
-    const programmingLangCandidates = filterByType("שפות תכנות", selectedProgrammingLanguages);
-    // פילטר סופי של מועמדים לפי כל הקריטריונים הנבחרים
-    const finalCandidates = candidatesFromServer.filter(
-      (candidate) =>
-        languageCandidates.includes(candidate.id) &&
-        techCandidates.includes(candidate.id) &&
-        locationCandidates.includes(candidate.id) &&
-        programmingLangCandidates.includes(candidate.id)
-    );
-    setFilteredCandidates(finalCandidates);
-  };
+
   const handleView = async (fileName) => {
-    debugger;
     if (!fileName) {
       alert("Please enter a file name.");
       return;
@@ -544,7 +500,6 @@ export const Filter = ({ onClose, candidate }) => {
     setFileUrl("");
   };
   const handleDownload = async () => {
-    debugger;
     if (!fileName) {
       alert("Please enter a file name to download.");
       return;
@@ -561,17 +516,73 @@ export const Filter = ({ onClose, candidate }) => {
       alert("Error downloading file");
     }
   };
+
+
+
+  const handleFilterCandidates = () => {
+    debugger
+    const filterByType = (type, selectedValues) => {
+      debugger
+      if (selectedValues.length === 0) return candidatesFromServer.map((c) => c.id);
+
+      // חיפוש ה-enum הרלוונטי
+      const enumItem = enums.find((e) => e.enumType === type);
+      if (!enumItem) return [];
+
+      // חיפוש כל האפשרויות מהטבלה options עבור ה-enum הנבחר
+      const optionsByType = options.filter((o) => o.enumType === enumItem.enumType);
+
+      // חיפוש ה-optionsId עבור הערכים הנבחרים
+      const optionsIds = selectedValues
+        .map((value) => {
+          const option = optionsByType.find((o) => o.optionsValue === value);
+          return option ? option.id : null;
+        })
+        .filter((id) => id !== null);
+
+      // חיפוש מועמדים שיש להם את כל האופציות הנבחרות
+      return candidatesFromServer
+        .filter((candidate) => {
+          return optionsIds.every((optionsId) =>
+            candidateOptions.some(
+              (candidateOption) =>
+                candidateOption.candidate.id === candidate.id &&
+                candidateOption.option.id === optionsId
+            )
+          );
+        })
+        .map((c) => c.id);
+    };
+    const ereaCandidates = filterByType("אזורים", selectedErea);
+    const languageCandidates = filterByType("שפות", selectedLanguages);
+    const techCandidates = filterByType("טכנולוגיות", selectedTechnologies);
+    const locationCandidates = filterByType("ערים", selectedLocations);
+    const programmingLangCandidates = filterByType("שפות תכנות", selectedProgrammingLanguages);
+    // פילטר סופי של מועמדים לפי כל הקריטריונים הנבחרים
+    const finalCandidates = candidatesFromServer.filter(
+      (candidate) =>
+        ereaCandidates.includes(candidate.id) &&
+        languageCandidates.includes(candidate.id) &&
+        techCandidates.includes(candidate.id) &&
+        locationCandidates.includes(candidate.id) &&
+        programmingLangCandidates.includes(candidate.id)
+    );
+    setFilteredCandidates(finalCandidates);
+  };
   const handleChange = (type, value) => {
     if (type === "שפות") {
       setSelectedLanguages(value);
     } else if (type === "טכנולוגיות") {
       setSelectedTechnologies(value);
+    } else if (type === "אזורים") {
+      setSelectedErea(value);
     } else if (type === "ערים") {
       setSelectedLocations(value);
     } else if (type === "שפות תכנות") {
       setSelectedProgrammingLanguages(value);
     }
   };
+
   const renderAutocomplete = (enumItem) => {
     const enumType = enumItem.enumType;
     const filteredOptions = options
@@ -707,7 +718,7 @@ export const Filter = ({ onClose, candidate }) => {
                         )}
                         renderInput={(params) => (
                           <TextField
-                          
+
                             {...params}
                             label="נמענים"
                             inputProps={{
@@ -966,47 +977,47 @@ export const Filter = ({ onClose, candidate }) => {
                           <DescriptionIcon />
                         </IconButton>
                       </Tooltip>
-                      <Dialog
-                        open={open}
-                        onClose={handleCloses}
-                        maxWidth="lg"
-                        fullWidth
-                      >
-                        <DialogTitle>AA</DialogTitle>
-                        <DialogContent>
-                          {fileUrl && (
-                            <Box position="relative">
-                              <iframe
-                                src={fileUrl}
-                                style={{
-                                  width: "100%",
-                                  height: "80vh",
-                                  border: "none",
-                                }}
-                                title="File Preview"
-                              />
-                              <IconButton
-                                variant="contained"
-                                onClick={handleDownload}
-                                style={{
-                                  position: "absolute",
-                                  top: "10px",
-                                  left: "10px",
-                                  color: "white",
-                                  backgroundColor: "rgba(0,0,0,0.5)",
-                                }}
-                              >
-                                <Downloading />
-                              </IconButton>
-                            </Box>
-                          )}
-                        </DialogContent>
-                        <DialogActions>
-                          <Button onClick={handleCloses} color="primary">
-                            סגור
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
+                      {/* <Dialog
+                          open={open}
+                          onClose={handleClose}
+                          maxWidth="lg"
+                          fullWidth
+                        >
+                          <DialogTitle>AA</DialogTitle>
+                          <DialogContent>
+                            {fileUrl && (
+                              <Box position="relative">
+                                <iframe
+                                  src={fileUrl}
+                                  style={{
+                                    width: "100%",
+                                    height: "80vh",
+                                    border: "none",
+                                  }}
+                                  title="File Preview"
+                                />
+                                <IconButton
+                                  variant="contained"
+                                  onClick={handleDownload}
+                                  style={{
+                                    position: "absolute",
+                                    top: "10px",
+                                    left: "10px",
+                                    color: "white",
+                                    backgroundColor: "rgba(0,0,0,0.5)",
+                                  }}
+                                >
+                                  <Downloading />
+                                </IconButton>
+                              </Box>
+                            )}
+                          </DialogContent>
+                          <DialogActions>
+                            <Button onClick={handleClose} color="primary">
+                              סגור
+                            </Button>
+                          </DialogActions>
+                        </Dialog> */}
                       {/* <Dialog open={open} onClose={handleClose}>
                         <DialogContent>
                           {fileUrl && (
@@ -1027,8 +1038,55 @@ export const Filter = ({ onClose, candidate }) => {
                         </DialogContent>
                         <DialogActions>
                           <Button onClick={handleClose}>Close</Button>
+                        </DialogActions> */}
+
+                      {/* </Dialog> */}
+                      <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
+                        <DialogContent>
+                          {fileUrl && (
+                            <Box position="relative">
+                              {fileUrl.endsWith('.pdf') ? (
+                                <iframe
+                                  src={fileUrl}
+                                  // type="application/pdf"
+                                  width="100%"
+                                  height="600px"
+                                />
+                              ) : fileUrl.endsWith('.doc') || fileUrl.endsWith('.docx') ? (
+                                <iframe
+                                  src={`https://view.officeapps.live.com/op/embed.aspx?src=${fileUrl}`}
+                                  width="100%"
+                                  height="600px"
+                                  frameBorder="0"
+                                />
+                              ) : (
+                                <img
+                                  src={fileUrl}
+                                  alt="File Preview"
+                                  style={{ width: '100%', height: 'auto' }}
+                                />
+                              )}
+                              <IconButton
+                                variant="contained"
+                                onClick={handleDownload}
+                                style={{
+                                  position: 'absolute',
+                                  top: '10px',
+                                  left: '10px',
+                                  color: 'white',
+                                  backgroundColor: 'rgba(0,0,0,0.5)',
+                                }}
+                              >
+                                <Downloading />
+                              </IconButton>
+                            </Box>
+                          )}
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleClose}>Close</Button>
                         </DialogActions>
-                      </Dialog> */}
+                      </Dialog>
+
                     </Box>
                   </TableCell>
                 </TableRow>
@@ -1061,7 +1119,7 @@ export const Filter = ({ onClose, candidate }) => {
                   label="שם פרטי"
                   type="text"
                   fullWidth
-                  value={currentCandidate.firstName|| ""}
+                  value={currentCandidate.firstName || ""}
                   onChange={handleEditChange}
                 />
                 <TextField
@@ -1070,7 +1128,7 @@ export const Filter = ({ onClose, candidate }) => {
                   label="שם משפחה"
                   type="text"
                   fullWidth
-                  value={currentCandidate.lastName|| ""}
+                  value={currentCandidate.lastName || ""}
                   onChange={handleEditChange}
                 />
                 <TextField
@@ -1242,8 +1300,6 @@ export const Filter = ({ onClose, candidate }) => {
           </Alert>
         </Snackbar> */}
       </Dialog>
-    </div>
+    </div >
   );
 };
-
-
