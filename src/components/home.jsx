@@ -14,7 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import logo from "../images/logo1.png";
+import logo from '../images/חנה ברגמן.png'
 import LogoutIcon from "@mui/icons-material/Logout";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";

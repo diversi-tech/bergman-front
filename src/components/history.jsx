@@ -18,6 +18,7 @@ import FileAxios from '../axios/fileAxios';
 import AddIcon from '@mui/icons-material/Add';
 import { useDispatch } from 'react-redux';
 import { FillReferralsData } from '../redux/action/referralsAction';
+import CandidateReferralsAxios from '../axios/candidateReferralsAxios';
 
 export const History = () => {
     const { userId } = useParams();
@@ -61,15 +62,13 @@ export const History = () => {
         };
         const fetchHistory = async () => {
             try {
-                const response = await ReferralsAxios.getAllReferrals();
-                console.log("referrals:", response);
-                console.log("candidateId:" + candidateId)
-                // console.log("response:", response.referralSource[candidateId].id);
-                const candidateReferrals = response.filter(referral => referral.referralSource.id === parseInt(candidateId));
-                console.log("candidateReferrals:", candidateReferrals)
-                setHistory(candidateReferrals);
+                const candidateReferrals = await CandidateReferralsAxios.getReferralsByCandidateId(candidateId);
+                const referralIds = candidateReferrals.map(referral => referral.referralId);
+                // Fetch detailed referral data for each referralId
+                const referrals = await Promise.all(referralIds.map(id => ReferralsAxios.getReferralById(id)));
+                setHistory(referrals || []);
             } catch (error) {
-                console.error('Error fetching referrals:', error);
+                console.error('Error fetching candidate referrals:', error);
             }
         };
         
@@ -209,7 +208,7 @@ export const History = () => {
                                 </TableCell>
                                 <TableCell align="center" sx={{ p: 1 }}>
                                     <Typography variant="body1" component="div">
-                                        {historyItem.referralDate}
+                                    {new Date(historyItem.referralDate).toLocaleDateString()}
                                     </Typography>
                                 </TableCell>
                                 <TableCell align="center" sx={{ p: 1 }}>

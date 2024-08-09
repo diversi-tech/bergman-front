@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
+import BusinessIcon from "@mui/icons-material/Business";
+
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
@@ -18,12 +20,13 @@ import { useSelector } from "react-redux";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 export const Nav = () => {
   const [user, setUser] = useState(
     useSelector((state) => state.userReducer.currentUser)
   );
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   useEffect(() => {
     const token = Cookies.get("jwtToken");
     try {
@@ -45,7 +48,7 @@ export const Nav = () => {
 
   return (
     <AppBar position="fixed">
-      <Toolbar>
+      {/* <Toolbar>
         <Button color="inherit" component={Link} to="/">
           <HomeIcon />
         </Button>
@@ -88,6 +91,48 @@ export const Nav = () => {
           </IconButton>
           </Tooltip>
         </Typography>
+      </Toolbar> */}
+      <Toolbar>
+        <Tooltip title=" ניהול" arrow>
+          <Button color="inherit" component={Link} to="/Manager" >
+            <AdminPanelSettingsIcon />
+          </Button>
+        </Tooltip>
+        <Tooltip title="חיפוש מועמדים" arrow>
+          <Button color="inherit" component={Link} to="/Filter">
+            <PersonSearchIcon />
+          </Button>
+        </Tooltip>
+        <Tooltip title="עריכת מסננים" arrow>
+          <Button color="inherit" component={Link} to="/EditingFilters">
+            <ManageSearchIcon />
+          </Button>
+        </Tooltip>
+        <Tooltip title="ניהול חברות" arrow>
+          <Button color="inherit" component={Link} to="/CompanyManagement">
+            <BusinessIcon />
+          </Button>
+        </Tooltip>
+        <Box sx={{ flexGrow: 1 }}></Box>
+        <Typography>
+          <Button
+            id="profile"
+            onClick={() => handleNavigation("/changeProfile")}
+            sx={{ borderRadius: "50%" }}
+          >
+            <Tooltip title="שינוי פרופיל " arrow>
+              <AccountCircleIcon fontSize="large" sx={{ color: "white" }} />
+            </Tooltip>
+          </Button>
+          שלום {user.firstName}
+          <Tooltip title="התנתקות" arrow>
+            <IconButton onClick={onLogout}>
+              <LogoutIcon sx={{ color: "white" }} />
+            </IconButton>
+          </Tooltip>
+        </Typography>
+        {/* <Box sx={{ flexGrow: 1 }}></Box>
+        <Typography>שלום {user.person.firstName}</Typography> */}
       </Toolbar>
     </AppBar>
   );
