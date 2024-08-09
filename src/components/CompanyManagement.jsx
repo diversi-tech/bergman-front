@@ -81,7 +81,7 @@ export const CompanyManagement = () => {
       }
     }
     fetchData();
-  }, [dispatch, comany]);
+  }, [dispatch]);
 
 
 

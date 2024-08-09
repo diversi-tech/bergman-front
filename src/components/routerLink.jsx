@@ -38,7 +38,7 @@ export const RouterLink = () => {
           console.error("Failed to decode token:", error);
         }}
       }, []);
-      if(userType===0){
+      if(userType === 0){
         try {
         const token = Cookies.get("jwtToken");
         const decodedToken = jwtDecode(token);

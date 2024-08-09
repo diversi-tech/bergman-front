@@ -33,7 +33,7 @@ const ProtectedRoute = ({ element: Component, ...rest }) => {
 
       return () => clearTimeout(timer);
     }
-  }, [userType, navigate]);
+  }, [navigate]);
 
 
   if (open) {

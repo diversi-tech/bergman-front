@@ -77,7 +77,7 @@ export const History = () => {
         // fetchUser();
         fetchHistory();
         // fetchPerson();
-    }, [candidateId, candidateDetails.userId]);
+    }, [candidateId]);
     console.log("history", history)
 
     const handleDetails = () => {
