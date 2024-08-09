@@ -59,6 +59,7 @@ export const Manager = () => {
     const [emailSubject, setEmailSubject] = useState('');
     const [emailBody, setEmailBody] = useState('');
     const [showTable, setShowTable] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     useEffect(() => {
@@ -114,11 +115,11 @@ export const Manager = () => {
     };
     const handleDeleteConfirm = async () => {
         try {
-            await userAxios.deleteUser(managerToDelete.userId);
+            await userAxios.deleteUser(managerToDelete.id);
             const managers1 = await userAxios.getAllManagers();
             setManagers(managers1);
             dispatch(FillUsersData(managers1));
-            setSnackbarMessage(`המשתמש ${managerToDelete.username} נמחק בהצלחה`);
+            setSnackbarMessage(`המשתמש ${managerToDelete.person.firstName} ${managerToDelete.person.lastName} נמחק בהצלחה`);
             setSnackbarOpen(true);
             handleDeleteWarningClose();
         } catch (error) {
@@ -292,8 +293,10 @@ export const Manager = () => {
             setSnackbarMessage('שגיאה בשליחת דוא"ל');
             setSnackbarOpen(true);
         }
-        // setLoading(false);
-        handleEmailDialogClose()
+        finally {
+            setLoading(false);
+            handleEmailDialogClose();
+        }
     };
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -627,7 +630,7 @@ export const Manager = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button variant="contained" color="primary" onClick={handleEmailDialogClose}>ביטול</Button>
-                    <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleEmailSend}>{loading ? <CircularProgress size={24} style={{color:'white'}}/> : 'שלח'}</Button>
+                    <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleEmailSend}>{loading ? <CircularProgress size={24} style={{color: 'white'}}/> : 'שלח'}</Button>
                 </DialogActions>
             </Dialog>
             <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
