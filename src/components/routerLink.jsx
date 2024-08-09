@@ -140,7 +140,7 @@ export const RouterLink = () => {
           <Route path="/Filter" element={<PrivateRoute element={Filter} />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/Manager" element={<PrivateRoute element={Manager} />} />
-          <Route path="/Secretary" element={<PrivateRoute element={Secretary} />} />
+          <Route path="/CompanyManagement" element={<PrivateRoute element={CompanyManagement} />} />
           <Route path="/EditingFilters" element={<PrivateRoute element={EditingFilters} />} />
           <Route path="/WorkersManagement" element={<WorkersManagement />} />
           <Route path="/History/:userId" element={<PrivateRoute element={History} />} />
