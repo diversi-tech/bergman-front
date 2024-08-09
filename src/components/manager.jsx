@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import MailIcon from '@mui/icons-material/Mail';
 import {
-    Alert, Autocomplete, Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+    Alert, Autocomplete, Avatar, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
     FormControl, IconButton, InputLabel, MenuItem, Paper, Select, Snackbar, Table, TableBody, TableCell,
     TableContainer, TableHead, TableRow, TextField, Tooltip, Typography
 } from '@mui/material';
@@ -40,9 +40,12 @@ export const Manager = () => {
     const [users, setUsers] = useState([]);
     const [userTypes, setUserType] = useState([]);
     const [persons, setPersons] = useState([]);
+    const [isFormValid, setIsFormValid] = useState(false);
     const [managers, setManagers] = useState([]);
     const [openEdit, setOpenEdit] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [openAdd, setOpenAdd] = useState(false);
+    const [userTypeError, setUserTypeError] = useState('');
     const [currentManager, setCurrentManager] = useState({});
     const [newManager, setNewManager] = useState({ username: '', email: '', password: '', createdAt: new Date() });
     const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
@@ -52,6 +55,7 @@ export const Manager = () => {
     const [lastNameError, setLastNameError] = useState('');
     const [openEmailDialog, setOpenEmailDialog] = useState(false);
     const [emailRecipient, setEmailRecipient] = useState('');
+    const [passwordError, setPasswordError] = useState('');
     const [emailSubject, setEmailSubject] = useState('');
     const [emailBody, setEmailBody] = useState('');
     const [showTable, setShowTable] = useState(false);
@@ -156,18 +160,65 @@ export const Manager = () => {
     };
     const handleAddChange = (e) => {
         const { name, value } = e.target;
-        setNewManager({ ...newManager, [name]: value });
-        if (name === 'email') {
-            if (!validateEmail(value)) {
-                setEmailError('כתובת מייל לא תקינה');
-            } else {
-                setEmailError('');
+        let error = '';
+
+        if (name === 'firstName' || name === 'lastName') {
+            const lettersOnly = /^[\p{L}]+$/u;
+            if (!lettersOnly.test(value)) {
+                error = 'השדה יכול להכיל רק אותיות';
             }
         }
+
+        if (name === 'email') {
+            if (!validateEmail(value)) {
+                error = 'כתובת מייל לא תקינה';
+            }
+        }
+        if (name === 'password') {
+            if (value.length < 6) {
+                error = 'סיסמה חייבת להיות באורך של לפחות 6 תווים';
+            }
+        }
+
+        setNewManager(prevManager => ({
+            ...prevManager,
+            [name]: value
+        }));
+
+        if (name === 'firstName') {
+            setFirstNameError(error);
+        } else if (name === 'lastName') {
+            setLastNameError(error);
+        } else if (name === 'email') {
+            setEmailError(error);
+        }
+        else if (name === 'password') {
+            setPasswordError(error);
+        }
+        setIsFormValid(
+            newManager.firstName && !firstNameError &&
+            newManager.lastName && !lastNameError &&
+            newManager.email && !emailError &&
+            newManager.password && !passwordError &&
+            newManager.userType && !userTypeError
+        );
     };
+
     const handleUserTypeChange = (e) => {
         const userType = e.target.value;
+        let error = '';
+        if (!userType) {
+            error = 'יש לבחור סוג משתמש';
+        }
+        setUserTypeError(error);
         setNewManager({ ...newManager, userType });
+        setIsFormValid(
+            newManager.firstName && !firstNameError &&
+            newManager.lastName && !lastNameError &&
+            newManager.email && !emailError &&
+            newManager.password && !passwordError &&
+            userType && !userTypeError
+        );
     };
     const handleUserTypeEditChange = (e) => {
         const selectedUserTypeId = e.target.value;
@@ -222,11 +273,11 @@ export const Manager = () => {
         setEmailBody('');
     };
     const handleEmailSend = async () => {
-        debugger
+        setLoading(true);
         let emailData = {
             to: [emailRecipient],
             subject: emailSubject,
-            body: emailBody
+            body: `<div dir="rtl">${emailBody}</div>`
         };
 
         console.log('Email Data:', emailData);
@@ -241,6 +292,7 @@ export const Manager = () => {
             setSnackbarMessage('שגיאה בשליחת דוא"ל');
             setSnackbarOpen(true);
         }
+        // setLoading(false);
         handleEmailDialogClose()
     };
     const handleSnackbarClose = (event, reason) => {
@@ -251,7 +303,7 @@ export const Manager = () => {
     };
     const renderTable = () => (
         <>
-            <Typography variant="h4" color={'black'} sx={{ mb: 2, fontWeight: 'bold' }} style={{ marginTop: '50px' }}>רשימת המשתמשים</Typography>
+            <Typography variant="h4" color={'black'} sx={{ mb: 2, fontWeight: 'bold', mt: 5 }} style={{ marginTop: '50px' }}>רשימת המשתמשים</Typography>
             <div style={{ padding: '20px', textAlign: 'center', direction: 'rtl', marginTop: '30px' }}>
                 <TableContainer component={Paper} style={{ margin: '0 auto', maxWidth: '80%' }}>
                     <Table>
@@ -425,7 +477,8 @@ export const Manager = () => {
                                     fullWidth
                                     value={newManager.firstName}
                                     onChange={handleAddChange}
-                                    autoComplete="new-password" // הוסף את התכונה הזו
+                                    error={!!firstNameError}
+                                    helperText={firstNameError}
                                 />
                             </div>
                         </ThemeProvider>
@@ -439,7 +492,8 @@ export const Manager = () => {
                                     fullWidth
                                     value={newManager.lastName}
                                     onChange={handleAddChange}
-                                    autoComplete="new-password" // הוסף את התכונה הזו
+                                    error={!!lastNameError}
+                                    helperText={lastNameError}
                                 />
                             </div>
                         </ThemeProvider>
@@ -455,7 +509,6 @@ export const Manager = () => {
                                     onChange={handleAddChange}
                                     error={!!emailError}
                                     helperText={emailError}
-                                    autoComplete="new-password"
                                 />
                             </div>
                         </ThemeProvider>
@@ -469,7 +522,8 @@ export const Manager = () => {
                                     fullWidth
                                     value={newManager.password}
                                     onChange={handleAddChange}
-                                    autoComplete="new-password"
+                                    error={Boolean(passwordError)}
+                                    helperText={passwordError}
                                 />
                             </div>
                         </ThemeProvider>
@@ -510,7 +564,7 @@ export const Manager = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleAddClose}>ביטול</Button>
-                    <Button variant="contained" color="primary" onClick={handleAddSubmit} disabled={!!emailError}>הוסף</Button>
+                    <Button variant="contained" color="primary" onClick={handleAddSubmit} disabled={!isFormValid}>הוסף</Button>
                 </DialogActions>
             </Dialog>
             <Dialog open={openDeleteWarning} onClose={handleDeleteWarningClose} dir="rtl">
@@ -573,7 +627,7 @@ export const Manager = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button variant="contained" color="primary" onClick={handleEmailDialogClose}>ביטול</Button>
-                    <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleEmailSend}>שלח</Button>
+                    <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleEmailSend}>{loading ? <CircularProgress size={24} style={{color:'white'}}/> : 'שלח'}</Button>
                 </DialogActions>
             </Dialog>
             <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
