@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 const api = axios.create({
   //הניתוב הבסיסי פה  ,userAxios
-    baseURL: 'http://localhost:8080/api/',
+    baseURL: 'https://bergman-back-2.onrender.com/api/',
 });
 
 // Interceptor לטיפול ב-Token ובקשת ה-API

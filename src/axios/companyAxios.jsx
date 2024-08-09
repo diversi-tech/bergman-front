@@ -1,12 +1,13 @@
 import axios from 'axios';
+import apiClient from './apiClient'; // או הנתיב הנכון
 
-const API_URL = 'https://bergman-back-2.onrender.com/api/companies'; // עדכן את ה-URL בהתאם לכתובת השרת שלך
+const API_URL = 'companies'; // עדכן את ה-URL בהתאם לכתובת השרת שלך
 
 
  const copanyAxios ={
   getAll : async () => {
     try {
-        const response = await axios.get(`${API_URL}`);
+        const response = await apiClient.get(`${API_URL}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching :', error);
@@ -15,7 +16,7 @@ const API_URL = 'https://bergman-back-2.onrender.com/api/companies'; // עדכן
   },
   getById : async (value) => {
     try {
-        const response = await axios.get(`${API_URL}/${value}`);
+        const response = await apiClient.get(`${API_URL}/${value}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching :', error);
@@ -24,7 +25,7 @@ const API_URL = 'https://bergman-back-2.onrender.com/api/companies'; // עדכן
   },
   create : async (data) => {
     try {
-        const response = await axios.post(`${API_URL}`,data);
+        const response = await apiClient.post(`${API_URL}`,data);
         return response.data;
     } catch (error) {
         console.error('Error fetching :', error);
@@ -33,7 +34,7 @@ const API_URL = 'https://bergman-back-2.onrender.com/api/companies'; // עדכן
   },
   update : async (id) => {
     try {
-        const response = await axios.put(`${API_URL}/${id}`);
+        const response = await apiClient.put(`${API_URL}/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching :', error);
@@ -42,7 +43,7 @@ const API_URL = 'https://bergman-back-2.onrender.com/api/companies'; // עדכן
   },
   delete : async (id) => {
     try {
-        const response = await axios.delete(`${API_URL}/${id}`);
+        const response = await apiClient.delete(`${API_URL}/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching :', error);
