@@ -43,7 +43,6 @@ export const Manager = () => {
     const [isFormValid, setIsFormValid] = useState(false);
     const [managers, setManagers] = useState([]);
     const [openEdit, setOpenEdit] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [openAdd, setOpenAdd] = useState(false);
     const [userTypeError, setUserTypeError] = useState('');
     const [currentManager, setCurrentManager] = useState({});
@@ -294,7 +293,6 @@ export const Manager = () => {
             setSnackbarOpen(true);
         }
         finally {
-            setLoading(false);
             handleEmailDialogClose();
         }
     };
