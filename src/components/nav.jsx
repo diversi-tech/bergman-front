@@ -57,9 +57,9 @@ export const Nav = () => {
             <PersonSearchIcon />
           </Button>
         </Tooltip>
-        <Button color="inherit" component={Link} to="/Secretary">
+        {/* <Button color="inherit" component={Link} to="/Secretary">
           מזכירה
-        </Button>
+        </Button> */}
         <Tooltip title="עריכת מסננים" arrow>
           <Button color="inherit" component={Link} to="/EditingFilters">
             <ManageSearchIcon />

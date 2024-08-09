@@ -33,6 +33,9 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DescriptionIcon from '@mui/icons-material/Description';
 import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
+import { jwtDecode } from 'jwt-decode';
+import Cookies from "js-cookie";
+
 const cities = [
   'תל אביב', 'ירושלים', 'חיפה', 'באר שבע', 'נתניה', 'אשדוד', 'פתח תקווה', 'ראשון לציון',
   'הרצליה', 'רעננה', 'כפר סבא', 'בת ים', 'חולון', 'רמת גן', 'גבעתיים', 'נהריה', 'עפולה', 'עכו',
@@ -100,8 +103,8 @@ export const Profile = () => {
       password: '',
       enabled: true,
       userType: {
-        id: '',
-        userTypeName: ''
+        id: '2',
+        userTypeName: 'משתמש'
       }
     },
     city: {
@@ -190,6 +193,22 @@ export const Profile = () => {
       }
     }
   }, [user]);
+
+  // useEffect(() => {
+  //   const token = Cookies.get("jwtToken");
+  //   if (token !== undefined) {
+  //     try {
+  //       // נסה לפרש את התוקן
+  //       const decodedToken = jwtDecode(token);
+  //       if(decodedToken.userTypeId === 2) {
+  //         debugger
+  //         setCurrentUser(candidatesFromServer.filter((x) => x.person.id === decodedToken.personId)[0]);
+  //       };
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   }
+  // }, []);
 
 
   const handleLinkedinChange = (event) => {
@@ -311,8 +330,8 @@ export const Profile = () => {
   const enumTypes = [...new Set(options.map(option => option.enumType))];
 
   // ee
-  const [hasHigherEducation, setHasHigherEducation] = useState(currentUser.hasHigherEducation || 'no');
-  const [educationFields, setEducationFields] = useState(currentUser.educationFields || ['']);
+  const [hasHigherEducation, setHasHigherEducation] = useState('');
+  const [educationFields, setEducationFields] = useState('');
 
   // useEffect(() => {
   //   setData({ hasHigherEducation, educationFields });
@@ -376,7 +395,7 @@ export const Profile = () => {
                 helperText={formik.touched.name && formik.errors.name}
               />
 
-              <Autocomplete
+              {/* <Autocomplete
                 fullWidth
                 id="city"
                 options={cities}
@@ -393,9 +412,10 @@ export const Profile = () => {
                     error={formik.touched.city && Boolean(formik.errors.city)}
                     helperText={formik.touched.city && formik.errors.city}
                     sx={{ backgroundColor: 'white' }} // צבע רקע לבן
-                  />
-                )}
-              />
+                  /> */}
+                {/* )}
+              /> */}
+
               <TextField
                 fullWidth
                 label="אימייל"

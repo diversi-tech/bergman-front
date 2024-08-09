@@ -33,6 +33,7 @@ import { store } from "../redux/store";
 import { requestPasswordReset } from "../axios/passwordResetAxios";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export const Login = () => {
@@ -61,19 +62,19 @@ export const Login = () => {
   const loggedInUser = useSelector((state) => state.myUser); // הוספת סלקטור למשתמש המחובר
   const [userInfo, setUserInfo] = useState(null);
 
-  // useEffect(() => {
-  //   const token = Cookies.get("jwtToken");
-  //   if (token) {
-  //     const decodedToken = jwtDecode(token);
-  //     setUserInfo({
-  //       userTypeId: decodedToken.userTypeId,
-  //       phoneNumber: decodedToken.phoneNumber,
-  //       lastName: decodedToken.lastName,
-  //       firstName: decodedToken.firstName,
-  //       email: decodedToken.sub,
-  //     });
-  //   }
-  // }, []);
+  useEffect(() => {
+    const token = Cookies.get("jwtToken");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setUserInfo({
+        userTypeId: decodedToken.userTypeId,
+        phoneNumber: decodedToken.phoneNumber,
+        lastName: decodedToken.lastName,
+        firstName: decodedToken.firstName,
+        email: decodedToken.sub,
+      });
+    }
+  }, []);
 
   // useEffect(() => {
   //   const fetchUsers = async () => {
@@ -139,12 +140,12 @@ export const Login = () => {
       return;
     }
     const s=await UserAxios.login(email, password);
-    if(!s){
+    if(s===null){
       setError(true);
       return;
     }
     const token = Cookies.get("jwtToken");
-    if (token) {
+    if (token ) {
       const decodedToken = jwtDecode(token);
     myDispatch(setMyUser(decodedToken.userTypeId));
     myDispatch(currentUser(decodedToken))

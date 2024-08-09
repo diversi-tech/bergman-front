@@ -4,13 +4,15 @@ import Cookies from 'js-cookie';
 
 const api = axios.create({
   //הניתוב הבסיסי פה  ,userAxios
-    baseURL: 'https://bergman-back-2.onrender.com/api/',
+    baseURL: 'http://localhost:8080/api/',
 });
 
 // Interceptor לטיפול ב-Token ובקשת ה-API
-api.interceptors.request.use(async (config) => {
+api.interceptors.request.use(async (config) =>
+     {
     let accessToken = Cookies.get('jwtToken');
     if (accessToken) {
+        
         const decodedToken = jwtDecode(accessToken);
         const isExpired = decodedToken.exp * 1000 < Date.now();
 

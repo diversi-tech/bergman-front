@@ -1,23 +1,21 @@
-import axios from "axios";
-import Cookies from "js-cookie";
-import {jwtDecode} from 'jwt-decode';
-import apiClient from "./apiClient";
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
 
-const API_URL = 'https://bergman-back-2.onrender.com/api/users'; // שים כאן את ה-URL שלך לקונטרולר
+const API_URL = 'http://localhost:8080/api/users'; // שים כאן את ה-URL שלך לקונטרולר
 
 
 const UserAxios = {
   login: async (email, pass) => {
-    
     try {
       const response = await axios.get(`${API_URL}/emailAndPass/${email}/${pass}`);
       if (response.data) {
         const token = await response.data;
-        Cookies.set("jwtToken", token, { 
-          sameSite: "None", 
-          secure: true ,
-          expires: 7 
-      });
+        Cookies.set("jwtToken", token, {
+          sameSite: "None",
+          secure: true,
+          expires: 7
+        });
         // פענוח התוקן ושליפת המידע
         const decodedToken = jwtDecode(token);
         console.log("User Info from Token:", {
@@ -31,25 +29,26 @@ const UserAxios = {
         console.error("Invalid credentials");
       }
     } catch (error) {
-      console.error("Error fetching users:", error);
+      return null;
     }
   },
   getAllUsers: async () => {
     try {
       const response = await axios.get(`${API_URL}`);
       return response.data;
-    } catch (error) {
-      console.error("Error fetching users:", error);
+    }
+    catch (error) {
+      console.error('Error fetching users:', error);
       throw error;
     }
   },
   getAllManagers: async () => {
     try {
-      
-      const response = await apiClient.get('/users/managers');
+      const response = await axios.get(`${API_URL}/managers`);
       return response.data;
-    } catch (error) {
-      console.error('Error fetching managers:', error);
+    }
+    catch (error) {
+      console.error('Error fetching users:', error);
       throw error;
     }
   },
@@ -57,8 +56,9 @@ const UserAxios = {
     try {
       const response = await axios.post(`${API_URL}`, user);
       return response.data;
-    } catch (error) {
-      console.error("Error adding user:", error);
+    }
+    catch (error) {
+      console.error('Error adding user:', error);
       throw error;
     }
   },
@@ -66,8 +66,9 @@ const UserAxios = {
     try {
       const response = await axios.delete(`${API_URL}/${userId}`);
       return response.data;
-    } catch (error) {
-      console.error("Error deleting user:", error);
+    }
+    catch (error) {
+      console.error('Error deleting user:', error);
       throw error;
     }
   },
@@ -75,10 +76,16 @@ const UserAxios = {
     try {
       const response = await axios.put(`${API_URL}/${id}`, updatedUser);
       return response.data;
-    } catch (error) {
-      console.error("Error updating user:", error);
+    }
+    catch (error) {
+      console.error('Error updating user:', error);
       throw error;
     }
-  },
+  }
 };
 export default UserAxios;
+
+
+
+
+

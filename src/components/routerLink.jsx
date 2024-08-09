@@ -25,7 +25,7 @@
 // import CompanyManagement from './CompanyManagement';
 
 // export const RouterLink = () => {
-    
+
 //     const [userType,setUserType] = useState(useToken()?.userTypeId || 0);
 //     useEffect(() => {
 //         const token = Cookies.get("jwtToken");
@@ -94,66 +94,66 @@ import ChangeProfile from './changeProfile';
 import PrivateRoute from './PrivateRoute';
 import { PasswordReset } from './PasswordReset';
 import Cookies from "js-cookie";
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import PrivateRouteUser from './PrivateRouteUser';
 import RouteWrapper from './RouteWrapper';
 import CompanyManagement from './CompanyManagement';
 
 export const RouterLink = () => {
-    const [userType, setUserType] = useState(0);
+  const [userType, setUserType] = useState(0);
 
-    // בדיקה ראשונית בזמן העלאת הקומפוננטה
-    useEffect(() => {
+  // בדיקה ראשונית בזמן העלאת הקומפוננטה
+  useEffect(() => {
+    const token = Cookies.get("jwtToken");
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setUserType(decodedToken.userTypeId);
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+      }
+    }
+  }, []);
+
+  // בדיקה נוספת במידה והקומפוננטה כבר רונדרה והמשתמש לא היה מחובר
+  useEffect(() => {
+    if (userType === 0) {
+      try {
         const token = Cookies.get("jwtToken");
         if (token) {
-            try {
-                const decodedToken = jwtDecode(token);
-                setUserType(decodedToken.userTypeId);
-            } catch (error) {
-                console.error("Failed to decode token:", error);
-            }
+          const decodedToken = jwtDecode(token);
+          setUserType(decodedToken.userTypeId);
         }
-    }, []);
+      } catch (err) {
+        console.error("Failed to decode token:", err);
+      }
+    }
+  }, [userType]);
 
-    // בדיקה נוספת במידה והקומפוננטה כבר רונדרה והמשתמש לא היה מחובר
-    useEffect(() => {
-        if (userType === 0) {
-            try {
-                const token = Cookies.get("jwtToken");
-                if (token) {
-                    const decodedToken = jwtDecode(token);
-                    setUserType(decodedToken.userTypeId);
-                }
-            } catch (err) {
-                console.error("Failed to decode token:", err);
-            }
-        }
-    }, [userType]);
-
-    return (
-        <BrowserRouter>
-            {(userType === 1) && (
-                <Nav />
-            )}
-            <Box sx={{ pt: '60px' }}>
-                <Routes>
-                    <Route path="/Filter" element={<PrivateRoute element={Filter} />} />
-                    <Route path="/Home" element={<Home />} />
-                    <Route path="/Manager" element={<PrivateRoute element={Manager} />} />
-                    <Route path="/Secretary" element={<PrivateRoute element={Secretary} />} />
-                    <Route path="/EditingFilters" element={<PrivateRoute element={EditingFilters} />} />
-                    <Route path="/WorkersManagement" element={<WorkersManagement />} />
-                    <Route path="/History/:userId" element={<PrivateRoute element={History} />} />
-                    <Route path="/Profile" element={<RouteWrapper element={Profile} usePrivateRoute={userType} />} />
-                    <Route path="/Login" element={<LoginModal />} />
-                    <Route path="/SignUp" element={<SignUpModal />} />
-                    <Route path='/HomeCandidate' element={<HomeCandidate />} />
-                    <Route path='/changeProfile' element={<RouteWrapper element={ChangeProfile} usePrivateRoute={userType} />} />
-                    <Route path='/request-password-reset' element={<PasswordReset />} />
-                    <Route path="/" element={<Home />} />
-                    <Route path='/CompanyManagement' element={<RouteWrapper element={CompanyManagement} usePrivateRoute={userType} />} />
-                </Routes>
-            </Box>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      {(userType === 1) && (
+        <Nav />
+      )}
+      <Box sx={{ pt: '60px' }}>
+        <Routes>
+          <Route path="/Filter" element={<PrivateRoute element={Filter} />} />
+          <Route path="/Home" element={<Home />} />
+          <Route path="/Manager" element={<PrivateRoute element={Manager} />} />
+          <Route path="/Secretary" element={<PrivateRoute element={Secretary} />} />
+          <Route path="/EditingFilters" element={<PrivateRoute element={EditingFilters} />} />
+          <Route path="/WorkersManagement" element={<WorkersManagement />} />
+          <Route path="/History/:userId" element={<PrivateRoute element={History} />} />
+          <Route path="/Profile" element={<RouteWrapper element={Profile} usePrivateRoute={userType} />} />
+          <Route path="/Login" element={<LoginModal />} />
+          <Route path="/SignUp" element={<SignUpModal />} />
+          <Route path='/HomeCandidate' element={<HomeCandidate />} />
+          <Route path='/changeProfile' element={<RouteWrapper element={ChangeProfile} usePrivateRoute={userType} />} />
+          <Route path='/request-password-reset' element={<PasswordReset />} />
+          <Route path="/" element={<Home />} />
+          <Route path='/CompanyManagement' element={<RouteWrapper element={CompanyManagement} usePrivateRoute={userType} />} />
+        </Routes>
+      </Box>
+    </BrowserRouter>
+  );
 };

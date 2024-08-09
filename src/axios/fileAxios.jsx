@@ -1,6 +1,6 @@
-import apiClient from "./apiClient";
+import axios from "axios";
 
-const API_URL = 'files'; // סיומת ה-API
+const API_URL = 'http://localhost:8080/api/files'; // סיומת ה-API
 
 const FileAxios = {
   uploadFile: async (file) => {
@@ -8,7 +8,7 @@ const FileAxios = {
     formData.append('file', file);
     
     try {
-      const response = await apiClient.post(`${API_URL}/upload`, formData, {
+      const response = await axios.post(`${API_URL}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -22,7 +22,7 @@ const FileAxios = {
   
   downloadFile: async (fileName) => {
     try {
-      const response = await apiClient.get(`${API_URL}/download/${fileName}`, {
+      const response = await axios.get(`${API_URL}/download/${fileName}`, {
         responseType: 'blob',
       });
       return response.data;
@@ -34,7 +34,7 @@ const FileAxios = {
   
   deleteFile: async (userID, fileName) => {
     try {
-      const response = await apiClient.delete(`${API_URL}/delete/${userID}/${fileName}`);
+      const response = await axios.delete(`${API_URL}/delete/${userID}/${fileName}`);
       return response.data;
     } catch (error) {
       console.error('Error deleting file:', error);
@@ -44,7 +44,7 @@ const FileAxios = {
   
   getFileUrl: async (fileName) => {
     try {
-      const response = await apiClient.get(`${API_URL}/url/${fileName}`);
+      const response = await axios.get(`${API_URL}/url/${fileName}`);
       return response.data;
     } catch (error) {
       console.error('Error getting file URL:', error);

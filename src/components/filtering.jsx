@@ -157,7 +157,6 @@ export const Filter = ({ onClose, candidate }) => {
 
 
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -233,7 +232,6 @@ export const Filter = ({ onClose, candidate }) => {
       setCurrentCandidate(candidatesFromServer);
     }
   }, [open, candidate]);
-
 
 
 
@@ -353,7 +351,7 @@ export const Filter = ({ onClose, candidate }) => {
           </head>
           <body>
             <div class="container">
-               <h3>${body}</h3>
+               <h3>${editorState}</h3>
                <a href="https://bergman-front.onrender.com/" class="button"> לאתר..... </a>
               <div class="footer">
                 <h4>בברכה<br/>חנה ברגמן</h4>
@@ -365,6 +363,7 @@ export const Filter = ({ onClose, candidate }) => {
           </html>
       `,
     };
+    debugger
     setBody("");
     setSubject("");
     try {
@@ -374,11 +373,11 @@ export const Filter = ({ onClose, candidate }) => {
     } catch (error) {
       console.error("Failed to send emails:", error);
       setLoading(false);
-      setnotSend(true);
+      // setnotSend(true);
       // טיפול בשגיאה אם השליחה נכשלה, לדוגמה הצגת הודעה למשתמש או פעולות נוספות
-    } finally {
+    } 
       handleClose();
-    }
+    
   };
   const toggleCandidateColor = (candidateId) => {
     const candidate = filteredCandidates.find(
@@ -399,9 +398,7 @@ export const Filter = ({ onClose, candidate }) => {
   //
 
 
-
   const handleEditOpen = (candidate) => {
-
 
     const candidateEmail = candidate.person.email;
     // filteredCandidates.find((u) => u.id === candidate.id)?.person.email || "";
@@ -434,6 +431,7 @@ export const Filter = ({ onClose, candidate }) => {
     setOpenEdit(false);
   };
   const handleEditChange = (event) => {
+    debugger
     const { name, value } = event.target;
     if (name === "referralDate") {
       setCurrentCandidate((prevCandidate) => ({
@@ -482,6 +480,7 @@ export const Filter = ({ onClose, candidate }) => {
   };
 
   const handleView = async (fileName) => {
+    debugger;
     if (!fileName) {
       alert("Please enter a file name.");
       return;
@@ -500,6 +499,7 @@ export const Filter = ({ onClose, candidate }) => {
     setFileUrl("");
   };
   const handleDownload = async () => {
+    debugger;
     if (!fileName) {
       alert("Please enter a file name to download.");
       return;
@@ -516,7 +516,6 @@ export const Filter = ({ onClose, candidate }) => {
       alert("Error downloading file");
     }
   };
-
 
 
   const handleFilterCandidates = () => {
@@ -773,7 +772,7 @@ export const Filter = ({ onClose, candidate }) => {
                         }}
                       >
                         <Editor
-                          value={body}
+                          // value={body}
                           editorState={editorState}
                           handleKeyCommand={handleKeyCommand}
                           onChange={setEditorState}
@@ -928,7 +927,7 @@ export const Filter = ({ onClose, candidate }) => {
                   <TableCell align="center">
                     <IconButton
                       onClick={() =>
-                        toggleCandidateColor(candidate.id)
+                        toggleCandidateColor(candidate.person.id)
                       }
                     >
                       <EmailIcon
@@ -1303,3 +1302,5 @@ export const Filter = ({ onClose, candidate }) => {
     </div >
   );
 };
+
+

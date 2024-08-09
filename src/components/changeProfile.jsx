@@ -8,6 +8,8 @@ import {
   CssBaseline,
   createTheme,
   ThemeProvider,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import UserAxios from "../axios/userAxios"; // עדכן את הנתיב בהתאם למיקום הקובץ
@@ -23,11 +25,13 @@ import createCache from "@emotion/cache";
 import rtlPlugin from "stylis-plugin-rtl";
 import { prefixer } from "stylis";
 import { CacheProvider } from "@emotion/react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const ChangeProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const reduxUser = useSelector((state) => state.userReducer.currentUser);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [profile, setProfile] = useState({
     username: "",
@@ -106,23 +110,23 @@ const ChangeProfile = () => {
       mode: "light",
     },
     components: {
-        // שינוי סגנון של רכיב Button
-        MuiButton: {
-          styleOverrides: {
-            root: {
-              padding: '16px 32px', // שינוי padding (מרווחים פנימיים) כדי להגדיל את התיבה
-              fontSize: '16px',     // שינוי גודל הפונט בתוך הכפתור
-            },
+      // שינוי סגנון של רכיב Button
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            padding: '16px 32px', // שינוי padding (מרווחים פנימיים) כדי להגדיל את התיבה
+            fontSize: '16px',     // שינוי גודל הפונט בתוך הכפתור
           },
         },
-        MuiTextField: {
-            styleOverrides: {
-              root: {
-                width: '100%', // שינוי רוחב השדה
-                maxWidth: '500px', // הגדרת רוחב מקסימלי
-              },
-            },
+      },
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            width: '100%', // שינוי רוחב השדה
+            maxWidth: '500px', // הגדרת רוחב מקסימלי
           },
+        },
+      },
     }
   });
   return (
@@ -183,9 +187,24 @@ const ChangeProfile = () => {
                   id="password"
                   label="סיסמא"
                   name="password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={profile.password}
                   onChange={handleChange}
+                  // error={Boolean(passwordError)}
+                  // helperText={passwordError}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </div>
             </ThemeProvider>

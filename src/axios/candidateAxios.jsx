@@ -3,7 +3,7 @@ import apiClient from './apiClient'; // או הנתיב הנכון
 const API_URL = 'candidate'; 
 
 const CandidateAxios = {
-  getAllCandidates: async () => {
+  getAllCandidate: async () => {
     try {
       const response = await apiClient.get(API_URL); // בלי פרמטרים נוספים
       return response.data;
