@@ -683,6 +683,22 @@ export const Filter = ({ onClose, candidate }) => {
                         color: 'white',
                       },
                     }}
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: "white", // מסגרת לבנה
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "white", // מסגרת לבנה כאשר עוברים עם העכבר
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "white", // מסגרת לבנה כאשר המוקד הוא בתיבה
+                        },
+                      },
+                      "& .MuiInputLabel-root": {
+                        color: "white", // צבע הכיתוב
+                      },
+                    }}
                   >
                     {[...Array(50)].map((_, index) => (
                       <MenuItem key={index + 1} value={index + 1}>
