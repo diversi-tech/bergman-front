@@ -2,7 +2,7 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 
-const API_URL = 'http://localhost:8080/api/users'; // שים כאן את ה-URL שלך לקונטרולר
+const API_URL = 'https://bergman-back-2.onrender.com/api/users'; // שים כאן את ה-URL שלך לקונטרולר
 
 
 const UserAxios = {
@@ -29,7 +29,7 @@ const UserAxios = {
         console.error("Invalid credentials");
       }
     } catch (error) {
-return  null;   }
+return  null   }
   },
   getAllUsers: async () => {
     try 

@@ -489,9 +489,10 @@ export const Profile = () => {
         email: value,
         firstName:value,
         lastName: value,
-        phoneNumber: value,
+        phoneNumber: value
       },
       user: {
+        ...prevState.user,
         person: {
           email: value,
           firstName:value,
