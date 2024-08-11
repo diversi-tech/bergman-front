@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = 'https://bergman-back-2.onrender.com/api/files'; // סיומת ה-API
+const API_URL = 'http://localhose:8080/api/files'; // סיומת ה-API
 
 const FileAxios = {
   uploadFile: async (file) => {

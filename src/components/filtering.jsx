@@ -689,7 +689,7 @@ export const Filter = ({ onClose, candidate }) => {
                         {index + 1}
                       </MenuItem>
                     ))}
-                    </TextField>
+                  </TextField>
                 </div>
               </ThemeProvider>
             </CacheProvider>
@@ -706,14 +706,14 @@ export const Filter = ({ onClose, candidate }) => {
                 fontWeight: "bold",
                 fontSize: "16px",
                 margin: "0px",
+                backgroundColor: "black", // צבע הרקע של הכפתור
+                color: "white",           // צבע הכיתוב
               }}
               fullWidth
             ></Button>
           </Grid>
         </Grid>
       </Box>
-      <br />
-      <br />
       <br />
       <Box>
         <div>
@@ -722,7 +722,12 @@ export const Filter = ({ onClose, candidate }) => {
             variant="contained"
             color="primary"
             onClick={handleClickOpen}
-            sx={{ width: "200px", margin: "0 auto" }}
+            sx={{
+              width: "200px",
+              margin: "0 auto",
+              backgroundColor: "black", // צבע הרקע של הכפתור
+              color: "white",           // צבע הכיתוב
+            }}
           >
             שליחת מייל
           </Button>
@@ -1204,7 +1209,7 @@ export const Filter = ({ onClose, candidate }) => {
                   value={currentCandidate.phoneNumber}
                   onChange={handleEditChange}
                 />
-                <TextField
+                {/* <TextField
                   margin="dense"
                   name="referralSource"
                   label="שם החברה"
@@ -1235,7 +1240,7 @@ export const Filter = ({ onClose, candidate }) => {
                   rows={4}
                   value={currentCandidate.remarks}
                   onChange={handleEditChange}
-                />
+                /> */}
                 <TextField
                   margin="dense"
                   name="state"

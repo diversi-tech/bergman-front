@@ -98,6 +98,7 @@ import { jwtDecode } from 'jwt-decode';
 import PrivateRouteUser from './PrivateRouteUser';
 import RouteWrapper from './RouteWrapper';
 import CompanyManagement from './CompanyManagement';
+import NotFound from './NotFound';
 
 export const RouterLink = () => {
   const [userType, setUserType] = useState(0);
@@ -137,6 +138,7 @@ export const RouterLink = () => {
       )}
       <Box sx={{ pt: '60px' }}>
         <Routes>
+        <Route path="*" element={<NotFound />} />
           <Route path="/Filter" element={<PrivateRoute element={Filter} />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/Manager" element={<PrivateRoute element={Manager} />} />

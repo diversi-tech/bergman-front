@@ -139,7 +139,7 @@ export const Profile = () => {
       setDialogTitle('Error');
       setDialogMessage('ניתן להעלות קבצים עד 10MB בלבד.');
       setDialogSeverity('error');
-      setDialogOpen(true);
+      setDialogOpenFile(true);
       return;
     }
     if (language === 'hebrew') {
@@ -161,7 +161,7 @@ export const Profile = () => {
       setDialogTitle('Error');
       setDialogMessage('Error uploading file');
       setDialogSeverity('error');
-      setDialogOpen(true);
+      setDialogOpenFile(true);
       throw error; // Re-throw error after handling it
     }
   };
@@ -172,7 +172,7 @@ export const Profile = () => {
       setDialogTitle('Error');
       setDialogMessage('יש להעלות קובץ אחד לפחות.');
       setDialogSeverity('error');
-      setDialogOpen(true);
+      setDialogOpenFile(true);
       return;
     }
 
@@ -191,7 +191,7 @@ export const Profile = () => {
         (hebrewFile && englishFile ? ', ' : '') +
         (englishFile ? englishFile.name : ''));
       setDialogSeverity('success');
-      setDialogOpen(true);
+      setDialogOpenFile(true);
       user.cvHebrewFile = hebrewFile;
       user.cvEnglishFile = englishFile;
       setHebrewFile(null);
@@ -224,7 +224,7 @@ export const Profile = () => {
       setFileUrl(fileURL);
       setViewFile(file);
       setDialogTitle('File Preview');
-      setDialogOpen(true);
+      setDialogOpenFile(true);
     }
   };
 
@@ -238,7 +238,7 @@ export const Profile = () => {
   };
 
   const handleCloseDialogFile = () => {
-    setDialogOpen(false);
+    setDialogOpenFile(false);
     setViewFile(null);
     setFileUrl(null);
   };
@@ -302,13 +302,6 @@ export const Profile = () => {
           setCandidatesFromServer(response);
           dispatch(FillCavdidateProfileData(response.data));
         }
-        if (users1 > 0) {
-          setUsers(users1);
-        } else {
-          const response = await UserAxios.getAllUsers();
-          setUsers(response);
-          dispatch(FillUsersData(response.data));
-        }
         if (options1 > 0) {
           setOptions(options1);
         } else {
@@ -331,13 +324,7 @@ export const Profile = () => {
           setCandidateOptions(response);
           dispatch(FillCandidateOptionsData(response.data));
         }
-        if (referrals1 > 0) {
-          setReferrals(referrals1);
-        } else {
-          const response = await ReferralsAxios.getAllReferrals();
-          setReferrals(response);
-          dispatch(FillReferralsData(response.data));
-        }
+        
       } catch (error) {
         console.error("Error:", error);
       }
@@ -353,15 +340,15 @@ export const Profile = () => {
     candidateOptions1,
     referrals1,
   ]);
-  useEffect(() => {
-    debugger
-    if (user && candidatesFromServer) {
-      const isCandidate = candidatesFromServer.some(candidate => candidate.person.id === user.person.id);
-      if (isCandidate) {
-        setCurrentUser(user);
-      }
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   debugger
+  //   if (user && candidatesFromServer) {
+  //     const isCandidate = candidatesFromServer.some(candidate => candidate.person.id === user.person.id);
+  //     if (isCandidate) {
+  //       setCurrentUser(user);
+  //     }
+  //   }
+  // }, [user]);
 
   // useEffect(() => {
   //   const token = Cookies.get("jwtToken");
@@ -378,6 +365,30 @@ export const Profile = () => {
   //     }
   //   }
   // }, []);
+
+  useEffect(() => {
+    const token = Cookies.get("jwtToken");
+    debugger
+    if (token && typeof token === 'string') {
+        try {
+            // פענוח הטוקן
+            const decodedToken = jwtDecode(token);
+
+            // בדיקת סוג המשתמש והגדרת המשתמש הנוכחי בהתאם
+            if(decodedToken.userTypeId === 2) {
+                const candidate = candidatesFromServer.find(candidate => candidate.person.id === decodedToken.personId);
+                
+                if (candidate) {
+                    setCurrentUser(candidate);
+                }
+            }
+        } catch (err) {
+            console.error("Failed to decode token:", err);
+        }
+    } else {
+        console.error("Invalid token specified: must be a string");
+    }
+}, []);
 
 
   const handleLinkedinChange = (event) => {
@@ -475,8 +486,40 @@ export const Profile = () => {
       ...prevState,
       person: {
         ...prevState.person,
-        [name]: value,
+        email: value,
+        firstName:value,
+        lastName: value,
+        phoneNumber: value,
       },
+      user: {
+        person: {
+          email: value,
+          firstName:value,
+          lastName: value,
+          phoneNumber: value,
+          createdAt: value,
+          updatedAt: value,
+        },
+        password: value,
+        enabled: true,
+        userType: {
+          id: '2',
+          userTypeName: 'משתמש'
+        }
+      },
+      city: {
+        id: value,
+        enumType: value,
+        optionsValue: value,
+      },
+      coverLater:value,
+      experienceYears: value,
+      education: value,
+      linkedinProfile: value,
+      githubProfile: value,
+      cvHebrewFile: value,
+      cvEnglishFile: value,
+      cityName: value,
     }));
   };
 
@@ -568,7 +611,12 @@ export const Profile = () => {
                       name="firstName"
                       value={currentUser.person.firstName}
                       onChange={handleChange}
-                    />
+                    /></div>
+                    </ThemeProvider>
+                  </CacheProvider>
+                  <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                  <div dir="rtl">
                     <TextField
                       fullWidth
                       label="אימייל"
@@ -580,6 +628,12 @@ export const Profile = () => {
                       onChange={handleChange}
                       sx={{ backgroundColor: 'white' }}
                     />
+                    </div>
+                </ThemeProvider>
+              </CacheProvider>
+              <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                  <div dir="rtl">
                     <TextField
                       fullWidth
                       label="טלפון"
@@ -807,11 +861,13 @@ export const Profile = () => {
               <ThemeProvider theme={theme}>
                 <div dir="rtl">
                   <TextField
+                  
                     id="linkedin-url"
                     label="קישור לפרופיל LinkedIn"
                     variant="outlined"
                     fullWidth
-                    value={currentUser.linkedin}
+                    name="linkedinProfile"
+                    value={currentUser.linkedinProfile}
                     onChange={handleChange}
                     error={urlError}
                     helperText={urlError ? "הקישור אינו תקין" : ""}
@@ -835,7 +891,8 @@ export const Profile = () => {
                     label="קישור לגיטהאב"
                     variant="outlined"
                     fullWidth
-                    value={currentUser.github}
+                    name="githubProfile"
+                    value={currentUser.githubProfile}
                     onChange={handleChange}
                     error={urlError}
                     helperText={urlError ? "הקישור אינו תקין" : ""}
