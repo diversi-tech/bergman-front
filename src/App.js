@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import Footer from './components/footer';
 import { Box } from '@mui/material';
-import background from './images/background4.jpg'; // תוודא שהנתיב נכון
+import background from './images/background4.webp'; // תוודא שהנתיב נכון
 import { AuthProvider } from './components/authContext';
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
             backgroundAttachment: 'fixed',
             color: 'white',
             // position:'relative',
-            // zIndex: -2
+            zIndex: 1000
           }}
         >
           <div className="App">
@@ -32,9 +32,10 @@ function App() {
               {/* כאן יש להוסיף את התוכן המרכזי של העמוד */}
               {/* <Home/> */}
             </Box>
+            <Footer />
+
           </div>
         </Box>
-        <Footer />
       </AuthProvider>
     </Provider>
   );

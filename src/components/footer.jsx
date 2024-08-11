@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { Box, Divider, Typography, Link } from '@mui/material';
 import { styled } from '@mui/system';
+import logo from '../images/image (10).png'; // עדכן את נתיב הלוגו
 
 const FooterContainer = styled('footer')({
   display: 'flex',
@@ -11,8 +11,11 @@ const FooterContainer = styled('footer')({
   direction: 'rtl',
   position: 'sticky',
   width: '100%',
-  backgroundColor: '#fff',
+  backgroundColor: 'rgba(0, 0, 0, 0.7)', // רקע שחור שקוף
   fontFamily: 'sans-serif',
+  color: 'white', // צבע טקסט לבן
+  zIndex: 1000,
+  marginTop: '550px',
 });
 
 const Logo = styled('img')({
@@ -23,6 +26,7 @@ const Logo = styled('img')({
 const TextContainer = styled(Box)({
   textAlign: 'right',
   fontSize: '1.5em',
+  color: 'white', // צבע טקסט לבן
 });
 
 const CustomDivider = styled(Divider)({
@@ -34,8 +38,14 @@ const Footer = () => {
   return (
     <FooterContainer>
       <Box style={{ display: 'flex', alignItems: 'center' }}>
-        <Logo src='/logosmall.jpg' alt="CHANA BERGMAN Logo" />
-        <CustomDivider orientation="vertical" flexItem />
+      <Box sx={{ flexGrow: 1 }}>
+          <Box
+            component="img"
+            src={logo}
+            alt="Logo"
+            sx={{ height: 150, marginLeft: 2 }}
+          />
+        </Box>        <CustomDivider orientation="vertical" flexItem />
         <TextContainer>
           <Typography variant="body1" style={{ margin: 0 }}>חנה ברגמן</Typography>
           <Typography variant="body1" style={{ margin: 0 }}>
@@ -53,4 +63,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

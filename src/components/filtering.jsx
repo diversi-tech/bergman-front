@@ -104,6 +104,8 @@ export const Filter = ({ onClose, candidate }) => {
   const [selectedProgrammingLanguages, setSelectedProgrammingLanguages] =
     useState([]);
   const [selectedTechnologies, setSelectedTechnologies] = useState([]);
+  const [selectedNumber, setSelectedNumber] = useState([]);
+
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [checkedCandidates, setCheckedCandidates] = useState({});
   const [candidatesFromServer, setCandidatesFromServer] = useState([]);
@@ -375,9 +377,9 @@ export const Filter = ({ onClose, candidate }) => {
       setLoading(false);
       // setnotSend(true);
       // טיפול בשגיאה אם השליחה נכשלה, לדוגמה הצגת הודעה למשתמש או פעולות נוספות
-    } 
-      handleClose();
-    
+    }
+    handleClose();
+
   };
   const toggleCandidateColor = (candidateId) => {
     const candidate = filteredCandidates.find(
@@ -617,11 +619,35 @@ export const Filter = ({ onClose, candidate }) => {
                     {...params}
                     label={enumType}
                     inputProps={{ ...params.inputProps, readOnly: true }}
-                    style={{ margin: "0px 0px", width: "100%" }} // הוספת רווח והתאמת רוחב
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: "white", // מסגרת לבנה
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "white", // מסגרת לבנה כאשר עוברים עם העכבר
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "white", // מסגרת לבנה כאשר המוקד הוא בתיבה
+                        },
+                      },
+                      "& .MuiInputLabel-root": {
+                        color: "white", // צבע הכיתוב
+                      },
+                    }}
+                    InputProps={{
+                      ...params.InputProps,
+                      style: {
+                        color: 'white', // צבע הטקסט בתוך התיבה
+                      },
+                    }}
                   />
                 )}
-                popupIcon={<ArrowDropDownIcon style={{ fill: "black" }} />} // חץ קטן ועדין עם צבע מלא
+                popupIcon={<ArrowDropDownIcon style={{ fill: "white" }} />} // חץ לבן
               />
+
+              {/* תיבה לבחירת מספר בין 1 ל-50 */}
+
             </div>
           </ThemeProvider>
         </CacheProvider>
@@ -641,16 +667,44 @@ export const Filter = ({ onClose, candidate }) => {
             lg={2}
             style={{ margin: "5px", marginTop: "50px" }}
           >
+            <CacheProvider value={cacheRtl}>
+              <ThemeProvider theme={theme}>
+                <div dir="rtl">
+                  <TextField
+                    select
+                    label="שנות ניסיון"
+                    value={selectedNumber}
+                    onChange={(event) => setSelectedNumber(event.target.value)}
+                    style={{ marginTop: "20px", width: "100%" }}
+                    InputLabelProps={{ style: { color: 'white' } }} // כיתוב לבן
+                    InputProps={{
+                      style: {
+                        borderColor: 'white', // מסגרת לבנה
+                        color: 'white',
+                      },
+                    }}
+                  >
+                    {[...Array(50)].map((_, index) => (
+                      <MenuItem key={index + 1} value={index + 1}>
+                        {index + 1}
+                      </MenuItem>
+                    ))}
+                    </TextField>
+                </div>
+              </ThemeProvider>
+            </CacheProvider>
+
+            <br></br>
             <Button
               variant="contained"
               className="btnView1"
               onClick={handleFilterCandidates}
               startIcon={<SearchIcon />}
               style={{
-                width: "100px", // רוחב
-                height: "50px", // גובה
-                fontWeight: "bold", // עובי
-                fontSize: "16px", // גודל טקסט
+                width: "100px",
+                height: "50px",
+                fontWeight: "bold",
+                fontSize: "16px",
                 margin: "0px",
               }}
               fullWidth

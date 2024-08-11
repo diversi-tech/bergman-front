@@ -1,5 +1,6 @@
-import { Alert, Autocomplete, Box, Button, Chip, Container, FormControl, InputLabel, ListItemText, MenuItem, Paper, Select, TextField, Typography, Stack } from '@mui/material';
+import { Alert, Autocomplete, Box, Button, Chip, Container, FormControl, InputLabel, ListItemText, MenuItem, Paper, Select, TextField, Typography, Stack, CircularProgress, Backdrop, Tooltip } from '@mui/material';
 import React, { useEffect, useState, useCallback } from "react";
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
 import { CV } from './CV';
@@ -22,6 +23,14 @@ import { FillReferralsData } from '../redux/action/referralsAction';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import axios from 'axios';
+import { CacheProvider } from "@emotion/react";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import userAxios from '../axios/userAxios';
+import { prefixer } from 'stylis';
+import createCache from "@emotion/cache";
+
+import rtlPlugin from 'stylis-plugin-rtl';
+
 import {
   FormControlLabel,
   RadioGroup,
@@ -35,7 +44,10 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
 import { jwtDecode } from 'jwt-decode';
 import Cookies from "js-cookie";
+import { styled } from '@mui/system';
 
+import FileAxios from '../axios/fileAxios'; // adjust the path to your axios instance
+import Downloading from '@mui/icons-material/Downloading';
 const cities = [
   'תל אביב', 'ירושלים', 'חיפה', 'באר שבע', 'נתניה', 'אשדוד', 'פתח תקווה', 'ראשון לציון',
   'הרצליה', 'רעננה', 'כפר סבא', 'בת ים', 'חולון', 'רמת גן', 'גבעתיים', 'נהריה', 'עפולה', 'עכו',
@@ -45,8 +57,38 @@ const cities = [
   'הרצליה', 'חולון', 'בת ים', 'רמת גן', 'גבעתיים'
 ];
 
+const theme =
+  createTheme({
+    direction: 'rtl',
+    palette: {
+      mode: 'light',
+    },
+  });
+const cacheRtl = createCache({
+  key: "muirtl",
+  stylisPlugins: [prefixer, rtlPlugin],
+});
 
+
+const UploadButton = styled(Button)({
+  flex: '1 1 auto',
+  maxWidth: '45%',
+  padding: '15px',
+  fontSize: '16px',
+});
 export const Profile = () => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleSubmit = () => {
+    // כאן תוסיף את הלוגיקה שלך לשמירת העדכונים
+    // אחרי שמירת העדכונים בהצלחה, נפתח את ה-Dialog
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
   const [selectedLocations, setSelectedLocations] = React.useState([]);
   const [linkedinUrl, setLinkedinUrl] = React.useState('');
   const [urlError, setUrlError] = React.useState(false);
@@ -75,6 +117,133 @@ export const Profile = () => {
   const enums1 = useSelector((state) => state.listEnums);
   const candidateOptions1 = useSelector((state) => state.listCandidateOptions);
   const referrals1 = useSelector((state) => state.referrals);
+
+
+
+  //file
+  const [hebrewFile, setHebrewFile] = React.useState(null);
+  const [englishFile, setEnglishFile] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+  const [dialogOpenFile, setDialogOpenFile] = React.useState(false);
+  const [dialogMessage, setDialogMessage] = React.useState('');
+  const [dialogTitle, setDialogTitle] = React.useState('');
+  const [dialogSeverity, setDialogSeverity] = React.useState('success');
+  const [viewFile, setViewFile] = React.useState(null);
+  const [fileUrl, setFileUrl] = React.useState(null);
+
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+  const handleFileChange = (e, language) => {
+    const file = e.target.files[0];
+    if (file.size > MAX_FILE_SIZE) {
+      setDialogTitle('Error');
+      setDialogMessage('ניתן להעלות קבצים עד 10MB בלבד.');
+      setDialogSeverity('error');
+      setDialogOpen(true);
+      return;
+    }
+    if (language === 'hebrew') {
+      setHebrewFile(file);
+    } else if (language === 'english') {
+      setEnglishFile(file);
+    }
+  };
+
+  const handleFileUpload = async (file, language) => {
+    if (!file) return;
+
+    const newFileName = `${user.id}_${language}_${file.name}`;
+    const renamedFile = new File([file], newFileName, { type: file.type });
+
+    try {
+      await FileAxios.uploadFile(renamedFile);
+    } catch (error) {
+      setDialogTitle('Error');
+      setDialogMessage('Error uploading file');
+      setDialogSeverity('error');
+      setDialogOpen(true);
+      throw error; // Re-throw error after handling it
+    }
+  };
+
+  const handleSubmitFile = async (e) => {
+    e.preventDefault();
+    if (!hebrewFile && !englishFile) {
+      setDialogTitle('Error');
+      setDialogMessage('יש להעלות קובץ אחד לפחות.');
+      setDialogSeverity('error');
+      setDialogOpen(true);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      if (hebrewFile) {
+        await handleFileUpload(hebrewFile, 'hebrew');
+      }
+      if (englishFile) {
+        await handleFileUpload(englishFile, 'english');
+      }
+
+      setDialogTitle('Success');
+      setDialogMessage('הקבצים הועלו בהצלחה: ' +
+        (hebrewFile ? hebrewFile.name : '') +
+        (hebrewFile && englishFile ? ', ' : '') +
+        (englishFile ? englishFile.name : ''));
+      setDialogSeverity('success');
+      setDialogOpen(true);
+      user.cvHebrewFile = hebrewFile;
+      user.cvEnglishFile = englishFile;
+      setHebrewFile(null);
+      setEnglishFile(null);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const triggerFileInput = (language) => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.pdf, .docx';
+    fileInput.style.display = 'none';
+    document.body.appendChild(fileInput);
+
+    fileInput.addEventListener('change', (e) => {
+      handleFileChange(e, language);
+      document.body.removeChild(fileInput);
+    });
+
+    fileInput.click();
+  };
+
+  const handleViewFile = (file) => {
+    if (file) {
+      const fileURL = URL.createObjectURL(file);
+      setFileUrl(fileURL);
+      setViewFile(file);
+      setDialogTitle('File Preview');
+      setDialogOpen(true);
+    }
+  };
+
+  const handleDownload = () => {
+    if (viewFile) {
+      const link = document.createElement('a');
+      link.href = fileUrl;
+      link.download = viewFile.name;
+      link.click();
+    }
+  };
+
+  const handleCloseDialogFile = () => {
+    setDialogOpen(false);
+    setViewFile(null);
+    setFileUrl(null);
+  };
+  //
+
 
   const [currentUser, setCurrentUser] = useState({
     id: '',
@@ -233,25 +402,25 @@ export const Profile = () => {
   //   return acc;
   // }, {});
 
-  const handleSubmit = () => {
-    const isUpdated =
-      JSON.stringify(selectedOptions) !== JSON.stringify(originalSkills) ||
-      JSON.stringify(selectedLocations) !== JSON.stringify(originalLocations) ||
-      linkedinUrl !== originalLinkedinUrl;
+  // const handleSubmit = () => {
+  //   const isUpdated =
+  //     JSON.stringify(selectedOptions) !== JSON.stringify(originalSkills) ||
+  //     JSON.stringify(selectedLocations) !== JSON.stringify(originalLocations) ||
+  //     linkedinUrl !== originalLinkedinUrl;
 
-    if (isUpdated) {
-      console.log('Submitted Data:', {
-        skills: selectedOptions,
-        locations: selectedLocations,
-        linkedinUrl: linkedinUrl,
-        cv: true,
-      });
-      alert('העדכונים נשמרו בהצלחה');
-      navigate('/home');
-    } else {
-      alert('לא היו שינויים לשמירה');
-    }
-  };
+  //   if (isUpdated) {
+  //     console.log('Submitted Data:', {
+  //       skills: selectedOptions,
+  //       locations: selectedLocations,
+  //       linkedinUrl: linkedinUrl,
+  //       cv: true,
+  //     });
+  //     alert('העדכונים נשמרו בהצלחה');
+  //     navigate('/home');
+  //   } else {
+  //     alert('לא היו שינויים לשמירה');
+  //   }
+  // };
   const [errorMessage, setErrorMessage] = React.useState('');
 
   const validationSchema = Yup.object({
@@ -300,9 +469,15 @@ export const Profile = () => {
       }
     });
   };
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCurrentUser({ ...currentUser, [name]: value });
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setCurrentUser((prevState) => ({
+      ...prevState,
+      person: {
+        ...prevState.person,
+        [name]: value,
+      },
+    }));
   };
 
   const handleDeleteSkills = (optionToDelete) => {
@@ -334,7 +509,7 @@ export const Profile = () => {
   const [educationFields, setEducationFields] = useState('');
 
   // useEffect(() => {
-  //   setData({ hasHigherEducation, educationFields });
+  //   setCurrentUser({ hasHigherEducation, educationFields });
   // }, [hasHigherEducation, educationFields]);
 
   // useEffect(() => {
@@ -380,81 +555,133 @@ export const Profile = () => {
                 {errorMessage}
               </Alert>
             )}
-            <form onSubmit={formik.handleSubmit}>
-              <TextField
-                fullWidth
-                label="שם פרטי ומשפחה"
-                variant="outlined"
-                margin="normal"
-                id="name"
-                name="name"
-                value={currentUser.person.firstName}
-                onChange={handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.name && Boolean(formik.errors.name)}
-                helperText={formik.touched.name && formik.errors.name}
-              />
-
-              {/* <Autocomplete
-                fullWidth
-                id="city"
-                options={cities}
-                value={currentUser.person.cityName}
-                onChange={(event, newValue) => formik.setFieldValue('city', newValue)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="עיר"
-                    variant="outlined"
-                    margin="normal"
-                    value={currentUser.cityName}
-                    onChange={handleChange}
-                    error={formik.touched.city && Boolean(formik.errors.city)}
-                    helperText={formik.touched.city && formik.errors.city}
-                    sx={{ backgroundColor: 'white' }} // צבע רקע לבן
-                  /> */}
-                {/* )}
-              /> */}
-
-              <TextField
-                fullWidth
-                label="אימייל"
-                variant="outlined"
-                margin="normal"
-                id="email"
-                name="email"
-                value={currentUser.person.email}
-                onChange={handleChange}
-                // onBlur={formik.handleBlur}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
-                sx={{ backgroundColor: 'white' }} // צבע רקע לבן
-              />
-              <TextField
-                fullWidth
-                label="טלפון"
-                variant="outlined"
-                margin="normal"
-                id="phone"
-                name="phone"
-                value={currentUser.person.phoneNumber}
-                onChange={handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.phone && Boolean(formik.errors.phone)}
-                helperText={formik.touched.phone && formik.errors.phone}
-                sx={{ backgroundColor: 'white' }} // צבע רקע לבן
-              />
+            <form dir="rtl">
+              <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                  <div dir="rtl">
+                    <TextField
+                      fullWidth
+                      label="שם פרטי"
+                      variant="outlined"
+                      margin="normal"
+                      id="name"
+                      name="firstName"
+                      value={currentUser.person.firstName}
+                      onChange={handleChange}
+                    />
+                    <TextField
+                      fullWidth
+                      label="אימייל"
+                      variant="outlined"
+                      margin="normal"
+                      id="email"
+                      name="email"
+                      value={currentUser.person.email}
+                      onChange={handleChange}
+                      sx={{ backgroundColor: 'white' }}
+                    />
+                    <TextField
+                      fullWidth
+                      label="טלפון"
+                      variant="outlined"
+                      margin="normal"
+                      id="phone"
+                      name="phoneNumber"
+                      value={currentUser.person.phoneNumber}
+                      onChange={handleChange}
+                      sx={{ backgroundColor: 'white' }}
+                    />
+                  </div>
+                </ThemeProvider>
+              </CacheProvider>
             </form>
           </Paper>
         </Container>
-      </Box>
+      </Box >
       <Box sx={{ borderRadius: 1, p: 2, mb: 2 }}>
         <Container maxWidth="md">
           <Paper elevation={3} sx={{ padding: 4, marginTop: 4 }}>
             <Typography variant="h6" color={'black'}>
               העלאת קורות חיים
             </Typography>
-            <CV />
+            <Container maxWidth="sm">
+              <form onSubmit={handleSubmitFile}>
+                <Box display="flex" flexDirection="column" gap={2} alignItems="center">
+                  <Box display="flex" gap={2} alignItems="center" justifyContent="center" width="100%">
+                    <UploadButton
+                      variant="contained"
+                      component="label"
+                      onClick={() => triggerFileInput('hebrew')}
+                    >
+                      בחר קובץ בעברית
+                    </UploadButton>
+                    {hebrewFile && (
+                      <>
+                        <Tooltip title="צפייה בקובץ ">
+                          <IconButton onClick={() => handleViewFile(hebrewFile)} color="primary">
+                            <DescriptionIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </>
+                    )}
+                  </Box>
+                  {hebrewFile && (
+                    <Typography variant="body2" align="center">{hebrewFile.name}</Typography>
+                  )}
+                  <Box display="flex" gap={2} alignItems="center" justifyContent="center" width="100%">
+                    <UploadButton
+                      variant="contained"
+                      component="label"
+                      onClick={() => triggerFileInput('english')}
+                    >
+                      בחר קובץ באנגלית
+                    </UploadButton>
+                    {englishFile && (
+                      <>
+                        <Tooltip title="צפייה בקובץ">
+                          <IconButton onClick={() => handleViewFile(englishFile)} color="primary">
+                            <DescriptionIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </>
+                    )}
+                  </Box>
+                  {englishFile && (
+                    <Typography variant="body2" align="center">{englishFile.name}</Typography>
+                  )}
+                  <Button type="submit" variant="contained" className="submit-button" disabled={loading}>
+                    {loading ? 'טוען...' : 'העלה קבצים'}
+                  </Button>
+                </Box>
+              </form>
+              <Backdrop open={loading} style={{ zIndex: 1000, color: '#fff', display: 'flex', flexDirection: 'column' }}>
+                <CircularProgress color="inherit" sx={{ width: '80px !important', height: '80px !important' }} />
+              </Backdrop>
+              <Dialog open={dialogOpenFile} onClose={handleCloseDialogFile} maxWidth="lg" fullWidth>
+                <DialogTitle>{dialogTitle}</DialogTitle>
+                <DialogContent>
+                  {fileUrl && (
+                    <Box position="relative">
+                      <iframe
+                        src={fileUrl}
+                        style={{ width: '100%', height: '80vh', border: 'none' }}
+                        title="File Preview"
+                      />
+                      <IconButton
+                        variant="contained"
+                        onClick={handleDownload}
+                        style={{ position: 'absolute', top: '10px', left: '10px', color: 'white', backgroundColor: 'rgba(0,0,0,0.5)' }}
+                      >
+                        <Downloading />
+                      </IconButton>
+                    </Box>
+                  )}
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseDialogFile}>סגור</Button>
+                </DialogActions>
+              </Dialog>
+            </Container>
           </Paper>
         </Container>
       </Box>
@@ -507,7 +734,7 @@ export const Profile = () => {
                   );
                 })}
               </Box>
-              
+
             </div>
           </Paper>
         </Container>
@@ -575,34 +802,48 @@ export const Profile = () => {
                 קישור לפרופיל LinkedIn:
               </Typography>
             </Stack>
-            <TextField
-              id="linkedin-url"
-              label="קישור לפרופיל LinkedIn"
-              variant="outlined"
-              fullWidth
-              value={currentUser.linkedin}
-              onChange={handleChange}
-              error={urlError}
-              helperText={urlError ? "הקישור אינו תקין" : ""}
-              sx={{ color: 'black' }}
-            />
+
+            <CacheProvider value={cacheRtl}>
+              <ThemeProvider theme={theme}>
+                <div dir="rtl">
+                  <TextField
+                    id="linkedin-url"
+                    label="קישור לפרופיל LinkedIn"
+                    variant="outlined"
+                    fullWidth
+                    value={currentUser.linkedin}
+                    onChange={handleChange}
+                    error={urlError}
+                    helperText={urlError ? "הקישור אינו תקין" : ""}
+                    sx={{ color: 'black' }}
+                  />
+                </div>
+              </ThemeProvider>
+            </CacheProvider>
+
             <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 2, mb: 1 }}>
               <GitHubIcon sx={{ color: 'black' }} />
               <Typography variant="body1" sx={{ color: 'black' }}>
                 קישור לגיטהאב:
               </Typography>
             </Stack>
-            <TextField
-              id="github-url"
-              label="קישור לגיטהאב"
-              variant="outlined"
-              fullWidth
-              value={currentUser.github}
-              onChange={handleChange}
-              error={urlError}
-              helperText={urlError ? "הקישור אינו תקין" : ""}
-              sx={{ color: 'black' }}
-            />
+            <CacheProvider value={cacheRtl}>
+              <ThemeProvider theme={theme}>
+                <div dir="rtl">
+                  <TextField
+                    id="github-url"
+                    label="קישור לגיטהאב"
+                    variant="outlined"
+                    fullWidth
+                    value={currentUser.github}
+                    onChange={handleChange}
+                    error={urlError}
+                    helperText={urlError ? "הקישור אינו תקין" : ""}
+                    sx={{ color: 'black' }}
+                  /></div>
+              </ThemeProvider>
+            </CacheProvider>
+
           </Paper>
         </Container>
       </Box>
@@ -631,16 +872,23 @@ export const Profile = () => {
                 <>
                   {educationFields.map((field, index) => (
                     <Box key={index} sx={{ mb: 2, display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <TextField
-                        multiline
-                        minRows={2}
-                        fullWidth
-                        label={`השכלה גבוהה ${index + 1}`}
-                        variant="outlined"
-                        value={currentUser.educationStatus}
-                        onChange={(event) => handleEducationChange(index, event)}
-                        sx={{ mr: 1 }}
-                      />
+
+                      <CacheProvider value={cacheRtl}>
+                        <ThemeProvider theme={theme}>
+                          <div dir="rtl">
+                            <TextField
+                              multiline
+                              minRows={2}
+                              fullWidth
+                              label={`השכלה גבוהה ${index + 1}`}
+                              variant="outlined"
+                              value={currentUser.educationStatus}
+                              onChange={(event) => handleEducationChange(index, event)}
+                              sx={{ mr: 1 }}
+                            /></div>
+                        </ThemeProvider>
+                      </CacheProvider>
+
                       {index > 0 && (
                         <IconButton
                           color="error"
@@ -680,7 +928,9 @@ export const Profile = () => {
             <form>
               <FormControl variant="outlined" margin="normal" sx={{ width: '150px' }}>
                 <InputLabel id="experience-label">שנות ניסיון</InputLabel>
+
                 <Select
+                  dir="rtl"
                   labelId="experience-label"
                   id="experience-select"
                   value={currentUser.experience}
@@ -708,34 +958,58 @@ export const Profile = () => {
                   <DescriptionIcon color="primary" sx={{ mr: 1 }} />
                   <Typography variant="h6">מכתב מקדים (אופציונלי)</Typography>
                 </Box>
-                <TextField
-                  id="cover-letter"
-                  label="מכתב מקדים"
-                  multiline
-                  value={currentUser.coverLater}
-                  rows={4}
-                  placeholder="מכתב מקדים"
-                  variant="outlined"
-                  fullWidth
-                  helperText="אופציונלי"
-                  onChange={handleChange} // עדכון ערך מהקלט
-                />
+
+                <CacheProvider value={cacheRtl}>
+                  <ThemeProvider theme={theme}>
+                    <div dir="rtl">
+                      <TextField
+                        id="cover-letter"
+                        label="מכתב מקדים"
+                        multiline
+                        value={currentUser.coverLater}
+                        rows={4}
+                        placeholder="מכתב מקדים"
+                        variant="outlined"
+                        fullWidth
+                        helperText="אופציונלי"
+                        onChange={handleChange} // עדכון ערך מהקלט
+                      />
+                    </div>
+                  </ThemeProvider>
+                </CacheProvider>
               </Box>
             </Container>
           </Paper>
         </Container>
       </Box>
 
-      <Box mt={4}>
+      <Box mt={4} display="flex" justifyContent="center">
         <Button
           variant="contained"
           color="primary"
           onClick={handleSubmit}
+          sx={{
+            backgroundColor: '#0000FF', // צבע כחול
+            padding: '15px 30px', // גודל הכפתור
+            fontSize: '18px', // גודל הטקסט
+            marginBottom: '16px', // רווח אחרי הכפתור
+          }}
         >
           שמירת עדכונים
         </Button>
+        <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+          <DialogTitle sx={{ textAlign: 'right' }}>הודעה</DialogTitle>
+          <DialogContent sx={{ textAlign: 'right' }}>
+            <Typography>העדכונים עבור המשתמש נשמרו בהצלחה!</Typography>
+          </DialogContent>
+          <DialogActions sx={{ justifyContent: 'flex-end' }}>
+            <Button onClick={handleCloseDialog} color="primary" autoFocus>
+              סגור
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
-    </Container>
+    </Container >
   );
 };
 

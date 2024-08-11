@@ -14,7 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import logo from '../images/חנה ברגמן.png'
+import logo from '../images/image (10).png'
 import LogoutIcon from "@mui/icons-material/Logout";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
@@ -154,34 +154,52 @@ export const Home = () => {
           <img
             src={logo}
             alt="לוגו"
-            style={{ width: "300px", height: "auto" }}
+            style={{ width: "100%", height: "auto" }}
           />
         </Box>
       </Box>
-      <Container sx={{ position: "relative", zIndex: 2, mt: 1, width: 600 }}>
-        <Box>
-          <Typography variant="h5" align="center" sx={{ color: "black" }}>
-            חנה ברגמן מתמחה במתן פתרונות גיוס מדויקים בתחום ההייטק.
-            <br />
-            מטרתנו היא לחבר בין כישרונות מובילים לבין חברות מובילות בתעשייה, תוך
-            הבטחת התאמה מושלמת הן למועמדים והן למעסיקים.
-            <br />
-            עם הבנה עמוקה של הדרישות הייחודיות של תחום ההייטק,
-            <br /> אנו גאים בגישה המדוקדקת שלנו להשמה ושואפים למצוינות ודיוק בכל
-            תהליך הגיוס.
-          </Typography>
-        </Box>
-        <Box sx={{ textAlign: "center", mt: 0 }}>
+      <Container sx={{ position: "relative", zIndex: 2, mt: 1, maxWidth: '100%' }}>
+      <Box
+        sx={{
+          backgroundColor: "rgba(0, 0, 0, 0.5)", // רקע שחור שקוף יותר
+          padding: 3, // ריפוד סביב התוכן
+          borderRadius: 2, // פינות מעוגלות
+          marginBottom: 4, // רווח בין הרקע השחור לכפתור
+        }}
+      >
+        <Typography
+          variant="h6" // טקסט גדול יותר
+          align="center"
+          sx={{
+            color: "white",
+            maxWidth: '800px', // מקסימום רוחב הטקסט
+            margin: '0 auto', // מרכז את הטקסט
+            lineHeight: 1.6, // גובה קו לקריאות טובה יותר
+          }}
+        >
+          חנה ברגמן מתמחה במתן פתרונות גיוס מדויקים בתחום ההייטק.
+          <br />
+          מטרתנו היא לחבר בין כישרונות מובילים לבין חברות מובילות בתעשייה, תוך
+          הבטחת התאמה מושלמת הן למועמדים והן למעסיקים.
+          <br />
+          עם הבנה עמוקה של הדרישות הייחודיות של תחום ההייטק,
+          <br /> אנו גאים בגישה המדוקדקת שלנו להשמה ושואפים למצוינות ודיוק בכל
+          תהליך הגיוס.
+        </Typography>
+      </Box>
+      
+    </Container>
+
+    <Box sx={{ textAlign: "center", mt: 4 }}>
           <Button
             variant="contained"
-            sx={{ mt: 4, animation: `${pulseAnimation} 2s infinite` }}
+            sx={{ animation: `${pulseAnimation} 2s infinite` }}
             onClick={upload}
           >
             העלאת קורות חיים
             <FileUploadIcon />
           </Button>
         </Box>
-      </Container>
       <Box
         component="footer"
         sx={{ py: 25, px: 2, textAlign: "center", mb: 0 }}

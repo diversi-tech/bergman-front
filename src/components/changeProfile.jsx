@@ -39,11 +39,11 @@ const ChangeProfile = () => {
     password: "",
     phone: "",
   });
+
   useEffect(() => {
     const token = Cookies.get("jwtToken");
     if (token !== undefined) {
       try {
-        // נסה לפרש את התוקן
         const decodedToken = jwtDecode(token);
         setProfile({
           username: decodedToken.firstName + " " + decodedToken.lastName || "",
@@ -56,16 +56,6 @@ const ChangeProfile = () => {
       }
     }
   }, []);
-  // useEffect(() => {
-  //     if (reduxUser) {
-  //         setProfile({
-  //             username: reduxUser.username || '',
-  //             email: reduxUser.email || '',
-  //             password: reduxUser.password || '',
-  //             phone: reduxUser.phone || ''
-  //         });
-  //     }
-  // }, [reduxUser]);
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -81,6 +71,17 @@ const ChangeProfile = () => {
 
   const save = async () => {
     try {
+      const user = {
+        id: profile.id,
+        person: {
+          id: profile.person.id,
+        },
+        password: profile.password,
+        enabled: profile.enabled,
+        userType: {
+          id: profile.userType.id,
+        },
+      };
       const updatedUser = {
         ...reduxUser,
         ...profile,
@@ -100,35 +101,37 @@ const ChangeProfile = () => {
     e.preventDefault();
     save();
   };
+
   const cacheRtl = createCache({
     key: "muirtl",
     stylisPlugins: [prefixer, rtlPlugin],
   });
+
   const theme = createTheme({
     direction: "rtl",
     palette: {
       mode: "light",
     },
     components: {
-      // שינוי סגנון של רכיב Button
       MuiButton: {
         styleOverrides: {
           root: {
-            padding: '16px 32px', // שינוי padding (מרווחים פנימיים) כדי להגדיל את התיבה
-            fontSize: '16px',     // שינוי גודל הפונט בתוך הכפתור
+            padding: "16px 32px",
+            fontSize: "16px",
           },
         },
       },
       MuiTextField: {
         styleOverrides: {
           root: {
-            width: '100%', // שינוי רוחב השדה
-            maxWidth: '500px', // הגדרת רוחב מקסימלי
+            width: "100%",
+            maxWidth: "500px",
           },
         },
       },
-    }
+    },
   });
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -140,10 +143,21 @@ const ChangeProfile = () => {
           alignItems: "center",
         }}
       >
-        <Typography component="h1" variant="h5" color={"black"}>
+        <Typography component="h1" variant="h5" color={"white"}>
           שינוי פרופיל
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{
+            mt: 1,
+            backgroundColor: "rgba(0, 0, 0, 0.7)", // רקע שחור שקוף
+            padding: 3, // מרווח פנימי
+            borderRadius: 2, // קצוות מעוגלים
+            width: "100%",
+            maxWidth: "600px",
+          }}
+        >
           <CacheProvider value={cacheRtl}>
             <ThemeProvider theme={theme}>
               <div dir="rtl">
@@ -157,6 +171,27 @@ const ChangeProfile = () => {
                   autoFocus
                   value={profile.username}
                   onChange={handleChange}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "white",
+                    },
+                  }}
+                  InputProps={{
+                    style: {
+                      color: "white",
+                    },
+                  }}
                 />
               </div>
             </ThemeProvider>
@@ -173,6 +208,27 @@ const ChangeProfile = () => {
                   name="email"
                   value={profile.email}
                   onChange={handleChange}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "white",
+                    },
+                  }}
+                  InputProps={{
+                    style: {
+                      color: "white",
+                    },
+                  }}
                 />
               </div>
             </ThemeProvider>
@@ -187,12 +243,29 @@ const ChangeProfile = () => {
                   id="password"
                   label="סיסמא"
                   name="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={profile.password}
                   onChange={handleChange}
-                  // error={Boolean(passwordError)}
-                  // helperText={passwordError}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "white",
+                    },
+                  }}
                   InputProps={{
+                    style: {
+                      color: "white",
+                    },
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
@@ -221,6 +294,27 @@ const ChangeProfile = () => {
                   name="phone"
                   value={profile.phone}
                   onChange={handleChange}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "white",
+                    },
+                  }}
+                  InputProps={{
+                    style: {
+                      color: "white",
+                    },
+                  }}
                 />
               </div>
             </ThemeProvider>
@@ -232,7 +326,6 @@ const ChangeProfile = () => {
             sx={{ mt: 3, mb: 2 }}
           >
             שמור שינויים
-            <DoneIcon />
           </Button>
         </Box>
       </Box>

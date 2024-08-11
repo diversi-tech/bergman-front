@@ -164,10 +164,12 @@ export const CV = () => {
                     <DescriptionIcon />
                   </IconButton>
                 </Tooltip>
-                <Typography variant="body2">{hebrewFile.name}</Typography>
               </>
             )}
           </Box>
+          {hebrewFile && (
+            <Typography variant="body2" align="center">{hebrewFile.name}</Typography>
+          )}
           <Box display="flex" gap={2} alignItems="center" justifyContent="center" width="100%">
             <UploadButton
               variant="contained"
@@ -183,10 +185,12 @@ export const CV = () => {
                     <DescriptionIcon />
                   </IconButton>
                 </Tooltip>
-                <Typography variant="body2">{englishFile.name}</Typography>
               </>
             )}
           </Box>
+          {englishFile && (
+            <Typography variant="body2" align="center">{englishFile.name}</Typography>
+          )}
           <Button type="submit" variant="contained" className="submit-button" disabled={loading}>
             {loading ? 'טוען...' : 'העלה קבצים'}
           </Button>
@@ -219,11 +223,6 @@ export const CV = () => {
           <Button onClick={handleCloseDialog}>סגור</Button>
         </DialogActions>
       </Dialog>
-      <Snackbar open={dialogOpen && !fileUrl} autoHideDuration={6000} onClose={handleCloseDialog}>
-        <Alert onClose={handleCloseDialog} severity={dialogSeverity}>
-          {dialogMessage}
-        </Alert>
-      </Snackbar>
     </Container>
   );
 };
