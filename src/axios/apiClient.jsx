@@ -3,11 +3,9 @@ import {jwtDecode} from 'jwt-decode';
 import Cookies from 'js-cookie';
 
 const api = axios.create({
-  //הניתוב הבסיסי פה  ,userAxios
-    baseURL: 'https://bergman-back-2.onrender.com/api/',
+    baseURL: 'https://bergman-back.onrender.com/api/',
 });
 
-// Interceptor לטיפול ב-Token ובקשת ה-API
 api.interceptors.request.use(async (config) => {
     let accessToken = Cookies.get('jwtToken');
     if (accessToken) {

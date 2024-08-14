@@ -338,7 +338,7 @@ export const Profile = () => {
     options1,
     enums1,
     candidateOptions1,
-    referrals1,
+  
   ]);
   // useEffect(() => {
   //   debugger
@@ -748,7 +748,6 @@ export const Profile = () => {
             </Typography>
             <div>
               <FormControl sx={{ m: 1, width: 300 }}>
-                <InputLabel>בחירת אופציות</InputLabel>
                 <Select
                   multiple
                   value={selectedOptions}
@@ -757,7 +756,6 @@ export const Profile = () => {
                 >
                   {enumTypes.map((enumType) => (
                     (enumType !== 'ערים' && enumType !== 'אזורים') && (
-
                       <React.Fragment key={enumType}>
                         <MenuItem disabled>{enumType}</MenuItem>
                         {options.filter(option => option.enumType === enumType).map((option) => (
@@ -769,7 +767,6 @@ export const Profile = () => {
                     )))}
                 </Select>
               </FormControl>
-
               <Box sx={{ mt: 2 }}>
                 {enumTypes.map(enumType => {
                   if (enumType === 'ערים' || enumType === 'אזורים') return null;
@@ -789,7 +786,6 @@ export const Profile = () => {
                   );
                 })}
               </Box>
-
             </div>
           </Paper>
         </Container>
