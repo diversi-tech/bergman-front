@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://bergman-back.onrender.com/api';
+const API_URL = 'https://bergman-back-9cfv.onrender.com/api';
 
 export const requestPasswordReset = async (email) => {
   debugger
