@@ -3,7 +3,7 @@ import {jwtDecode} from 'jwt-decode';
 import Cookies from 'js-cookie';
 
 const api = axios.create({
-    baseURL: 'https://bergman-back-9cfv.onrender.com/api/',
+    baseURL: 'https://bergman-back.onrender.com/api/',
 });
 
 api.interceptors.request.use(async (config) => {

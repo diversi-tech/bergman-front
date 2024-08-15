@@ -2,7 +2,7 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 
-const API_URL = 'https://bergman-back-9cfv.onrender.com/api/users'; // שים כאן את ה-URL שלך לקונטרולר
+const API_URL = 'https://bergman-back.onrender.com/api/users'; // שים כאן את ה-URL שלך לקונטרולר
 
 
 const UserAxios = {
